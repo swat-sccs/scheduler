@@ -1,0 +1,139 @@
+
+<html>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"></script>
+    <link type="text/css" rel='stylesheet' href='bower_components/fullcalendar/dist/fullcalendar.css' />
+    <link type="text/css" rel='stylesheet' href='style.css' />
+    <script src='sched.js'></script>
+    <script src='bower_components/moment/min/moment.min.js'></script>
+    <script src='bower_components/fullcalendar/dist/fullcalendar.js'></script>
+    <script src='bower_components/list.js/dist/list.min.js'></script>
+
+
+    <script>
+var urlClasses = []
+     $( document ).ready(function() {
+         /* $.getJSON("https://dl.dropboxusercontent.com/u/24397004/Permanent%20To%20Share/classSched.txt", function(json) {*/
+         /* console.log(json); // this will show the info it in firebug console*/
+             classSchedObj = json
+             tableArr = []
+             for(var i=0; i<=1; i++){
+                 for(var z in json[i]){
+                     var id = json[i][z].id
+                     if(id in json[2]){
+                         /* console.log(id)*/
+                         json[i][z].type+="<br>!!"+json[2][id].type
+                         json[i][z].days+="<br>"+json[2][id].days
+                         json[i][z].time+="<br>"+json[2][id].time
+                         json[i][z].rm+="<br>"+json[2][id].rm
+                     }
+                     tableArr.push(json[i][z])
+                 }
+             }
+             
+
+             var options = {
+                 valueNames: ["ref", "subj", "num", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
+                 /* item: '<li><h3 class="title"></h3><p class="ref"></p></li>'*/
+                 item: '<tr><td><input type="checkbox" name="rre" class="longListId"></td><td class="ref"></td><td class="subj"></td><td class="num"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>'
+             };
+             
+             /* var values = json[0].concat(json[1])*/
+             var hackerList = new List('hacker-list', options, tableArr);
+
+             // page is now ready, initialize the calendar...
+
+             fullCal = $('#calendar').fullCalendar({
+                 // put your options and callbacks here
+                 height: 650,
+                 /* weekends: false,*/
+                 header: {
+				             left: 'prev,next today',
+				             center: 'title'
+				             /* right: 'month,agendaWeek'*/
+			           },
+                 defaultView: 'agendaWeek',
+                 editable: false,
+                 /* events: json[0]*/
+                 /* events: [*/
+                 /* {*/
+                 /* title  : 'event3',*/
+                 /* dow: [2],*/
+                 /* start  : '10:00',*/
+                 /* end  : '13:00',*/
+                 /* allDay : false // will make the time show*/
+                 /* }*/
+                 /* ]*/
+                 /* })*/
+
+             });
+             $('.longListId').change(function() {
+                 // this will contain a reference to the checkbox   
+                 var id = this.getAttribute("value")
+                 if (this.checked) {
+                     b = this
+                     console.log(this)
+                     if(id in classSchedObj[2]){
+                         console.log(classSchedObj[2][id])
+
+                         $('#calendar').fullCalendar('addEventSource', [classSchedObj[2][id]]);
+                         $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")
+                     }
+                     if(id in classSchedObj[1]){
+                         alert("No set times to meet")
+                     }else{
+                         $('#calendar').fullCalendar('addEventSource', [classSchedObj[0][id]]);
+                         console.log("<input type='checkbox' id='"+id+"'>"+classSchedObj[0][id].join("\t")+"<br>")
+                     }
+                     if(urlClasses.indexOf(id)==-1){
+                         urlClasses.push(id)
+                         window.location.hash=urlClasses.join(",")
+                     }
+                 } else {
+                     $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
+                     urlClasses.splice(urlClasses.indexOf(id), 1)
+                     window.location.hash=urlClasses.join(",")
+                 }
+             });
+             if(window.location.hash!==""){
+                 urlClasses = window.location.hash.replace("#", "").split(",")
+                 for(var q in urlClasses){
+                     $("input[value='"+urlClasses[q]+"']").prop( "checked", true ).trigger("change")
+                     var hashId = urlClasses[q]
+                         $('.rightCol').append("<input type='checkbox' id='"+hashId+"'>"+classSchedObj[0][hashId].title+"<br>")
+                 }
+             }
+             /* })*/
+     })
+    </script>
+    <div class="container">
+        <div class="leftCol">
+            <div id="calendar">
+            </div>
+        </div>
+        <div class="rightCol">
+        </div>
+        <br>
+    </div>
+
+
+
+
+
+    <br><br>
+    <div id="hacker-list">
+        <input class="search" placeholder="Search" />
+        <button class="sort" data-sort="ref">Sort by Reference</button>
+        <button class="sort" data-sort="subj">Sort by Subject</button>
+
+        <table>
+            <thead>
+                <td></td><td>ref</td><td>subj</td><td>num</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
+            </thead>
+            <form id="classForm">
+                <tbody class="list">
+                </tbody>
+            </form>
+    </div>
+
+</html>
