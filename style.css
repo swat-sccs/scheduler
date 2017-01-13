@@ -1,10 +1,22 @@
-.leftCol{
-    width:80%;
-    float:left;
+#calendarTd{
+    vertical-align: top; 
 }
-.rightCol{
+#classTd{
     width:20%;
-    float:right;
+    vertical-align: top; 
+}
+/* .leftCol{ */
+/*     width:80%; */
+/*     float:left; */
+/* } */
+/* .rightCol{ */
+/*     width:20%; */
+/*     float:right; */
+/* } */
+.rightCol{
+    overflow-y: scroll;
+    height:800;
+    /* x-overflow:visible; */
 }
 .list {
     font-family:sans-serif;
