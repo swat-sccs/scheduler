@@ -8,6 +8,22 @@
     <script src='bower_components/moment/min/moment.min.js'></script>
     <script src='bower_components/fullcalendar/dist/fullcalendar.js'></script>
     <script src='bower_components/list.js/dist/list.min.js'></script>
+    <h1>
+        SCCS Class Scheduler
+    </h1>
+    <div id="exportReady" style="display: none">
+    <button onclick="getReadyForExport(0)">Export All Events to Google Calendar</button>
+    <button onclick="getReadyForExport(1)">Export Highlighted Events to Google Calendar</button>
+    </div>
+    <div id="authorize" style="display: none">
+        <div id="authorize-div" style="display: none">
+            <span>Authorize access to Google Calendar API</span>
+            <!--Button for the user to click to initiate auth sequence -->
+            <button id="authorize-button" onclick="handleAuthClick(event)">
+                Authorize
+            </button>
+        </div>
+    </div>
     <table>
         <tr>
             <td id="calendarTd">
@@ -45,199 +61,6 @@
             </form>
     </div>
 
-    <script>
-     var classes = {}
-     var highlightedClasses = []
-     $( document ).ready(function() {
-         /* $.getJSON("https://dl.dropboxusercontent.com/u/24397004/Permanent%20To%20Share/classSched.txt", function(json) {*/
-         /* console.log(json); // this will show the info it in firebug console*/
-         classSchedObj = json
-         tableArr = []
-         for(var i=0; i<=1; i++){
-             for(var z in json[i]){
-                 var id = json[i][z].id
-                 if(id in json[2]){
-                     /* console.log(id)*/
-                     json[i][z].type+="<br>"+json[2][id].type
-                     json[i][z].days+="<br>"+json[2][id].days
-                     json[i][z].time+="<br>"+json[2][id].time
-                     json[i][z].rm+="<br>"+json[2][id].rm
-                 }
-                 tableArr.push(json[i][z])
-             }
-         }
-         
-
-         var options = {
-             /* valueNames: ["ref", "subj", "num", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],*/
-             valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
-             /* item: '<li><h3 class="title"></h3><p class="ref"></p></li>'*/
-             /* item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="subj"></td><td class="num"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>'*/
-             item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="name"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>'
-         };
-         
-         /* var values = json[0].concat(json[1])*/
-         var hackerList = new List('hacker-list', options, tableArr);
-
-         // page is now ready, initialize the calendar...
-
-         fullCal = $('#calendar').fullCalendar({
-             // put your options and callbacks here
-             height: 800,
-             minTime: "08:00:00",
-             maxTime: "23:00:00",
-             /* contentHeight: 800,*/
-             weekends: false,
-             allDaySlot: false,
-             header: {
-				         left: 'prev,next today',
-				         center: 'title'
-				         /* right: 'month,agendaWeek'*/
-			       },
-             defaultView: 'agendaWeek',
-             editable: false,
-             /* events: json[0]*/
-             /* events: [*/
-             /* {*/
-             /* title  : 'event3',*/
-             /* dow: [2],*/
-             /* start  : '10:00',*/
-             /* end  : '13:00',*/
-             /* allDay : false // will make the time show*/
-             /* }*/
-             /* ]*/
-             /* })*/
-
-         });
-         $('.longListId').change(longListCallback);
-         if(window.location.hash!==""){
-
-             var bothHash = window.location.hash.replace("#", "").split(";")
-             var hashClasses = bothHash[0].split(",")
-             if(bothHash[1]!=null){
-                 var highlight = bothHash[1].split(",")
-             }else{
-                 highlight = []
-             }
-             //needs to be global bc dont want to spam hash event :(
-             notFromHash = false
-             for(var q in hashClasses){
-                 /* console.log(hashClasses[q])*/
-                 $("input.longListId[value='"+hashClasses[q]+"']").prop( "checked", true ).trigger("change")
-             }
-             notFromHash = true
-             reloadRightCol()
-             for(var z in highlight){
-                 $("input.highlightCheck[value='"+highlight[z]+"']").prop( "checked", true ).trigger("change")
-             }
-             window.location.hash=Object.keys(classes).join(",")+";"+highlightedClasses.join(",")
-         }
-     })
-     function longListCallback() {
-         // this will contain a reference to the checkbox   
-         var id = this.getAttribute("value")
-         if (this.checked) {
-             /* console.log(this)*/
-             if(id in classSchedObj[2]){
-                 /* console.log(classSchedObj[2][id])*/
-
-                 $('#calendar').fullCalendar('addEventSource', [classSchedObj[2][id]]);
-                 /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")*/
-             }
-             if(id in classSchedObj[1]){
-                 alert("No set times to meet")
-             }else{
-                 $('#calendar').fullCalendar('addEventSource', [classSchedObj[0][id]]);
-                 /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[0][id].join("\t")+"<br>")*/
-             }
-             if(!(id in classes)){
-                 classes[id] = classSchedObj[0][id]
-                 if(notFromHash){
-                     window.location.hash=Object.keys(classes).join(",")+";"+highlightedClasses.join(",")
-                 }
-                 reloadRightCol()
-             }
-         } else {
-             $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-             delete classes[id]
-             if(notFromHash){
-                 window.location.hash=Object.keys(classes).join(",")+";"+highlightedClasses.join(",")
-             }
-             reloadRightCol()
-         }
-     }
-
-     function highlightCallback(){
-         var id = this.getAttribute("value")
-         if (this.checked) {
-             b = this
-             /* console.log(this)*/
-             if(id in classSchedObj[2]){
-                 /* console.log(classSchedObj[2][id])*/
-                 $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-                 $('#calendar').fullCalendar('addEventSource', {events:[classSchedObj[2][id]], color: "red" });
-                 /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")*/
-             }
-             if(id in classSchedObj[1]){
-                 alert("No set times to meet")
-             }else{
-                 /* $('#calendar').fullCalendar('addEventSource', [classSchedObj[0][id]]);*/
-                 if(!(id in classSchedObj[2])){
-                     $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-                 }
-                 $('#calendar').fullCalendar('addEventSource', {events:[classSchedObj[0][id]], color: "red" });
-                 /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[0][id].join("\t")+"<br>")*/
-             }
-             if(highlightedClasses.indexOf(id)==-1){
-                 highlightedClasses.push(id)
-                 window.location.hash=Object.keys(classes).join(",")+";"+highlightedClasses.join(",")
-             }
-         } else {
-             $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-             highlightedClasses.splice(highlightedClasses.indexOf(id), 1)
-             if(id in classSchedObj[2]){
-                 /* console.log(classSchedObj[2][id])*/
-                 var addEvent = classSchedObj[2][id]
-                 $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-                 $('#calendar').fullCalendar('addEventSource', {events:[classSchedObj[2][id]]});
-                 /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")*/
-             }
-             if(id in classSchedObj[1]){
-                 alert("No set times to meet")
-             }else{
-                 /* $('#calendar').fullCalendar('addEventSource', [classSchedObj[0][id]]);*/
-                 if(!(id in classSchedObj[2])){
-                     $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-                 }
-                 $('#calendar').fullCalendar('addEventSource', {events:[classSchedObj[0][id]]});
-                 /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[0][id].join("\t")+"<br>")*/
-             }
-             /* delete classes[id]*/
-             /* window.location.hash=Object.keys(classes).join(",")*/
-             /* reloadRightCol()*/
-             window.location.hash=Object.keys(classes).join(",")+";"+highlightedClasses.join(",")
-         }
-     }     
-
-     
-     function reloadRightCol(){
-         htmlObj = []         
-         var html = ""
-         for(var i in classes){
-             var checked = '' 
-             if(highlightedClasses.indexOf(classes[i].num)!=-1){
-                 checked = 'checked'
-             }
-             htmlObj.push({key: classes[i].subj+classes[i].num, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+": "+classes[i].title+"<br>"})
-         }
-         htmlObj = htmlObj.sort(function (a, b) {
-             return a.key.localeCompare( b.key );
-         });
-         for(var z in htmlObj){
-             html+=htmlObj[z].val
-         }
-         $(".rightCol").html(html)
-         $('.highlightCheck').off("change").change(highlightCallback)
-     }
-    </script>
+    <script src="script.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=revealExport"></script>
 </html>
