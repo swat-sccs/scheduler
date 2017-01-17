@@ -230,12 +230,13 @@ exceptionDays = exceptionDays.substring(0,exceptionDays.length-1)
          $('.highlightCheck').off("change").change(highlightCallback)
      }
 function getReadyForExport(index){
-             checkAuth()
              document.getElementById("authorize").style.display = ""
              allOrHigh = index
+             exportToGoogle()
 }
      function exportToGoogle(){
         var addedClassObj = allAddedClassObj[allOrHigh]
+                var events = []
          for(var i in addedClassObj){
                                    console.log("-----")
              //need to make a new Obj each time bc will overwrite with set hour
@@ -357,6 +358,8 @@ console.log(addedClassObj[i].title)
                  // Hide auth UI, then load client library.
                  authorizeDiv.style.display = 'none';
                  loadCalendarApi();
+        document.getElementById("exportReady").style.display = ""
+                    document.getElementById("exportReady").style.display = ""
              } else {
                  // Show auth UI, allowing the user to initiate authorization by
                  // clicking authorize button.
@@ -384,8 +387,7 @@ console.log(addedClassObj[i].title)
              /* gapi.client.load('calendar', 'v3', getSCCSCal); */
                  gapi.client.load('calendar', 'v3', function(){
                          //TDD
-console.log("read for action")
-        exportToGoogle()
+                    console.log("read for action")
 
                  });
          }
@@ -552,5 +554,5 @@ function toDateStr(date) {
         /* +'T000000Z' */
     };
 function revealExport(){
-        document.getElementById("exportReady").style.display = ""
+        checkAuth()
 }
