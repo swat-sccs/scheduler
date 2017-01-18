@@ -477,7 +477,7 @@ function handleAuthCheckButton(authResult){
                  batch.execute(function(resp){
                          console.log("deleted")
                      console.log(resp)
-                             $("#exportReady").append('<b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar (might need to refresh)</b><br>')
+                             $("#exportReady").append('<br><b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar (might need to refresh)</b><br>')
                  })
              })
          }
