@@ -1,3 +1,4 @@
+var authorized = false;
      var term = "spring17"
      var classes = {}
      var highlightedClasses = []
@@ -9,6 +10,7 @@
      //YEARMONTHDAY+"T000000Z", pad with 0s
      var endSemesterISO = "20170428T000000Z"
      var allOrHigh = 0
+     var globalFromButton = false
      /* 20170127T000000Z */
          var CLIENT_ID = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
 
@@ -230,10 +232,15 @@ exceptionDays = exceptionDays.substring(0,exceptionDays.length-1)
          $('.highlightCheck').off("change").change(highlightCallback)
      }
 function getReadyForExport(index){
-             document.getElementById("authorize").style.display = ""
              allOrHigh = index
+             if(authorized ){
              exportToGoogle()
+             }else{
+             document.getElementById("authorize").style.display = ""
+
 }
+}
+
      function exportToGoogle(){
         var addedClassObj = allAddedClassObj[allOrHigh]
                 var events = []
@@ -352,14 +359,19 @@ console.log(addedClassObj[i].title)
           *
           * @param {Object} authResult Authorization result.
           */
-         function handleAuthResult(authResult) {
+         function handleAuthResult(authResult, fromButton) {
              var authorizeDiv = document.getElementById('authorize-div');
              if (authResult && !authResult.error) {
                  // Hide auth UI, then load client library.
                  authorizeDiv.style.display = 'none';
+                 //needs to be global
+                 console.log(fromButton)
+                 globalFromButton = fromButton
                  loadCalendarApi();
-        document.getElementById("exportReady").style.display = ""
-                    document.getElementById("exportReady").style.display = ""
+                document.getElementById("exportReady").style.display = ""
+               document.getElementById("exportReady").style.display = ""
+               authorized = true
+
              } else {
                  // Show auth UI, allowing the user to initiate authorization by
                  // clicking authorize button.
@@ -375,9 +387,12 @@ console.log(addedClassObj[i].title)
          function handleAuthClick(event) {
              gapi.auth.authorize(
                  {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-                 handleAuthResult);
+                 handleAuthCheckButton);
              return false;
          }
+function handleAuthCheckButton(authResult){
+        handleAuthResult(authResult, true)
+}
 
          /**
           * Load Google Calendar client library. List upcoming events
@@ -385,18 +400,23 @@ console.log(addedClassObj[i].title)
           */
          function loadCalendarApi() {
              /* gapi.client.load('calendar', 'v3', getSCCSCal); */
+                            console.log(globalFromButton)
                  gapi.client.load('calendar', 'v3', function(){
                          //TDD
                     console.log("read for action")
+                            console.log(globalFromButton)
+                            if(globalFromButton){
+                    exportToGoogle()
 
+
+                 }
                  });
          }
          function getSCCSCal(addEvents) {
-             sccsSchedCalId = 'swarthmore.edu_0ha19taudgvpckfmel7okbq6ic@group.calendar.google.com'
-             addToCal(sccsSchedCalId, addEvents)
+             /* sccsSchedCalId = 'swarthmore.edu_0ha19taudgvpckfmel7okbq6ic@group.calendar.google.com' */
+             /* addToCal(sccsSchedCalId, addEvents) */
              /* makeTest(sccsSchedCalId)*/
              /* makeTest(sccsSchedCalId)*/
-             return
              var getCalsReq = gapi.client.calendar.calendarList.list()
 
              getCalsReq.execute(function(resp) {
@@ -407,7 +427,7 @@ console.log(addedClassObj[i].title)
                      if(resp.items[i].summary=="SCCS Class Schedule"){
                          needsNewCal = false
                          sccsSchedCalId = resp.items[i].id
-                         addToCal(sccsSchedCalId)
+                         addToCal(sccsSchedCalId, addEvents)
                      }
                  }
                  if(needsNewCal){
@@ -419,14 +439,13 @@ console.log(addedClassObj[i].title)
                          console.log("Make New Cal")
                          console.log(resp)
                          sccsSchedCalId = resp.result.id
-                         addToCal(sccsSchedCalId)
+                         addToCal(sccsSchedCalId, addEvents)
                      })
                  }
 
              });
          }
          function addToCal(calId, addClass){
-             var batch = gapi.client.newBatch();
              console.log("calID: "+calId)
              var getEventsReq = gapi.client.calendar.events.list({
 			           'calendarId': calId,
@@ -435,14 +454,19 @@ console.log(addedClassObj[i].title)
 		         })
              console.log("getEvents")
              getEventsReq.execute(function(resp){
+             var batch = gapi.client.newBatch();
+             console.log("got")
                  console.log(resp)
                  var items = resp.items
+             console.log("items "+JSON.stringify(items))
                  for(var i in items){
                      batch.add(gapi.client.calendar.events.delete({
                          'calendarId': calId,
                          'eventId': items[i].id
                      }))
+                     console.log(items[i])
                  }
+             console.log("classes "+JSON.stringify(addClass))
                  for(var i in addClass){
                      batch.add(gapi.client.calendar.events.insert({
                          'calendarId': calId,
@@ -451,8 +475,9 @@ console.log(addedClassObj[i].title)
                  }
                  console.log("delete batch")
                  batch.execute(function(resp){
+                         console.log("deleted")
                      console.log(resp)
-                             $("#authorize").append('<b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar</b>')
+                             $("#authorize").append('<b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar (might need to refresh)</b><br>')
                  })
              })
          }
