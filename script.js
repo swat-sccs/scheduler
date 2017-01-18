@@ -368,7 +368,6 @@ console.log(addedClassObj[i].title)
                  console.log(fromButton)
                  globalFromButton = fromButton
                  loadCalendarApi();
-               document.getElementById("exportReady").style.display = ""
                authorized = true
 
              } else {
