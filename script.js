@@ -368,7 +368,6 @@ console.log(addedClassObj[i].title)
                  console.log(fromButton)
                  globalFromButton = fromButton
                  loadCalendarApi();
-                document.getElementById("exportReady").style.display = ""
                document.getElementById("exportReady").style.display = ""
                authorized = true
 
@@ -580,4 +579,5 @@ function toDateStr(date) {
     };
 function revealExport(){
         checkAuth()
+               document.getElementById("exportReady").style.display = ""
 }
