@@ -13,13 +13,31 @@
 /*     width:20%; */
 /*     float:right; */
 /* } */
+
+h1 {
+  font-family: "Dosis";
+  font-size: 5em;
+  color: #990000;
+}
+
+body {
+  font-family: "Harmattan";
+  font-size: 0.5em;
+}
+
+thead {
+  color: #ffffff;
+  background-color: #990000;
+}
+
+}
 .rightCol{
     overflow-y: scroll;
     height:800;
     /* x-overflow:visible; */
 }
 .list {
-    font-family:sans-serif;
+    font-family: "Dosis";
 }
 td {
   padding:10px; 
@@ -43,12 +61,16 @@ input:focus {
   display:inline-block;
   color:#fff;
   text-decoration: none;
-  background-color: #28a8e0;
+/*  background-color: #28a8e0;
+*/
+  background-color: #a62429;  
   height:30px;
 }
 .sort:hover {
   text-decoration: none;
-  background-color:#1b8aba;
+/*  background-color:#1b8aba;
+*/
+  background-color: #990000;
 }
 .sort:focus {
   outline:none;
