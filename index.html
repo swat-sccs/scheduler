@@ -17,9 +17,10 @@
     <h1>
         - SCCS Class Scheduler -
     </h1>
+    Welcome to the SCCS Class Scheduler! 
     <div id="exportReady" style="display:none">
-    <button onclick="getReadyForExport(0)">Export All Events to Google Calendar</button>
-    <button onclick="getReadyForExport(1)">Export Highlighted Events to Google Calendar</button>
+    <center><button onclick="getReadyForExport(0)">Export All Events to Google Calendar</button>
+    <button onclick="getReadyForExport(1)">Export Highlighted Events to Google Calendar</button></center>
     <div id="authorize" style="display: none">
         <div id="authorize-div" style="display: none">
             <span>Authorize access to Google Calendar API</span>
@@ -53,18 +54,20 @@
 
     <br><br>
     <div id="hacker-list">
-        <input class="search" placeholder="Search" />
-        <button class="sort" data-sort="ref">Sort by Reference</button>
-        <button class="sort" data-sort="subj">Sort by Subject</button>
+        <div class = "middleCol">
+            <input class="search" placeholder="Search" />
+            <button class="sort" data-sort="ref">Sort by Reference</button>
+            <button class="sort" data-sort="subj">Sort by Subject</button>
 
-        <table>
-            <thead>
-                <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
-            </thead>
-            <form id="classForm">
-                <tbody class="list">
-                </tbody>
-            </form>
+            <table>
+                <thead>
+                    <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
+                </thead>
+                <form id="classForm">
+                    <tbody class="list">
+                    </tbody>
+                </form>
+        </div>
     </div>
 
     <script src="script.js"></script>

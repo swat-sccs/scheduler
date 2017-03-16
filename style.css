@@ -5,10 +5,17 @@
     width:20%;
     vertical-align: top; 
 }
-/* .leftCol{ */
-/*     width:80%; */
-/*     float:left; */
-/* } */
+
+
+ .middleCol {
+    height: 800;
+ }
+
+ .rightCol{
+    overflow-y: scroll;
+    height:800;
+    /* x-overflow:visible; */
+}
 /* .rightCol{ */
 /*     width:20%; */
 /*     float:right; */
@@ -16,13 +23,17 @@
 
 h1 {
   font-family: "Dosis";
-  font-size: 5em;
+  font-size: 4em;
+  text-align: center;
   color: #990000;
+  padding: none;
 }
 
 body {
+  text-align: center;
   font-family: "Harmattan";
-  font-size: 0.5em;
+  font-size: 1em;
+  padding: none;
 }
 
 thead {
@@ -31,11 +42,7 @@ thead {
 }
 
 }
-.rightCol{
-    overflow-y: scroll;
-    height:800;
-    /* x-overflow:visible; */
-}
+
 .list {
     font-family: "Dosis";
 }
@@ -53,6 +60,17 @@ input {
 input:focus {
   outline:none;
   border-color:#aaa;
+}
+
+button {
+  padding:8px 30px;
+  border-radius: 6px;
+  border:none;
+  display:inline-block;
+  color:#fff;
+  text-decoration: none;
+  background-color: #a62429;  
+  height:30px;
 }
 .sort {
   padding:8px 30px;
