@@ -23,10 +23,19 @@
 
 h1 {
   font-family: "Dosis";
-  font-size: 4em;
+  font-size: 1em;
   text-align: center;
-  color: #990000;
+  color: #ffffff;
+  background-color: #a62429;
   padding: none;
+}
+
+h1 a{
+  color: #ffffff;
+}
+
+h1 a:hover{
+  letter-spacing: 2px;
 }
 
 body {
