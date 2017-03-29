@@ -23,12 +23,20 @@
 
 h1 {
   font-family: "Dosis";
-  font-size: 4em;
+  font-size: 1em;
   text-align: center;
-  color: #990000;
+  color: #ffffff;
+  background-color: #a62429;
   padding: none;
 }
 
+h1 a{
+  color: #ffffff;
+}
+
+h1 a:hover{
+  letter-spacing:3px;
+}
 body {
   text-align: center;
   font-family: "Harmattan";
@@ -41,7 +49,6 @@ thead {
   background-color: #990000;
 }
 
-}
 
 .list {
     font-family: "Dosis";
@@ -79,8 +86,6 @@ button {
   display:inline-block;
   color:#fff;
   text-decoration: none;
-/*  background-color: #28a8e0;
-*/
   background-color: #a62429;  
   height:30px;
 }
@@ -127,4 +132,4 @@ button {
   top:-4px;
   right:-5px;
 }
-   
+
