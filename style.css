@@ -7,13 +7,8 @@
 }
 
 
- .middleCol {
-    height: 800;
- }
-
  .rightCol{
     overflow-y: scroll;
-    height:800;
     /* x-overflow:visible; */
 }
 /* .rightCol{ */
@@ -23,26 +18,23 @@
 
 h1 {
   font-family: "Dosis";
-  font-size: 1em;
+  /*font-size: 1em;*/
   text-align: center;
-  color: #ffffff;
-  background-color: #a62429;
-  padding: none;
+  color: #a62429;
 }
 
 h1 a{
-  color: #ffffff;
+	color:#6d1b1e;
+	text-decoration:none;
 }
-
-h1 a:hover{
-  letter-spacing:3px;
+h1 a:visited{
+	color:#6d1b1e;
+	text-decoration:none;
 }
-
 body {
   text-align: center;
   font-family: "Harmattan";
   font-size: 1em;
-  padding: none;
 }
 
 thead {
@@ -133,4 +125,17 @@ button {
   top:-4px;
   right:-5px;
 }
+table{
+	border-collapse: collapse;
+}
+thead>tr>td{
+	border:solid 0px;
+}
 
+#footer{
+	font-family: initial;
+}
+#help{
+text-align: left;
+line-height:15px;
+}

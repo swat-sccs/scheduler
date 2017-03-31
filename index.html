@@ -13,19 +13,15 @@
     <h1>
         Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
     </h1>
-    <div id="exportReady" style="display:none">
-    <center><button onclick="getReadyForExport(0)">Export All Events to Google Calendar</button>
-    <button onclick="getReadyForExport(1)">Export Highlighted Events to Google Calendar</button></center>
-    <div id="authorize" style="display: none">
-        <div id="authorize-div" style="display: none">
-            <span>Authorize access to Google Calendar API</span>
-            <!--Button for the user to click to initiate auth sequence -->
-            <button id="authorize-button" onclick="handleAuthClick(event)">
-                Authorize
-            </button>
-        </div>
-    </div>
-    </div>
+<div id="help">
+<b><u>How to use:</u></b><br>
+ - Using the search bar at the bottom, search for all classes and all sections that you could possibly take. Add them to the calendar with the left checkbox<br>
+ - Try out different schedules by highlighting classes with the right column<br>
+ - When you find one that works, you can export your classes to your - either only the highlighted ones or all selected ones<br>
+ - P.S. You can share your classes with others simply by giving them the URL<br><br>
+
+ This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
+</div>
     <table>
         <tr>
             <td id="calendarTd">
@@ -44,24 +40,41 @@
         </tr>
     </table>
 
+<br>
 
+    <div id="exportReady" style="display:none">
+    <center><button onclick="getReadyForExport(0)">Export All Events to Google Calendar</button>
+    <button onclick="getReadyForExport(1)">Export Highlighted Events to Google Calendar</button></center>
+    <div id="authorize" style="display: none">
+        <div id="authorize-div" style="display: none">
+            <span>Authorize access to Google Calendar API</span>
+            <!--Button for the user to click to initiate auth sequence -->
+            <button id="authorize-button" onclick="handleAuthClick(event)">
+                Authorize
+            </button>
+        </div>
+    </div>
+    </div>
 
-
-    <br><br>
+    <br>
     <div id="hacker-list">
         <div class = "middleCol">
-            <input class="search" placeholder="Search" />
+            <input class="search" id="search" placeholder="Find Your Classes!" />
+<br>
+<div id="classTable" style="display:none;">
             <button class="sort" data-sort="ref">Sort by Reference</button>
             <button class="sort" data-sort="subj">Sort by Subject</button>
 
-            <table>
+            <table >
                 <thead>
                     <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
                 </thead>
                 <form id="classForm">
-                    <tbody class="list">
+                    <tbody class="list" >
                     </tbody>
                 </form>
+			</table>
+</div>
         </div>
     </div>
 
@@ -78,4 +91,11 @@
     ga('send', 'pageview');
 
 </script>
+<br><br>
+<hr>
+<div id="footer">
+<h5>
+Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
+</h5>
+</div>
 </html>
