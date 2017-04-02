@@ -30,10 +30,6 @@ h1 a{
     letter-spacing: 3px;
 	text-decoration:none;
 }
-h1 a:visited{
-	color:#6d1b1e;
-	text-decoration:none;
-}
 body {
   text-align: center;
   font-family: "Harmattan";
