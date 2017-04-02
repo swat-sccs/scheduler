@@ -18,13 +18,14 @@
 
 h1 {
   font-family: "Dosis";
-  /*font-size: 1em;*/
+  font-size: 1em;
   text-align: center;
-  color: #a62429;
+  color: #ffffff;
+  padding: none;
+  background-color: #a62429;
 }
 
 h1 a{
-	color:#6d1b1e;
 	text-decoration:none;
 }
 h1 a:visited{
