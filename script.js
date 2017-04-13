@@ -1,14 +1,16 @@
 var authorized = false;
-     var term = "spring17"
+     var term = "fall17"
      var classes = {}
      var highlightedClasses = []
      var allAddedClassObj = [{},{}]
      //Jan 17 start sem
+     //Fall 2017 start sem = Sep 4
      //month and day number are 0 indexed
-     var startSemesterTime = Date.UTC(2017,0,17,0,0,0)
+     var startSemesterTime = Date.UTC(2017,8,4,0,0,0)
      //Apr 28 start sem
      //YEARMONTHDAY+"T000000Z", pad with 0s
-     var endSemesterISO = "20170428T000000Z"
+        //Dec 12
+     var endSemesterISO = "20171212T000000Z"
      var allOrHigh = 0
      var globalFromButton = false
      /* 20170127T000000Z */
@@ -16,7 +18,6 @@ var authorized = false;
 
          var SCOPES = ["https://www.googleapis.com/auth/calendar"];
          var sccsSchedCalId = ''
-         var term = "spring17"
          var exceptionDays = ""
          var startSemDate = new Date(startSemesterTime)
         var startSemDay = startSemDate.getUTCDay()
@@ -26,6 +27,8 @@ var authorized = false;
                     i--
         }
 exceptionDays = exceptionDays.substring(0,exceptionDays.length-1)
+
+var quotes = ["The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr", "It always seems impossible until it is done\n - Nelson Mandela", "Education is what survives when what has been learned has been forgotten.\n - BF Skinner", "Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein", "No pressure, no diamonds\n - Thomas Carlyle", "One kind word can change someone's entire day", "When nothing goes right ...  go left"]
      $( document ).ready(function() {
          /* $.getJSON("https://dl.dropboxusercontent.com/u/24397004/Permanent%20To%20Share/classSched.txt", function(json) {*/
          /* console.log(json); // this will show the info it in firebug console*/
@@ -51,26 +54,36 @@ exceptionDays = exceptionDays.substring(0,exceptionDays.length-1)
              valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
              /* item: '<li><h3 class="title"></h3><p class="ref"></p></li>'*/
              /* item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="subj"></td><td class="num"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>'*/
-             item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="name"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>'
+             item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="name"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>',
+			indexAsync: true
          };
          
          /* var values = json[0].concat(json[1])*/
          var hackerList = new List('hacker-list', options, tableArr);
+		 var searchId = document.getElementById("search");
+		 hackerList.on("searchStart", function(){
+						 if(searchId.value==""){
+						 document.getElementById("classTable").style.display = "none"
+						 }else{
+						 document.getElementById("classTable").style.display = ""
+
+						 }
+						 })
 
          // page is now ready, initialize the calendar...
 
          fullCal = $('#calendar').fullCalendar({
              // put your options and callbacks here
-             height: 800,
+             height: 'auto',
              minTime: "08:00:00",
              maxTime: "23:00:00",
-             /* contentHeight: 800,*/
+			 //contentHeight: 800,
              weekends: false,
              allDaySlot: false,
              header: {
 				         left: 'prev,next today',
-				         center: 'title'
-				         /* right: 'month,agendaWeek'*/
+				         center: 'title',
+						 right: ''
 			       },
              defaultView: 'agendaWeek',
              editable: false,
@@ -301,7 +314,10 @@ console.log(addedClassObj[i].title)
 //remove last ,
             ByDayRepeat = ByDayRepeat.substring(0,ByDayRepeat.length-1)
             console.log(ByDayRepeat)
-
+			if(addedClassObj[i].comment != ""){
+					addedClassObj[i].comment += "\n\n"
+			}
+			addedClassObj[i].comment += "----\nAnd remember:\n"+randomQuote()
              events.push({
                  'summary': addedClassObj[i].title,
                  'location': addedClassObj[i].rm,
@@ -475,7 +491,7 @@ function handleAuthCheckButton(authResult){
                  batch.execute(function(resp){
                          console.log("deleted")
                      console.log(resp)
-                             $("#exportReady").append('<br><b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar (might need to refresh)</b><br>')
+                             $("#exportReady").append('<br><b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar with events starting next semester, September 4. (you\'ll need to refresh) </b><br>')
                  })
              })
          }
@@ -579,4 +595,8 @@ function toDateStr(date) {
 function revealExport(){
         checkAuth()
                document.getElementById("exportReady").style.display = ""
+}
+
+function randomQuote(){
+return quotes[Math.floor(Math.random()*quotes.length)];
 }
