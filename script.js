@@ -233,7 +233,7 @@ var quotes = ["The cure for boredom is curiosity. There is no cure for curiosity
              if(highlightedClasses.indexOf(i.toString())!=-1){
                  checked = 'checked'
              }
-             htmlObj.push({key: classes[i].subj+classes[i].num, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+": "+classes[i].title+"<br>"})
+             htmlObj.push({key: classes[i].subj+classes[i].num, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+": "+classes[i].title+" ("+i+")<br>"})
          }
          htmlObj = htmlObj.sort(function (a, b) {
              return a.key.localeCompare( b.key );
