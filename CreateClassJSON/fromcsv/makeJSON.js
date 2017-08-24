@@ -57,7 +57,6 @@ fs.readFile("./schedule.csv", "utf8", function(err, results){
             //      outArr[1].push({ref: spreadArr[i][0], subj: spreadArr[i][1],num: spreadArr[i][2],sec: spreadArr[i][3], title: spreadArr[i][4],cred: spreadArr[i][5],dist: spreadArr[i][6],lim: spreadArr[i][7],instruct: spreadArr[i][8],type: spreadArr[i][9],days: spreadArr[i][10],time: spreadArr[i][11],rm: spreadArr[i][12]})
         }
     }
-    console.log(JSON.stringify(outArr));
         fs.writeFile("schedule.json", JSON.stringify(outArr), function(err){
                 if(err){
                         console.log("Error writing file")

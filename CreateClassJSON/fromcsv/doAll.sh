@@ -20,8 +20,17 @@ if [ $? -ne 0 ]; then
 
         #And make the new out.json
         unoconv -f csv -e FilterOptions=124,94,76 schedule.xls;
-        ./makeJSON.js > out.json;
-        #TODO Send diff to staff and/or a mailing list
+        ./makeJSON.js
+        #Copy schedule into the website's js
+        cp schedule.js ../../
+
+        #https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
+        #Only `mail`s the diff to me if I have mail (i.e. on the sccs server)
+        #TODO send to a sccs mailing list? Have to filter out small changes?
+        command -v mail >/dev/null 2>&1 && { echo >&2 
+        diff -wd <(jq -S . schedule.json) <(cat PREV_SCHEDULES/$DATE.js|sed "s/json = //"|jq -S .)|mail -s "Change in Class Schedule" jlangli1@swarthmore.edu
+        }
+
 else
         echo "The downloaded schedule xls is the same as prev. Ending"
         rm schedule.tmp.xls;
