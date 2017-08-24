@@ -1,3 +1,5 @@
+Example CRON tab:
+     0 * * * cd /srv/Secure/schedule/CreateClassJSON/fromcsv && ./doAll.sh
 Dependencies:
     Python:
         xlrd (pip install xlrd --user)
