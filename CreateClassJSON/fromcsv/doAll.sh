@@ -19,7 +19,11 @@ if [ $? -ne 0 ]; then
         mv schedule.tmp.xls schedule.xls
 
         #And make the new out.json
-        unoconv -f csv -e FilterOptions=124,94,76 schedule.xls;
+        #If want to use unoconv:
+        #unoconv -f csv -e FilterOptions=124,94,76 schedule.xls;
+        #But this works as well and doesn't have a large loffice dependency (for gwaihir):
+        python xlsToCSV.py
+
         ./makeJSON.js
         #Copy schedule into the website's js
         cp schedule.js ../../
