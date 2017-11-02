@@ -384,7 +384,9 @@ console.log(addedClassObj[i].title)
                  console.log(fromButton)
                  globalFromButton = fromButton
                  loadCalendarApi();
+
                authorized = true
+                       document.getElementById("authored").display = ""
 
              } else {
                  // Show auth UI, allowing the user to initiate authorization by
@@ -408,6 +410,13 @@ function handleAuthCheckButton(authResult){
         handleAuthResult(authResult, true)
 }
 
+function logoutGcal(){
+        var auth = gapi.auth.getAuthInstance();
+        auth2.signOut().then(function () {
+                      console.log('User signed out.');
+                          
+        });
+}
          /**
           * Load Google Calendar client library. List upcoming events
           * once client library is loaded.
