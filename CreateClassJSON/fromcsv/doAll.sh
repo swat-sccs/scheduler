@@ -2,7 +2,7 @@
 # In LOffice, find , and replace with ; to not mess with csv. Eventually implement proper csv
 # -e ... from the man page. 124 = ascii "|" as the delim (hopefully no conflicts). If there is a conflict, it will 'quote' it but use 94 = ascii "^". So I check if that exists (in makeJSON), in which case there is a conflict with "|" so needs to be manually fixed (assuming to "^" conflict).
 #TODO can add true csv parsing, would be easy with a nodejs npm but this is fast
-URL="http://www.swarthmore.edu/sites/default/files/assets/documents/registrar/201704CSV.xls"
+URL="https://www.swarthmore.edu/sites/default/files/assets/documents/registrar/201802CSV.xls"
 #Add my path so jq will work with crontabs
 PATH=$HOME/bin:$PATH
 wget --quiet -O schedule.tmp.xls  $URL 
