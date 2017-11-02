@@ -40,6 +40,6 @@ if [ $? -ne 0 ]; then
 
 else
         #Don't echo so cron doesn't email me
-        #echo "The downloaded schedule xls is the same as prev. Ending"
+        echo "The downloaded schedule xls is the same as prev. Ending"
         rm schedule.tmp.xls;
 fi
