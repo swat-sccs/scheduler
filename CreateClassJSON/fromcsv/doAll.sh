@@ -7,8 +7,9 @@ URL="https://www.swarthmore.edu/sites/default/files/assets/documents/registrar/2
 PATH=$HOME/bin:$PATH
 wget --quiet -O schedule.tmp.xls  $URL 
 diff schedule.tmp.xls schedule.xls
+rv=$?
 #Needs to be right after the diff $? returns the prev command's return value
-if [ $? -ne 0 ]; then
+if [ $rv -ne 0 ]; then
         echo "There is a new schedule"
         #So cp the newOne as a named file...
         DATE=$(date +"%Y%m%d")
