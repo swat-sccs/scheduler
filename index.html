@@ -31,36 +31,37 @@
             </p>
         </div>
     </div>
-    <table>
-        <tr>
-            <td id="calendarTd">
-                <div class="leftCol">
-                    <div id="calendar">
+    <button id="showCal" onclick="toggleCal()">Toggle Calendar</button>
+    <div id="calContainer">
+        <table>
+            <tr>
+                <td id="calendarTd">
+                    <div class="leftCol">
+                        <div id="calendar">
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td id="classTd">
-                <div class="rightCol">
-                    Please use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <br>
-
-    <div id="exportButtons">
-        <button onclick="getReadyForExport(0)">Export All  Events to Google Calendar</button>
+                </td>
+                <td id="classTd">
+                    <div id="exportButtons">
+                        <button onclick="getReadyForExport(0)">Export All Events to gCal</button>
+                        <button onclick="getReadyForExport(1)">Export Only Red Highlighted Events to gCal</button>
+                    </div>
+                    <div id="notAuthorized">
+                        <button id="authorize-button">Authorize</button>
+                    </div>
+                    <div id="isAuthorized">
+                        <button id="signout-button">Sign Out</button>
+                    </div>
+                    <div class="rightCol">
+                        Please use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
+                    </div>
+                </td>
+            </tr>
+        </table>
         <br>
-        <button onclick="getReadyForExport(1)">Export Only Red Highlighted Events to Google Calendar</button>
+
     </div>
-    <div id="notAuthorized">
-        <button id="authorize-button">Authorize</button>
-    </div>
-    <div id="isAuthorized">
-        <button id="signout-button">Sign Out</button>
-    </div>
-    <!-- TODO delet uneeded -->
+
     <br>
     <div id="hacker-list">
         <div class = "middleCol">

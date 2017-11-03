@@ -614,3 +614,7 @@ function handleClientLoad() {
         }
     });
 }
+
+function toggleCal(){
+    $("#calContainer").slideToggle("slow");
+}
