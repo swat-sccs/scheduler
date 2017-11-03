@@ -44,17 +44,22 @@
                 </td>
                 <td id="classTd">
                     <div id="exportButtons">
-                        <button onclick="getReadyForExport(0)">Export All Events to gCal</button>
-                        <button onclick="getReadyForExport(1)">Export Only Red Highlighted Events to gCal</button>
+                        <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
                     </div>
-                    <div id="notAuthorized">
-                        <button id="authorize-button">Authorize</button>
-                    </div>
-                    <div id="isAuthorized">
-                        <button id="signout-button">Sign Out</button>
+                    <div id="authorizedButtons">
+                        <div id="waitingForGoogle">
+                            Waiting for Google API's to load (please check your internet connection)
+                        </div>
+                        <div id="notAuthorized">
+                            <button class="fullWidth" id="authorize-button">Authorize then export again</button>
+                        </div>
+                        <div id="isAuthorized">
+                            <button class="fullWidth" id="signout-button">Sign Out</button>
+                        </div>
+                        <hr>
                     </div>
                     <div class="rightCol">
-                        Please use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
+                        Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
                     </div>
                 </td>
             </tr>
@@ -62,26 +67,28 @@
         <br>
 
     </div>
+    <br>
+    <button id="showCal" class="fullWidth" onclick="toggleCal()">Toggle Calendar</button>
 
+    <br>
     <br>
     <div id="hacker-list">
         <div class = "middleCol">
-            <input class="search" id="search" placeholder="Find Your Classes!" />
+            <input class="search" id="search" placeholder="Find Classes!" />
             <br>
             <div id="classTable">
                 <!-- Sort is confusing and clutters
                     <button class="sort" data-sort="ref">Sort by Reference</button>
                     <button class="sort" data-sort="subj">Sort by Subject</button>
                 -->
-
-                <table >
+                <table id="classResultsTable" class="fullWidth centering">
                     <thead>
                         <tr>
                             <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
                         </tr>
                     </thead>
                     <form id="classForm">
-                        <tbody class="list"></tbody>
+                        <tbody class="scrolling list"></tbody>
                     </form>
                 </table>
             </div>
@@ -107,7 +114,6 @@ ga('send', 'pageview');
 
     </script>
     <br><br>
-    <hr>
     <div id="footer">
         <h5>
             Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
