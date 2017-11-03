@@ -1114,6 +1114,10 @@ module.exports = function(list) {
     },
     item: function(item) {
       item.found = false;
+        if(item.elm.children[0].children[0].checked == true){
+            item.found = true;
+            return true;
+        }
       for (var j = 0, jl = columns.length; j < jl; j++) {
         if (search.values(item.values(), columns[j])) {
           item.found = true;
