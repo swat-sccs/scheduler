@@ -1,3 +1,10 @@
+body {
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1em;
+  font-weight: lighter;
+  margin: 0px;
+}
 #calendarTd{
     vertical-align: top; 
 }
@@ -16,38 +23,23 @@
 /*     float:right; */
 /* } */
 
-h1 {
-  font-family: "Dosis";
-  font-size: 1em;
-  text-align: center;
-  color: #ffffff;
-  padding: none;
-  background-color: #a62429;
-}
-
-h1 a{
-	color: #ffffff
-    letter-spacing: 3px;
-	text-decoration:none;
-}
-body {
-  text-align: center;
-  font-family: "Harmattan";
-  font-size: 1em;
-}
 
 thead {
-  color: #ffffff;
-  background-color: #990000;
+  color: #001A23;
+  background-color: #B3EFB2;
 }
 
 
 .list {
-    font-family: "Dosis";
+	/*
+font-family: 'Playfair Display', serif
+*/
 }
 td {
   padding:10px; 
-  border:solid 1px #eee;
+  /*
+border:solid 1px #eee;
+*/
 }
 
 input {
@@ -66,26 +58,24 @@ button {
   border-radius: 6px;
   border:none;
   display:inline-block;
-  color:#fff;
+  color:#001A23;
+  background-color: #B3EFB2;  
   text-decoration: none;
-  background-color: #a62429;  
   height:30px;
+  font-family: 'Raleway', sans-serif;
+  margin: 2px;
+}
+button:hover{
+  background-color: #A3DAA2;
 }
 .sort {
   padding:8px 30px;
   border-radius: 6px;
   border:none;
   display:inline-block;
-  color:#fff;
   text-decoration: none;
-  background-color: #a62429;  
   height:30px;
-}
-.sort:hover {
   text-decoration: none;
-/*  background-color:#1b8aba;
-*/
-  background-color: #990000;
 }
 .sort:focus {
   outline:none;
@@ -131,10 +121,143 @@ thead>tr>td{
 	border:solid 0px;
 }
 
-#footer{
-	font-family: initial;
+
+.topNav{
+    background-color: #31425F;
+    overflow: hidden;
+    padding: none;
+  font-size: 1em;
+  text-align: center;
+  color: #ffffff;
 }
-#help{
-text-align: left;
-line-height:15px;
+
+.topNav a{
+	color: #B3EFB2;
+	text-decoration:none;
+}
+
+.topNav a:hover{
+	color: #A3DAA2;
+}
+
+/* Modified from https://tutorialzine.com/2014/07/css-inline-help-tips */
+	.help-tip{
+		position: absolute;
+		top: 18px;
+		right: 18px;
+		text-align: center;
+		background-color: #001A23;
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		font-size: 14px;
+		line-height: 40px;
+		cursor: default;
+	}
+
+	.help-tip:before{
+		content:'?';
+		font-weight: bold;
+		color: #E8F1F2;
+	}
+
+	.help-tip:hover p{
+		display:block;
+		transform-origin: 100% 0%;
+
+		-webkit-animation: fadeIn 0.3s ease-in-out;
+		animation: fadeIn 0.3s ease-in-out;
+		
+		z-index: 2;
+	}
+
+
+	.help-tip p{    /* The tooltip */
+		display: none;
+		text-align: left;
+		background-color: #1E2021;
+		padding: 20px;
+		width: 300px;
+		position: absolute;
+		border-radius: 3px;
+		box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+		right: -4px;
+		color: #FFF;
+		font-size: 13px;
+		line-height: 1.4;
+	}
+
+	.help-tip p:before{ /* The pointer of the tooltip */
+		position: absolute;
+		content: '';
+		width:0;
+		height: 0;
+		border:6px solid transparent;
+		border-bottom-color:#1E2021;
+		right:10px;
+		top:-12px;
+	}
+
+	.help-tip p:after{ /* Prevents the tooltip from being hidden */
+		width:100%;
+		height:40px;
+		content:'';
+		position: absolute;
+		top:-40px;
+		left:0;
+	}
+
+	/* CSS animation */
+
+	@-webkit-keyframes fadeIn {
+		0% { 
+			opacity:0; 
+			transform: scale(0.6);
+		}
+
+		100% {
+			opacity:100%;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes fadeIn {
+		0% { opacity:0; }
+		100% { opacity:100%; }
+	}
+
+.fc-body{
+	background-color: #FCFCFC;
+}
+
+.fc-unthemed td.fc-today {
+	background-color: #FCFCFC;
+}
+
+.fc-axis.fc-time{
+/*Side bar with time*/
+  border-width: 0px;
+}
+.fc-minor>.fc-axis{
+  /* I hate doing this but the fullcalendar.css */
+/*
+  border-bottom-width: 1px!important;
+  border-bottom-style: dotted!important;
+  border-bottom-color: #ddd!important;
+*/
+}
+.fc-day-header.fc-widget-header.fc-mon.fc-past{
+	border-left: none!important;
+}
+.fc-axis.fc-widget-header, .fc-head-container.fc-widget-header, .fc-body>tr>.fc-widget-content {
+	/* Removes border from header */
+	border: none!important;
+}
+
+.fc-toolbar.fc-header-toolbar{
+margin-bottom:0px;
+}
+
+th{
+font-weight: normal;
 }

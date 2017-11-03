@@ -1,28 +1,35 @@
 
 <html>
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.css"></script>
-    <link type="text/css" rel='stylesheet' href='node_modules/fullcalendar/dist/fullcalendar.css' />
+    <link rtype="text/css" rel='stylesheet'href="node_modules/fullcalendar/dist/fullcalendar.css"></script>
+
     <link type="text/css" rel='stylesheet' href='style.css' />
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
-	<link href="https://fonts.googleapis.com/css?family=Dosis|Harmattan" rel="stylesheet">	
     <script src='schedule.js'></script>
-    <script src='node_modules/moment/min/moment.min.js'></script>
-    <script src='node_modules/fullcalendar/dist/fullcalendar.js'></script>
-    <script src='node_modules/list.js/dist/list.min.js'></script>
-<title>SCCS's Scheduler</title>
-    <h1>
-        Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
-    </h1>
-<div id="help">
-<b><u>How to use:</u></b><br>
-- Use the search bar at the bottom to find your classes. Add every section with the left checkbox<br>
-- Use the right column to highlight different combinations of the sections<br>
-- When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones<br>
- P.S. You can share your classes with others simply by giving them the URL<br><br>
 
- This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
-</div>
+    <script src='node_modules/moment/min/moment.min.js'></script>
+
+    <script src='node_modules/fullcalendar/dist/fullcalendar.js'></script>
+
+    <script src='node_modules/list.js/dist/list.min.js'></script>
+    <div class="topnav">
+        <title>SCCS's Scheduler</title>
+        <h1>
+            Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
+        </h1>
+        <div class="help-tip">
+            <p>
+            <b><u>How to use:</u></b><br>
+            - Use the search bar at the bottom to find your classes. Add every section with the left checkbox<br>
+            - Use the right column to highlight different combinations of the sections<br>
+            - When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones<br>
+            P.S. You can share your classes with others simply by giving them the URL<br><br>
+
+            This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
+            </p>
+        </div>
+    </div>
     <table>
         <tr>
             <td id="calendarTd">
@@ -33,21 +40,22 @@
             </td>
             <td id="classTd">
                 <div class="rightCol">
-                    <b>
-                        Please use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
-                    </b>
+                    Please use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
                 </div>
             </td>
         </tr>
     </table>
 
-<br>
+    <br>
 
     <div id="exportReady" style="display:none">
-    <center><button onclick="getReadyForExport(0)">Export All Events to Google Calendar</button>
-            <button onclick="getReadyForExport(1)">Export Only the Highlighted Events to Google Calendar</button><br>
-            <button onclick="logoutGcal()">Log out</div>
-    </center>
+        <button onclick="getReadyForExport(0)">Export All  Events to Google Calendar</button>
+        <button onclick="logoutGcal()">Log out</button>
+        <br>
+        <button onclick="getReadyForExport(1)">Export Only Red Highlighted Events to Google Calendar</button>
+
+        <br>
+    </div>
     <div id="authorize" style="display: none">
         <div id="authorize-div" style="display: none">
             <span>Authorize access to Google Calendar API</span>
@@ -58,50 +66,50 @@
         </div>
     </div>
     <div id="authorized" style="display:none">
-            <!--Log out from {{email}} -->
-            <button onclick="logoutGcal()"></div>
+        <!--Log out from {{email}} -->
+        <button onclick="logoutGcal()"></div>
     </div>
 
     <br>
     <div id="hacker-list">
         <div class = "middleCol">
             <input class="search" id="search" placeholder="Find Your Classes!" />
-<br>
-<div id="classTable" style="display:none;">
-            <button class="sort" data-sort="ref">Sort by Reference</button>
-            <button class="sort" data-sort="subj">Sort by Subject</button>
+            <br>
+            <div id="classTable" style="display:none;">
+                <button class="sort" data-sort="ref">Sort by Reference</button>
+                <button class="sort" data-sort="subj">Sort by Subject</button>
 
-            <table >
-                <thead>
-                    <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
-                </thead>
-                <form id="classForm">
-                    <tbody class="list" >
-                    </tbody>
-                </form>
-			</table>
-</div>
+                <table >
+                    <thead>
+                        <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
+                    </thead>
+                    <form id="classForm">
+                        <tbody class="list" >
+                        </tbody>
+                    </form>
+                </table>
+            </div>
         </div>
     </div>
 
     <script src="script.js"></script>
-<script src="https://apis.google.com/js/client.js?onload=revealExport"></script>
-<script>
+    <script src="https://apis.google.com/js/client.js?onload=revealExport"></script>
+    <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)
+    (i[r].q=i[r].q||[]).push(arguments)
 },i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-90553706-1', 'auto');
-    ga('send', 'pageview');
+ga('create', 'UA-90553706-1', 'auto');
+ga('send', 'pageview');
 
-</script>
-<br><br>
-<hr>
-<div id="footer">
-<h5>
-Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
-</h5>
-</div>
+    </script>
+    <br><br>
+    <hr>
+    <div id="footer">
+        <h5>
+            Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
+        </h5>
+    </div>
 </html>
