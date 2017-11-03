@@ -261,3 +261,8 @@ thead>tr>td{
 th{
     font-weight: normal;
 }
+
+/* Initial hide of (not|is)Authorized*/
+#notAuthorized, #isAuthorized, #exportButtons{
+    display: none;
+}

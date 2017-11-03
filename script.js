@@ -3,6 +3,13 @@ var term = "fall17";
 var classes = {};
 var highlightedClasses = [];
 var allAddedClassObj = [{},{}];
+
+var CLIENT_ID        = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
+//CAN'T BE ARRAY OF FAILS SILENTLY (Change to new gapi client v2)
+var SCOPES           = "https://www.googleapis.com/auth/calendar.readonly";
+
+var authorized = false;
+
 //Jan 17 start sem
 //Fall 2017 start sem = Sep 4
 //month and day number are 0 indexed
@@ -11,29 +18,29 @@ var startSemesterTime = Date.UTC(2017,8,4,0,0,0);
 //YEARMONTHDAY+"T000000Z", pad with 0s
 //Dec 12
 var endSemesterISO = "20171212T000000Z";
-var allOrHigh = 0;
+var allOrHigh        = 0;
 var globalFromButton = false;
-/* 20170127T000000Z */
-var CLIENT_ID = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
 
-var SCOPES = ["https://www.googleapis.com/auth/calendar"];
-var sccsSchedCalId = '';
-var exceptionDays = "";
 var startSemDate = new Date(startSemesterTime);
-var startSemDay = startSemDate.getUTCDay();
+var startSemDay  = startSemDate.getUTCDay();
+
+/* TODO add holidays manually
+var exceptionDays = "";
 var i = -1;
 for(var q = startSemDay-1; q>=1;q--){
     exceptionDays+=toDateStr(addDay(startSemDate,i))+",";
     i--;
 }
 exceptionDays = exceptionDays.substring(0,exceptionDays.length-1);
+ */
 
 var quotes = ["The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr", "It always seems impossible until it is done\n - Nelson Mandela", "Education is what survives when what has been learned has been forgotten.\n - BF Skinner", "Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein", "No pressure, no diamonds\n - Thomas Carlyle", "One kind word can change someone's entire day", "When nothing goes right ...  go left"];
+
 $( document ).ready(function() {
     //classSchedObj from included schedule.js file (made with `doAll` in folder)
+    //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
     tableArr = [];
 
-    //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
 
     //Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
     for(var i=0; i<=1; i++){
@@ -279,12 +286,15 @@ function reloadRightCol(){
 }
 function getReadyForExport(index){
     allOrHigh = index;
-    if(authorized ){
+    if(authorized){
         exportToGoogle();
-    }else{
-        document.getElementById("authorize").style.display = "";
-
     }
+    //If can see buttons to click, will already see notAuthorized if need to
+    /*else{
+        //Show notAuthorizedDiv so they can signup
+        document.getElementById("notAuthorized").style.display = "block";
+    }
+    */
 }
 
 function exportToGoogle(){
@@ -386,7 +396,6 @@ function exportToGoogle(){
     }
     console.log(events);
     console.log(JSON.stringify(events));
-    addClass = events;
     getSCCSCal(events);
 }
 function addDay(date, days){
@@ -634,11 +643,153 @@ function toDateStr(date) {
         +  twoDigits(date.getUTCDate());
     /* +'T000000Z' */
 };
-function revealExport(){
-    checkAuth();
-    document.getElementById("exportReady").style.display = "";
-}
-
 function randomQuote(){
     return quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+function getSCCSCal(addEvents) {
+    var getCalsReq = gapi.client.calendar.calendarList.list()
+
+    getCalsReq.execute(function(resp) {
+        console.log("Get Cal List")
+        console.log(resp)
+        var needsNewCal = true;
+        for(var i in resp.items){
+            if(resp.items[i].summary=="SCCS Class Schedule"){
+                needsNewCal = false
+                sccsSchedCalId = resp.items[i].id
+                addToCal(sccsSchedCalId, addEvents)
+            }
+        }
+        if(needsNewCal){
+            //needs to make new calendar
+            var makeNewCalReq = gapi.client.calendar.calendars.insert({
+                'summary': "SCCS Class Schedule"
+            })
+            makeNewCalReq.execute(function(resp){
+                console.log("Make New Cal")
+                console.log(resp)
+                sccsSchedCalId = resp.result.id
+                addToCal(sccsSchedCalId, addEvents)
+            })
+        }
+
+    });
+}
+function addToCal(calId, addClass){
+    console.log("calID: "+calId)
+    var getEventsReq = gapi.client.calendar.events.list({
+        'calendarId': calId,
+        'maxResults': 2500,
+        'privateExtendedProperty': 'sccsTerm='+term,
+    })
+    console.log("getEvents")
+    getEventsReq.execute(function(resp){
+        var batch = gapi.client.newBatch();
+        console.log("got")
+        console.log(resp)
+        var items = resp.items
+        console.log("items "+JSON.stringify(items))
+        for(var i in items){
+            batch.add(gapi.client.calendar.events.delete({
+                'calendarId': calId,
+                'eventId': items[i].id
+            }))
+            console.log(items[i])
+        }
+        console.log("classes "+JSON.stringify(addClass))
+        for(var i in addClass){
+            batch.add(gapi.client.calendar.events.insert({
+                'calendarId': calId,
+                resource: addClass[i]
+            }))
+        }
+        console.log("delete batch")
+        batch.execute(function(resp){
+            console.log("deleted")
+            console.log(resp)
+            $("#exportReady").append('<br><b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar with events starting next semester, September 4. (you\'ll need to refresh) </b><br>')
+        })
+    })
+}
+//https://developers.google.com/google-apps/calendar/quickstart/js
+
+/**
+ *  On load, called to load the auth2 library and API client library.
+ */
+
+/**
+ *  Initializes the API client library and sets up sign-in state
+ *  listeners.
+ */
+function initClient() {
+    console.log("inited")
+    gapi.client.init({
+        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+        clientId:      CLIENT_ID,
+        scope:         SCOPES
+    }).then(function () {
+        // Listen for sign-in state changes.
+        console.log("thenned")
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+        document.getElementById("authorize-button").onclick = handleAuthClick;
+        document.getElementById("signout-button")  .onclick = handleSignoutClick;
+
+        // Handle the initial sign-in state.
+        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        //TODO
+        authorized = true;
+
+        document.getElementById("exportButtons").style.display = "block";
+    }, function(error){
+        console.log(error)
+    })
+        .catch(function(e){
+            console.log(e)
+        })
+}
+
+/**
+ *  Called when the signed in status changes, to update the UI
+ *  appropriately. After a sign-in, the API is called.
+ */
+function updateSigninStatus(isSignedIn) {
+    var notAuthorizedDiv = document.getElementById('notAuthorized');
+    var isAuthorizedDiv  = document.getElementById('isAuthorized');
+
+    if (isSignedIn) {
+        notAuthorizedDiv.style.display = 'none';
+        isAuthorizedDiv .style.display = 'block';
+
+        //Set global authorized so know (so that user doesn't have to sign in unless exporting)
+        authorized                     = true;
+    } else {
+        notAuthorizedDiv.style.display = 'block';
+        isAuthorizedDiv .style.display = 'none';
+    }
+}
+
+/**
+ *  Sign in the user upon button click.
+ */
+function handleAuthClick(event) {
+    gapi.auth2.getAuthInstance().signIn();
+}
+
+/**
+ *  Sign out the user upon button click.
+ */
+function handleSignoutClick(event) {
+    gapi.auth2.getAuthInstance().signOut();
+}
+function handleClientLoad() {
+    console.log("handled")
+    //https://github.com/google/google-api-javascript-client/issues/265
+    gapi.load('client:auth2', {
+        callback: initClient,
+        onerror: function(e){
+            throw e
+        }
+    });
 }
