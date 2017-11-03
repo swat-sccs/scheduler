@@ -1,47 +1,47 @@
 <html>
     <head>
-        <script src="node_modules/jquery/dist/jquery.min.js"></script>
-        <link rtype="text/css" rel='stylesheet'href="node_modules/fullcalendar/dist/fullcalendar.css"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.css"></script>
+    <link type="text/css" rel='stylesheet' href='node_modules/fullcalendar/dist/fullcalendar.css' />
+    <link type="text/css" rel='stylesheet' href='style.css' />
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
-        <link type="text/css" rel='stylesheet' href='style.css' />
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <script src='schedule.js'></script>
 
-        <script src='schedule.js'></script>
+    <script src='node_modules/moment/min/moment.min.js'></script>
 
-        <script src='node_modules/moment/min/moment.min.js'></script>
-
-        <script src='node_modules/fullcalendar/dist/fullcalendar.js'></script>
+    <script src='node_modules/fullcalendar/dist/fullcalendar.js'></script>
 
         <!--Allow custom search by modifying-->
         <script src='list.js'></script>
-        <title>SCCS's Scheduler</title>
+<title>SCCS's Scheduler</title>
     </head>
     <div class="topnav">
-        <h1>
-            Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
-        </h1>
+    <h1>
+        Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
+    </h1>
         <div class="help-tip">
             <p>
-            <b><u>How to use:</u></b><br>
-            - Use the search bar at the bottom to find your classes. Add every section with the left checkbox<br>
-            - Use the right column to highlight different combinations of the sections<br>
-            - When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones<br>
-            P.S. You can share your classes with others simply by giving them the URL<br><br>
+<b><u>How to use:</u></b><br>
+- Use the search bar at the bottom to find your classes. Add every section with the left checkbox<br>
+- Use the right column to highlight different combinations of the sections<br>
+- When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones<br>
+ P.S. You can share your classes with others simply by giving them the URL<br><br>
 
-            This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
+ This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
             </p>
-        </div>
+</div>
     </div>
     <div id="calContainer">
-        <table>
-            <tr>
-                <td id="calendarTd">
-                    <div class="leftCol">
-                        <div id="calendar">
-                        </div>
+    <table>
+        <tr>
+            <td id="calendarTd">
+                <div class="leftCol">
+                    <div id="calendar">
                     </div>
-                </td>
-                <td id="classTd">
+                </div>
+            </td>
+            <td id="classTd">
                     <div id="exportButtons">
                         <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
                     </div>
@@ -57,40 +57,41 @@
                         </div>
                         <hr>
                     </div>
-                    <div class="rightCol">
+                <div class="rightCol">
                         Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <br>
+                </div>
+            </td>
+        </tr>
+    </table>
 
+<br>
+
+   
     </div>
     <br>
     <button id="showCal" class="fullWidth" onclick="toggleCal()">Toggle Calendar</button>
 
     <br>
-    <br>
     <div id="hacker-list">
         <div class = "middleCol">
             <input class="search" id="search" placeholder="Find Classes!" />
-            <br>
+<br>
             <div id="classTable">
                 <!-- Sort is confusing and clutters
-                    <button class="sort" data-sort="ref">Sort by Reference</button>
-                    <button class="sort" data-sort="subj">Sort by Subject</button>
+            <button class="sort" data-sort="ref">Sort by Reference</button>
+            <button class="sort" data-sort="subj">Sort by Subject</button>
                 -->
                 <table id="classResultsTable" class="fullWidth centering">
-                    <thead>
+                <thead>
                         <tr>
-                            <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
+                    <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
                         </tr>
-                    </thead>
-                    <form id="classForm">
+                </thead>
+                <form id="classForm">
                         <tbody class="scrolling list"></tbody>
-                    </form>
-                </table>
-            </div>
+                </form>
+			</table>
+</div>
         </div>
     </div>
 
@@ -112,10 +113,11 @@ ga('create', 'UA-90553706-1', 'auto');
 ga('send', 'pageview');
 
     </script>
-    <br><br>
-    <div id="footer">
-        <h5>
-            Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
-        </h5>
-    </div>
+<br><br>
+<hr>
+<div id="footer">
+<h5>
+Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
+</h5>
+</div>
 </html>
