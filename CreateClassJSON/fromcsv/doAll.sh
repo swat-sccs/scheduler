@@ -58,7 +58,7 @@ if [ $rv -ne 0 ]; then
 
     #Beware, will send from atypical address which goes to spam
     command -v mail >/dev/null 2>&1 && { echo >&2 
-    diff -wd <(jq -S . schedule.json) <(cat PREV_SCHEDULES/$DATE.js|sed "s/json = //"|jq -S .)|mail -s "Change in Class Schedule" staff@sccs.swarthmore.edu
+    diff -wd <(jq -S . schedule.json) <(cat PREV_SCHEDULES/$DATE.js|sed "s/var classSchedObj = //"|jq -S .)|mail -s "Change in Class Schedule" staff@sccs.swarthmore.edu
 }
 
 else

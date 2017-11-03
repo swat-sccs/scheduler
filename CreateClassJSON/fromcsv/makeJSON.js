@@ -62,7 +62,7 @@ fs.readFile("./schedule.csv", "utf8", function(err, results){
                         console.log("Error writing file")
                 }
         })
-        fs.writeFile("schedule.js", "json = "+JSON.stringify(outArr), function(err){
+        fs.writeFile("schedule.js", "var classSchedObj = "+JSON.stringify(outArr), function(err){
                 if(err){
                         console.log("Error writing file")
                 }

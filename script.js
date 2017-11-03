@@ -30,10 +30,12 @@ exceptionDays = exceptionDays.substring(0,exceptionDays.length-1);
 
 var quotes = ["The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr", "It always seems impossible until it is done\n - Nelson Mandela", "Education is what survives when what has been learned has been forgotten.\n - BF Skinner", "Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein", "No pressure, no diamonds\n - Thomas Carlyle", "One kind word can change someone's entire day", "When nothing goes right ...  go left"];
 $( document ).ready(function() {
-    /* $.getJSON("https://dl.dropboxusercontent.com/u/24397004/Permanent%20To%20Share/classSched.txt", function(json) {*/
-    /* console.log(json); // this will show the info it in firebug console*/
-    classSchedObj = json;
+    //classSchedObj from included schedule.js file (made with `doAll` in folder)
     tableArr = [];
+
+    //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
+
+    //Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
     for(var i=0; i<=1; i++){
         for(var z in json[i]){
             var id = json[i][z].id;
