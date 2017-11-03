@@ -22,7 +22,6 @@ var startSemesterTime = Date.UTC(2018,0,22,0,0,0);
 //Dec 12
 //May 4 for Spring 2018 end
 var endSemesterISO   = "20170504T000000Z";
-var allOrHigh        = 0;
 var globalFromButton = false;
 
 var startSemDate = new Date(startSemesterTime);
@@ -73,11 +72,14 @@ $( document ).ready(function() {
     var hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
     hackerList.on("searchStart", function(){
+        $(".list tr").off("click").on("click", function(){
+            //Click checkbox if click row
+            this.children[0].children[0].click()
+        })
         if(searchId.value==""){
             document.getElementById("classTable").style.display = "none";
         }else{
-            document.getElementById("classTable").style.display = "";
-
+            document.getElementById("classTable").style.display = "block";
         }
     })
 
@@ -146,6 +148,9 @@ $( document ).ready(function() {
     $('.longListId').change(longListCallback);
     notFromHash = true;
     if(window.location.hash!==""){
+
+        //Want to show classTable bc there will be classes
+        document.getElementById("classTable").style.display = "block";
 
         var bothHash = window.location.hash.replace("#", "").split(";");
         var hashClasses = bothHash[0].split(",");
@@ -286,21 +291,18 @@ function reloadRightCol(){
     $(".rightCol").html(html);
     $('.highlightCheck').off("change").change(highlightCallback);
 }
-function getReadyForExport(index){
-    allOrHigh = index;
+function getReadyForExport(){
+    //Show either log out or authorize
+    document.getElementById("authorizedButtons").style.display = "block";
     if(authorized){
+        //Already authorized, can go right in
         exportToGoogle();
     }
-    //If can see buttons to click, will already see notAuthorized if need to
-    /*else{
-        //Show notAuthorizedDiv so they can signup
-        document.getElementById("notAuthorized").style.display = "block";
-    }
-    */
 }
 
 function exportToGoogle(){
-    var addedClassObj = allAddedClassObj[allOrHigh];
+    //Only export all events, not highlighted
+    var addedClassObj = allAddedClassObj[0];
     var events = [];
     for(var i in addedClassObj){
         console.log("-----");
@@ -559,8 +561,6 @@ function initClient() {
 
         // Handle the initial sign-in state.
         updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-        //TODO
-        authorized = true;
 
         document.getElementById("exportButtons").style.display = "block";
     }, function(error){
@@ -579,6 +579,8 @@ function updateSigninStatus(isSignedIn) {
     var notAuthorizedDiv = document.getElementById('notAuthorized');
     var isAuthorizedDiv  = document.getElementById('isAuthorized');
 
+    document.getElementById("waitingForGoogle").style.display = "none";
+
     if (isSignedIn) {
         notAuthorizedDiv.style.display = 'none';
         isAuthorizedDiv .style.display = 'block';
@@ -586,7 +588,9 @@ function updateSigninStatus(isSignedIn) {
         //Set global authorized so know (so that user doesn't have to sign in unless exporting)
         authorized                     = true;
     } else {
+        /* wait for getRadyForExport so not too many buttons
         notAuthorizedDiv.style.display = 'block';
+        */
         isAuthorizedDiv .style.display = 'none';
     }
 }
