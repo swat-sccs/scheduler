@@ -72,21 +72,53 @@ var quotes = ["The cure for boredom is curiosity. There is no cure for curiosity
 
          // page is now ready, initialize the calendar...
 
+         //Can use string comparison to compare because is 24 hour time
+         minTime = "09:00:00"
+         maxTime = "18:00:00"
          fullCal = $('#calendar').fullCalendar({
              // put your options and callbacks here
              height: 'auto',
-             minTime: "08:00:00",
-             maxTime: "23:00:00",
+             minTime: minTime,
+             maxTime: maxTime,
+             //maxTime: "23:00:00",
 			 //contentHeight: 800,
              weekends: false,
              allDaySlot: false,
              header: {
-				         left: 'prev,next today',
-				         center: 'title',
+				         //left: 'prev,next today',
+				         //center: 'title',
+                         left: '',
+                         center: '',
 						 right: ''
 			       },
+             columnFormat: 'dddd',
              defaultView: 'agendaWeek',
              editable: false,
+             eventColor: "purple",
+             eventAfterAllRender: function(view){
+            var events = $('#calendar').fullCalendar('clientEvents')
+                var newMinTime = minTime;
+                var newMaxTime = maxTime;
+
+                 for(var i in events){
+                     //Can use string comparison natively
+                     console.log(events[i].start.format("HH:mm:ss"));
+                     if(events[i].start.format("HH:mm:ss") < newMinTime){
+                        newMinTime = events[i].start.format("HH:mm:ss")
+                     }
+                     if(events[i].end.  format("HH:mm:ss") > newMaxTime){
+                        newMaxTime = events[i].end.format("HH:mm:ss")
+                     }
+                 }
+                 if(newMinTime!=minTime){
+                     minTime = newMinTime;
+                     $("#calendar").fullCalendar('option', { minTime: minTime })
+                 }
+                 if(newMaxTime!=maxTime){
+                     maxTime = newMaxTime;
+                     $("#calendar").fullCalendar('option', { maxTime: maxTime })
+                 }
+             }
              /* events: json[0]*/
              /* events: [*/
              /* {*/
