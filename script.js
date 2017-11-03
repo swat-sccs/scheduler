@@ -1,8 +1,8 @@
 var authorized = false;
 var term = "fall17";
-var classes = {};
-var highlightedClasses = [];
-var allAddedClassObj = [{},{}];
+var classes             = {};
+var highlightedClasses  = [];
+var allAddedClassObj    = [{},{}];
 
 var CLIENT_ID        = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
 //CAN'T BE ARRAY OF FAILS SILENTLY (Change to new gapi client v2)
@@ -44,16 +44,16 @@ $( document ).ready(function() {
 
     //Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
     for(var i=0; i<=1; i++){
-        for(var z in json[i]){
-            var id = json[i][z].id;
-            if(id in json[2]){
+        for(var z in classSchedObj[i]){
+            var id = classSchedObj[i][z].id;
+            if(id in classSchedObj[2]){
                 /* console.log(id)*/
-                json[i][z].type+="<br>"+json[2][id].type;
-                json[i][z].days+="<br>"+json[2][id].days;
-                json[i][z].time+="<br>"+json[2][id].time;
-                json[i][z].rm+="<br>"+json[2][id].rm;
+                classSchedObj[i][z].type += "<br>"+classSchedObj[2][id].type;
+                classSchedObj[i][z].days += "<br>"+classSchedObj[2][id].days;
+                classSchedObj[i][z].time += "<br>"+classSchedObj[2][id].time;
+                classSchedObj[i][z].rm   += "<br>"+classSchedObj[2][id].rm;
             }
-            tableArr.push(json[i][z]);
+            tableArr.push(classSchedObj[i][z]);
         }
     }
 
@@ -61,15 +61,13 @@ $( document ).ready(function() {
     var options = {
         /* valueNames: ["ref", "subj", "num", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],*/
         valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
-        /* item: '<li><h3 class="title"></h3><p class="ref"></p></li>'*/
-        /* item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="subj"></td><td class="num"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>'*/
         item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="name"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>',
         indexAsync: true
     };
 
-    /* var values = json[0].concat(json[1])*/
+    /* var values = classSchedObj[0].concat(classSchedObj[1])*/
     var hackerList = new List('hacker-list', options, tableArr);
-    var searchId = document.getElementById("search");
+    var searchId   = document.getElementById("search");
     hackerList.on("searchStart", function(){
         if(searchId.value==""){
             document.getElementById("classTable").style.display = "none";
@@ -403,232 +401,51 @@ function addDay(date, days){
     dat.setDate(dat.getDate() + days);
     return dat;
 }
-function checkAuth() {
-    gapi.auth.authorize(
-        {
-            'client_id': CLIENT_ID,
-            'scope': SCOPES.join(' '),
-            'immediate': true
-        }, handleAuthResult);
-}
 
-/**
- * Handle response from authorization server.
- *
- * @param {Object} authResult Authorization result.
- */
-         function handleAuthResult(authResult, fromButton) {
-             var authorizeDiv = document.getElementById('authorize-div');
-             if (authResult && !authResult.error) {
-// Hide auth UI, then load client library.
-                 authorizeDiv.style.display = 'none';
-//needs to be global
-                 console.log(fromButton);
-                 globalFromButton = fromButton;
-                 loadCalendarApi();
-
-               authorized = true;
-                       document.getElementById("authored").display = "";
-
-             } else {
-                 // Show auth UI, allowing the user to initiate authorization by
-                 // clicking authorize button.
-                 authorizeDiv.style.display = 'inline';
-             }
-         }
-
-/**
- * Initiate auth flow in response to user clicking authorize button.
- *
- * @param {Event} event Button click event.
- */
-         function handleAuthClick(event) {
-             gapi.auth.authorize(
-                 {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-                 handleAuthCheckButton);
-             return false;
-         }
-function handleAuthCheckButton(authResult){
-        handleAuthResult(authResult, true);
-}
-
-function logoutGcal(){
-        var auth = gapi.auth.getAuthInstance();
-        auth2.signOut().then(function () {
-                      console.log('User signed out.');
-
-        });
-}
-/**
- * Load Google Calendar client library. List upcoming events
- * once client library is loaded.
- */
-         function loadCalendarApi() {
-/* gapi.client.load('calendar', 'v3', getSCCSCal); */
-console.log(globalFromButton);
-gapi.client.load('calendar', 'v3', function(){
-    //TDD
-    console.log("read for action");
-    console.log(globalFromButton);
-    if(globalFromButton){
-        exportToGoogle();
-
-
-    }
-});
-         }
-                 function getSCCSCal(addEvents) {
-                     /* sccsSchedCalId = 'swarthmore.edu_0ha19taudgvpckfmel7okbq6ic@group.calendar.google.com' */
-                     /* addToCal(sccsSchedCalId, addEvents) */
-                     /* makeTest(sccsSchedCalId)*/
-                     /* makeTest(sccsSchedCalId)*/
-                     var getCalsReq = gapi.client.calendar.calendarList.list();
-
-                     getCalsReq.execute(function(resp) {
-                         console.log("Get Cal List");
-                         console.log(resp);
-                         var needsNewCal = true;
-                         for(var i in resp.items){
-                             if(resp.items[i].summary=="SCCS Class Schedule"){
-                                 needsNewCal = false;
-                                 sccsSchedCalId = resp.items[i].id;
-                                 addToCal(sccsSchedCalId, addEvents);
-                             }
-                         }
-                         if(needsNewCal){
-                             //needs to make new calendar
-                             var makeNewCalReq = gapi.client.calendar.calendars.insert({
-                                 'summary': "SCCS Class Schedule"
-                             });
-                             makeNewCalReq.execute(function(resp){
-                                 console.log("Make New Cal");
-                                 console.log(resp);
-                                 sccsSchedCalId = resp.result.id;
-                                 addToCal(sccsSchedCalId, addEvents);
-                             })
-                         }
-
-                     });
-                 }
-                 function addToCal(calId, addClass){
-                     console.log("calID: "+calId);
-                     var getEventsReq = gapi.client.calendar.events.list({
-                         'calendarId': calId,
-                         'maxResults': 2500,
-                         'privateExtendedProperty': 'sccsTerm='+term,
-                     });
-                     console.log("getEvents");
-                     getEventsReq.execute(function(resp){
-                         var batch = gapi.client.newBatch();
-                         console.log("got");
-                         console.log(resp);
-                         var items = resp.items;
-                         console.log("items "+JSON.stringify(items));
-                         for(var i in items){
-                             batch.add(gapi.client.calendar.events.delete({
-                                 'calendarId': calId,
-                                 'eventId': items[i].id
-                             }));
-                             console.log(items[i]);
-                         }
-                         console.log("classes "+JSON.stringify(addClass));
-                         for(var i in addClass){
-                             batch.add(gapi.client.calendar.events.insert({
-                                 'calendarId': calId,
-                                 resource: addClass[i]
-                             }));
-                         }
-                         console.log("delete batch");
-                         batch.execute(function(resp){
-                             console.log("deleted");
-                             console.log(resp);
-                             $("#exportReady").append('<br><b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar with events starting next semester, September 4. (you\'ll need to refresh) </b><br>');
-                         })
-                     })
-                 }
-    function makeTest(id){
-        var event = {
-            'calendarId': id,
-            'resource': {
-                'summary': 'Google I/O 2015',
-                'location': '800 Howard St., San Francisco, CA 94103',
-                'description': 'A chance to hear more about Google\'s developer products.',
-                'start': {
-                    'dateTime': '2017-01-13T21:21:11',
-                    'timeZone': 'America/New_York'
-                },
-                'end': {
-                    'dateTime': '2017-01-13T21:21:11',
-                    'timeZone': 'America/New_York'
-                },
-                'extendedProperties':{
-                    'private':{
-                        'sccsTerm': term
-                    }
+function makeTest(id){
+    var event = {
+        'calendarId': id,
+        'resource': {
+            'summary': 'Google I/O 2015',
+            'location': '800 Howard St., San Francisco, CA 94103',
+            'description': 'A chance to hear more about Google\'s developer products.',
+            'start': {
+                'dateTime': '2017-01-13T21:21:11',
+                'timeZone': 'America/New_York'
+            },
+            'end': {
+                'dateTime': '2017-01-13T21:21:11',
+                'timeZone': 'America/New_York'
+            },
+            'extendedProperties':{
+                'private':{
+                    'sccsTerm': term
                 }
-                /* 'recurrence': [*/
-                /* 'RRULE:FREQ=DAILY;COUNT=2'*/
-                /* ]*/
-                /* 'reminders': {*/
-                /* 'useDefault': false,*/
-                /* 'overrides': [*/
-                /* {'method': 'email', 'minutes': 24 * 60},*/
-                /* {'method': 'popup', 'minutes': 10}*/
-                /* ]*/
-                /* }*/
             }
-        };
+            /* 'recurrence': [*/
+            /* 'RRULE:FREQ=DAILY;COUNT=2'*/
+            /* ]*/
+            /* 'reminders': {*/
+            /* 'useDefault': false,*/
+            /* 'overrides': [*/
+            /* {'method': 'email', 'minutes': 24 * 60},*/
+            /* {'method': 'popup', 'minutes': 10}*/
+            /* ]*/
+            /* }*/
+        }
+    };
 
-        var makeTestReq = gapi.client.calendar.events.insert(event);
-        console.log("make test ");
-        makeTestReq.execute(function(resp){
-            console.log(resp);
-        })
-    }
-    /* var request = gapi.client.calendar.events.list({ */
-    /*   'calendarId': 'primary', */
-    /*   'timeMin': (new Date()).toISOString(), */
-    /*   'showDeleted': false, */
-    /*   'singleEvents': true, */
-    /*   'maxResults': 10, */
-    /*   'orderBy': 'startTime' */
-    /* }); */
-
-    /* request.execute(function(resp) { */
-    /*   var events = resp.items; */
-    /*   appendPre('Upcoming events:'); */
-
-    /*   if (events.length > 0) { */
-    /*     for (i = 0; i < events.length; i++) { */
-    /*       var event = events[i]; */
-    /*       var when = event.start.dateTime; */
-    /*       if (!when) { */
-    /*         when = event.start.date; */
-    /*       } */
-    /*       appendPre(event.summary + ' (' + when + ')') */
-    /*     } */
-    /*   } else { */
-    /*     appendPre('No upcoming events found.'); */
-    /*   } */
-
-    /* }); */
-
-    /**
-     * Append a pre element to the body containing the given message
-     * as its text node.
-     *
-     * @param {string} message Text to be placed in pre element.
-     */
-         function appendPre(message) {
-             var pre = document.getElementById('output');
-             var textContent = document.createTextNode(message + '\n');
-             pre.appendChild(textContent);
-         }
+    var makeTestReq = gapi.client.calendar.events.insert(event);
+    console.log("make test ");
+    makeTestReq.execute(function(resp){
+        console.log(resp);
+    })
+}
 function twoDigits(value) {
- return (value < 10 ? '0' : '') + value;
+    return (value < 10 ? '0' : '') + value;
 }
 function totruncateISOString(date) {
-      return date.getUTCFullYear()
+    return date.getUTCFullYear()
         + '-' + twoDigits(date.getUTCMonth() + 1)
         + '-' + twoDigits(date.getUTCDate());
     /* + 'T' + twoDigits(date.getUTCHours()) */

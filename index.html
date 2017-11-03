@@ -60,23 +60,24 @@
     <div id="isAuthorized">
         <button id="signout-button">Sign Out</button>
     </div>
-
+    <!-- TODO delet uneeded -->
     <br>
     <div id="hacker-list">
         <div class = "middleCol">
             <input class="search" id="search" placeholder="Find Your Classes!" />
             <br>
-            <div id="classTable" style="display:none;">
+            <div id="classTable">
                 <button class="sort" data-sort="ref">Sort by Reference</button>
                 <button class="sort" data-sort="subj">Sort by Subject</button>
 
                 <table >
                     <thead>
-                        <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
+                        <tr>
+                            <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
+                        </tr>
                     </thead>
                     <form id="classForm">
-                        <tbody class="list" >
-                        </tbody>
+                        <tbody class="list"></tbody>
                     </form>
                 </table>
             </div>
