@@ -1,5 +1,6 @@
 var authorized = false;
-var term = "fall17";
+//TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
+var term                = "spring17";
 var classes             = {};
 var highlightedClasses  = [];
 var allAddedClassObj    = [{},{}];
@@ -10,14 +11,17 @@ var SCOPES           = "https://www.googleapis.com/auth/calendar.readonly";
 
 var authorized = false;
 
+
 //Jan 17 start sem
 //Fall 2017 start sem = Sep 4
-//month and day number are 0 indexed
-var startSemesterTime = Date.UTC(2017,8,4,0,0,0);
+//month and day number are 0 indexed! so -1
+//Jan 22 2018 = Spring 2018 start
+var startSemesterTime = Date.UTC(2018,0,22,0,0,0);
 //Apr 28 start sem
 //YEARMONTHDAY+"T000000Z", pad with 0s
 //Dec 12
-var endSemesterISO = "20171212T000000Z";
+//May 4 for Spring 2018 end
+var endSemesterISO   = "20170504T000000Z";
 var allOrHigh        = 0;
 var globalFromButton = false;
 
