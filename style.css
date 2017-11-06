@@ -244,7 +244,7 @@ a:hover{
     border-bottom-color: #ddd!important;
      */
 }
-.fc-day-header.fc-widget-header.fc-mon.fc-past{
+.fc-day-header.fc-widget-header.fc-mon{
     border-left: none!important;
 }
 .fc-axis.fc-widget-header, .fc-head-container.fc-widget-header, .fc-body>tr>.fc-widget-content {
