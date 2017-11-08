@@ -49,6 +49,9 @@ $( document ).ready(function() {
     for(var i=0; i<=1; i++){
         for(var z in classSchedObj[i]){
             var id = classSchedObj[i][z].id;
+            //classSchedObj[i][z].idCopy = id;
+            //TODO what should the ADA label be?
+            classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref+" "+classSchedObj[i][z].name;
             if(id in classSchedObj[2]){
                 /* console.log(id)*/
                 classSchedObj[i][z].type += "<br>"+classSchedObj[2][id].type;
@@ -60,13 +63,15 @@ $( document ).ready(function() {
         }
     }
 
-
     var options = {
-        /* valueNames: ["ref", "subj", "num", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],*/
-        valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
-        item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="name"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>',
+        valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'idCopy', attr: "for"/*, forMultiple: true*/}, {name: 'id', attr: 'id'}, "comment", "labelSummary"],
+        //Item with labels on ever td, AxE only wants 1 label p/ checkbox
+        //item: '<tr> <td> <input type="checkbox" class="longListId id" group="classCheckbox"> </td> <td> <label class="idCopy"> <div class="ref"></div> </label> </td> <td> <label class="idCopy"> <div class="name"></div> </label> </td> <td> <label class="idCopy"> <div class="sec"></div> </label> </td> <td> <label class="idCopy"> <p class="title"></p> </label> <div class="comment"></div> </td> <td> <label class="idCopy"> <div class="cred"></div> </label> </td>  <td> <label class="idCopy"> <div class="dist"></div> </label> </td> <td> <label class="idCopy"> <div class="lim"></div> </label> </td> <td> <label class="idCopy"> <div class="instruct"></div> </label> </td> <td> <label class="idCopy"> <div class="type"></div> </label> </td> <td> <label class="idCopy"> <div class="days"></div> </label> </td> <td> <label class="idCopy"> <div class="time"></div> </label> </td> <td> <label class="idCopy"> <div class="rm"></div> </label> </td> </tr>',
+        //W/o labels on all, just on rref number
+        item: '<tr class="trClickable"> <td><label><input class="longListId id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <label class="idCopy"> <div class="ref"> </div> </label> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="type"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
         indexAsync: true
     };
+
 
     /* var values = classSchedObj[0].concat(classSchedObj[1])*/
     var hackerList = new List('hacker-list', options, tableArr);
@@ -173,7 +178,7 @@ $( document ).ready(function() {
 })
 function longListCallback() {
     // this will contain a reference to the checkbox   
-    var id = this.getAttribute("value");
+    var id = this.getAttribute("id");
     if (this.checked) {
         if(id in classSchedObj[2]){
 
@@ -196,7 +201,7 @@ function longListCallback() {
             reloadRightCol();
         }
     } else {
-        $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
+        $('#calendar').fullCalendar('removeEvents', this.getAttribute("id"));
         delete classes[id];
         delete allAddedClassObj[0][id];
         if(highlightedClasses.indexOf(id)!=-1){
@@ -215,9 +220,7 @@ function longListCallback() {
 function highlightCallback(){
     var id = this.getAttribute("value");
     if (this.checked) {
-        /* console.log(this)*/
         if(id in classSchedObj[2]){
-            /* console.log(classSchedObj[2][id])*/
             $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
             allAddedClassObj[1][id+"extra"] = classSchedObj[2][id];
             $('#calendar').fullCalendar('addEventSource', {events:[classSchedObj[2][id]], color: "red" });
