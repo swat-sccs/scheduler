@@ -585,6 +585,12 @@ function updateSigninStatus(isSignedIn) {
         notAuthorizedDiv.style.display = 'none';
         isAuthorizedDiv .style.display = 'block';
 
+        //Put email so know which calendar
+        document.getElementById("sayHi").innerHTML = "Hi, "+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()+"!<br>("+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()+")!";
+
+        //If signed in, automatically show all
+        document.getElementById("authorizedButtons").style.display = 'block';
+
         //Set global authorized so know (so that user doesn't have to sign in unless exporting)
         authorized                     = true;
     } else {
