@@ -77,14 +77,19 @@ $( document ).ready(function() {
     var hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
     hackerList.on("searchStart", function(){
-        $(".list tr").off("click").on("click", function(){
-            //Click checkbox if click row
-            this.children[0].children[0].click()
-        })
         if(searchId.value==""){
             document.getElementById("classTable").style.display = "none";
         }else{
             document.getElementById("classTable").style.display = "block";
+        }
+    })
+
+    $(".trClickable").on("click", function(e){
+        //Click checkbox if click row
+        c = event;
+        if(e.target.type != "checkbox"){
+            var cb = $(this).find("input[type=checkbox]")
+            cb.trigger("click");
         }
     })
 
