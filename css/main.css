@@ -99,18 +99,315 @@ textarea {
 
 
 
+/* Color scheme used: 
+https://coolors.co/31425f-e8f1f2-b3efb2-7a9e7e-001a23
+*/
+body {
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1em;
+    font-weight: lighter;
+    margin: 0px;
+}
+#calendarTd{
+    vertical-align: top; 
+}
+#classTd{
+    width:20%;
+    vertical-align: top; 
+}
 
 
+.rightCol{
+    overflow-y: scroll;
+    /* x-overflow:visible; */
+}
+/* .rightCol{ */
+/*     width:20%; */
+/*     float:right; */
+/* } */
 
 
+thead {
+    color: #001A23;
+    background-color: #B3EFB2;
+}
 
 
+td {
+    padding:10px; 
+    /*
+    border:solid 1px #eee;
+     */
+}
+
+input {
+    border:solid 1px #ccc;
+    border-radius: 5px;
+    padding:7px 14px;
+    margin-bottom:10px
+}
+input:focus {
+    outline:none;
+    border-color:#aaa;
+}
+
+button {
+    padding:8px 30px;
+    border-radius: 6px;
+    border:none;
+    display:inline-block;
+    color:#001A23;
+    background-color: #B3EFB2;  
+    text-decoration: none;
+    height:30px;
+    font-family: 'Raleway', sans-serif;
+    margin: 2px;
+}
+button:hover{
+    background-color: #A3DAA2;
+}
+.sort {
+    padding:8px 30px;
+    border-radius: 6px;
+    border:none;
+    display:inline-block;
+    text-decoration: none;
+    height:30px;
+    text-decoration: none;
+}
+.sort:focus {
+    outline:none;
+}
+.sort:after {
+    display:inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    content:"";
+    position: relative;
+    top:-10px;
+    right:-5px;
+}
+.sort.asc:after {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #fff;
+    content:"";
+    position: relative;
+    top:4px;
+    right:-5px;
+}
+.sort.desc:after {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #fff;
+    content:"";
+    position: relative;
+    top:-4px;
+    right:-5px;
+}
+table{
+    border-collapse: collapse;
+}
+thead>tr>td{
+    border:solid 0px;
+}
 
 
+#topNav,#footer{
+    background-color: #31425F;
+    overflow: hidden;
+    padding: 0px;
+    font-size: 1em;
+    text-align: center;
+    color: #ffffff;
+}
+
+a{
+    color: #B3EFB2;
+    text-decoration:none;
+}
+
+a:hover{
+    color: #A3DAA2;
+}
+
+/* Modified from https://tutorialzine.com/2014/07/css-inline-help-tips */
+.help-tip{
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    text-align: center;
+    background-color: #001A23;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    cursor: default;
+}
+
+.help-tip:before{
+    content:'?';
+    font-weight: bold;
+    color: #E8F1F2;
+}
+
+.help-tip:hover p{
+    display:block;
+    transform-origin: 100% 0%;
+
+    -webkit-animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
+
+    z-index: 2;
+}
 
 
+.help-tip p{    /* The tooltip */
+    display: none;
+    text-align: left;
+    background-color: #1E2021;
+    padding: 20px;
+    width: 300px;
+    position: absolute;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    right: -4px;
+    color: #FFF;
+    font-size: 13px;
+    line-height: 1.4;
+}
 
+.help-tip p:before{ /* The pointer of the tooltip */
+    position: absolute;
+    content: '';
+    width:0;
+    height: 0;
+    border:6px solid transparent;
+    border-bottom-color:#1E2021;
+    right:10px;
+    top:-12px;
+}
 
+.help-tip p:after{ /* Prevents the tooltip from being hidden */
+    width:100%;
+    height:40px;
+    content:'';
+    position: absolute;
+    top:-40px;
+    left:0;
+}
+
+/* CSS animation */
+
+@-webkit-keyframes fadeIn {
+    0% { 
+        opacity:0; 
+        transform: scale(0.6);
+    }
+
+    100% {
+        opacity:100%;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% { opacity:0; }
+    100% { opacity:100%; }
+}
+
+.fc-body{
+    background-color: #FCFCFC;
+}
+
+.fc-unthemed td.fc-today {
+    background-color: #FCFCFC;
+}
+
+.fc-axis.fc-time{
+    /*Side bar with time*/
+    border-width: 0px;
+}
+.fc-minor>.fc-axis{
+    /* I hate doing this but the fullcalendar.css */
+    /*
+    border-bottom-width: 1px!important;
+    border-bottom-style: dotted!important;
+    border-bottom-color: #ddd!important;
+     */
+}
+.fc-day-header.fc-widget-header.fc-mon{
+    border-left: none!important;
+}
+.fc-axis.fc-widget-header, .fc-head-container.fc-widget-header, .fc-body>tr>.fc-widget-content {
+    /* Removes border from header */
+    border: none!important;
+}
+
+.fc-toolbar.fc-header-toolbar{
+    margin-bottom:0px;
+}
+
+th{
+    font-weight: normal;
+}
+
+/* Initial hide of (not|is)Authorized*/
+#authorizedButtons{
+    display: none;
+}
+#calContainer{
+    /*Initially hide calendar, ft. Tobin 
+    display: none;
+    */
+}
+
+#showCal{
+    width: 98%;
+}
+
+#search{
+    width: 90%;
+}
+#classTable {
+    display: none;
+}
+
+.fullWidth{
+    width: 98%;
+}
+.centering{
+    margin: 0 auto;
+}
+#exportButtons>button{
+    /*Remove margin from top of top button so aligns better with header*/
+    margin-top: 0px;
+}
+
+.list tr:hover{
+    /* #B3EFB2 b with 50% opacity */
+    background-color: rgba(179, 239, 178, .5)
+}
+
+#classResultsTable{
+    display: block;
+    background-color: #FCFCFC;
+}
+
+.scrolling{
+    display: block;
+    overflow-y: auto;
+    height: 500px;
+}
 
 
 /* ==========================================================================
