@@ -431,6 +431,11 @@ th{
     height: 500px;
 }
 
+#classResultsTable>thead>tr>td{
+    /* 100%/11 columns */
+    width: 8.33%; 
+}
+
 
 /* ==========================================================================
    Helper classes

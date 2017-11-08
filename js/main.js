@@ -115,7 +115,6 @@ $( document ).ready(function() {
 
             for(var i in events){
                 //Can use string comparison natively
-                console.log(events[i].start.format("HH:mm:ss"));
                 if(events[i].start.format("HH:mm:ss") < newMinTime){
                     newMinTime = events[i].start.format("HH:mm:ss");
                 }
@@ -162,7 +161,6 @@ $( document ).ready(function() {
         //needs to be global bc dont want to spam hash event :(
         notFromHash = false;
         for(var q in hashClasses){
-            /* console.log(hashClasses[q])*/
             $("input.longListId[value='"+hashClasses[q]+"']").prop( "checked", true ).trigger("change");
         }
         notFromHash = true;
@@ -177,9 +175,7 @@ function longListCallback() {
     // this will contain a reference to the checkbox   
     var id = this.getAttribute("value");
     if (this.checked) {
-        /* console.log(this)*/
         if(id in classSchedObj[2]){
-            /* console.log(classSchedObj[2][id])*/
 
             $('#calendar').fullCalendar('addEventSource', [classSchedObj[2][id]]);
             allAddedClassObj[0][id+"extra"] = classSchedObj[2][id];
@@ -247,7 +243,6 @@ function highlightCallback(){
         $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
         highlightedClasses.splice(highlightedClasses.indexOf(id), 1);
         if(id in classSchedObj[2]){
-            /* console.log(classSchedObj[2][id])*/
             var addEvent = classSchedObj[2][id];
             delete allAddedClassObj[1][id+"extra"]
             $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
@@ -506,21 +501,15 @@ function addToCal(calId, addClass){
         'maxResults': 2500,
         'privateExtendedProperty': 'sccsTerm='+term,
     })
-    console.log("getEvents")
     getEventsReq.execute(function(resp){
         var batch = gapi.client.newBatch();
-        console.log("got")
-        console.log(resp)
         var items = resp.items
-        console.log("items "+JSON.stringify(items))
         for(var i in items){
             batch.add(gapi.client.calendar.events.delete({
                 'calendarId': calId,
                 'eventId': items[i].id
             }))
-            console.log(items[i])
         }
-        console.log("classes "+JSON.stringify(addClass))
         for(var i in addClass){
             batch.add(gapi.client.calendar.events.insert({
                 'calendarId': calId,
@@ -546,14 +535,12 @@ function addToCal(calId, addClass){
  *  listeners.
  */
 function initClient() {
-    console.log("inited")
     gapi.client.init({
         discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
         clientId:      CLIENT_ID,
         scope:         SCOPES
     }).then(function () {
         // Listen for sign-in state changes.
-        console.log("thenned")
         gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
         document.getElementById("authorize-button").onclick = handleAuthClick;
@@ -615,7 +602,6 @@ function handleSignoutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
 }
 function handleClientLoad() {
-    console.log("handled")
     //https://github.com/google/google-api-javascript-client/issues/265
     gapi.load('client:auth2', {
         callback: initClient,
