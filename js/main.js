@@ -49,6 +49,9 @@ $( document ).ready(function() {
     for(var i=0; i<=1; i++){
         for(var z in classSchedObj[i]){
             var id = classSchedObj[i][z].id;
+            //classSchedObj[i][z].idCopy = id;
+            //TODO what should the ADA label be?
+            classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref+" "+classSchedObj[i][z].name;
             if(id in classSchedObj[2]){
                 /* console.log(id)*/
                 classSchedObj[i][z].type += "<br>"+classSchedObj[2][id].type;
@@ -60,26 +63,33 @@ $( document ).ready(function() {
         }
     }
 
-
     var options = {
-        /* valueNames: ["ref", "subj", "num", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],*/
-        valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
-        item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="name"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>',
+        valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'idCopy', attr: "for"/*, forMultiple: true*/}, {name: 'id', attr: 'id'}, "comment", "labelSummary"],
+        //Item with labels on ever td, AxE only wants 1 label p/ checkbox
+        //item: '<tr> <td> <input type="checkbox" class="longListId id" group="classCheckbox"> </td> <td> <label class="idCopy"> <div class="ref"></div> </label> </td> <td> <label class="idCopy"> <div class="name"></div> </label> </td> <td> <label class="idCopy"> <div class="sec"></div> </label> </td> <td> <label class="idCopy"> <p class="title"></p> </label> <div class="comment"></div> </td> <td> <label class="idCopy"> <div class="cred"></div> </label> </td>  <td> <label class="idCopy"> <div class="dist"></div> </label> </td> <td> <label class="idCopy"> <div class="lim"></div> </label> </td> <td> <label class="idCopy"> <div class="instruct"></div> </label> </td> <td> <label class="idCopy"> <div class="type"></div> </label> </td> <td> <label class="idCopy"> <div class="days"></div> </label> </td> <td> <label class="idCopy"> <div class="time"></div> </label> </td> <td> <label class="idCopy"> <div class="rm"></div> </label> </td> </tr>',
+        //W/o labels on all, just on rref number
+        item: '<tr class="trClickable"> <td><label><input class="longListId id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <label class="idCopy"> <div class="ref"> </div> </label> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="type"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
         indexAsync: true
     };
+
 
     /* var values = classSchedObj[0].concat(classSchedObj[1])*/
     var hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
     hackerList.on("searchStart", function(){
-        $(".list tr").off("click").on("click", function(){
-            //Click checkbox if click row
-            this.children[0].children[0].click()
-        })
         if(searchId.value==""){
             document.getElementById("classTable").style.display = "none";
         }else{
             document.getElementById("classTable").style.display = "block";
+        }
+    })
+
+    $(".trClickable").on("click", function(e){
+        //Click checkbox if click row
+        c = event;
+        if(e.target.type != "checkbox"){
+            var cb = $(this).find("input[type=checkbox]")
+            cb.trigger("click");
         }
     })
 
@@ -115,7 +125,6 @@ $( document ).ready(function() {
 
             for(var i in events){
                 //Can use string comparison natively
-                console.log(events[i].start.format("HH:mm:ss"));
                 if(events[i].start.format("HH:mm:ss") < newMinTime){
                     newMinTime = events[i].start.format("HH:mm:ss");
                 }
@@ -162,7 +171,6 @@ $( document ).ready(function() {
         //needs to be global bc dont want to spam hash event :(
         notFromHash = false;
         for(var q in hashClasses){
-            /* console.log(hashClasses[q])*/
             $("input.longListId[value='"+hashClasses[q]+"']").prop( "checked", true ).trigger("change");
         }
         notFromHash = true;
@@ -175,11 +183,9 @@ $( document ).ready(function() {
 })
 function longListCallback() {
     // this will contain a reference to the checkbox   
-    var id = this.getAttribute("value");
+    var id = this.getAttribute("id");
     if (this.checked) {
-        /* console.log(this)*/
         if(id in classSchedObj[2]){
-            /* console.log(classSchedObj[2][id])*/
 
             $('#calendar').fullCalendar('addEventSource', [classSchedObj[2][id]]);
             allAddedClassObj[0][id+"extra"] = classSchedObj[2][id];
@@ -200,7 +206,7 @@ function longListCallback() {
             reloadRightCol();
         }
     } else {
-        $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
+        $('#calendar').fullCalendar('removeEvents', this.getAttribute("id"));
         delete classes[id];
         delete allAddedClassObj[0][id];
         if(highlightedClasses.indexOf(id)!=-1){
@@ -219,9 +225,7 @@ function longListCallback() {
 function highlightCallback(){
     var id = this.getAttribute("value");
     if (this.checked) {
-        /* console.log(this)*/
         if(id in classSchedObj[2]){
-            /* console.log(classSchedObj[2][id])*/
             $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
             allAddedClassObj[1][id+"extra"] = classSchedObj[2][id];
             $('#calendar').fullCalendar('addEventSource', {events:[classSchedObj[2][id]], color: "red" });
@@ -247,7 +251,6 @@ function highlightCallback(){
         $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
         highlightedClasses.splice(highlightedClasses.indexOf(id), 1);
         if(id in classSchedObj[2]){
-            /* console.log(classSchedObj[2][id])*/
             var addEvent = classSchedObj[2][id];
             delete allAddedClassObj[1][id+"extra"]
             $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
@@ -506,21 +509,15 @@ function addToCal(calId, addClass){
         'maxResults': 2500,
         'privateExtendedProperty': 'sccsTerm='+term,
     })
-    console.log("getEvents")
     getEventsReq.execute(function(resp){
         var batch = gapi.client.newBatch();
-        console.log("got")
-        console.log(resp)
         var items = resp.items
-        console.log("items "+JSON.stringify(items))
         for(var i in items){
             batch.add(gapi.client.calendar.events.delete({
                 'calendarId': calId,
                 'eventId': items[i].id
             }))
-            console.log(items[i])
         }
-        console.log("classes "+JSON.stringify(addClass))
         for(var i in addClass){
             batch.add(gapi.client.calendar.events.insert({
                 'calendarId': calId,
@@ -546,14 +543,12 @@ function addToCal(calId, addClass){
  *  listeners.
  */
 function initClient() {
-    console.log("inited")
     gapi.client.init({
         discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
         clientId:      CLIENT_ID,
         scope:         SCOPES
     }).then(function () {
         // Listen for sign-in state changes.
-        console.log("thenned")
         gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
         document.getElementById("authorize-button").onclick = handleAuthClick;
@@ -615,7 +610,6 @@ function handleSignoutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
 }
 function handleClientLoad() {
-    console.log("handled")
     //https://github.com/google/google-api-javascript-client/issues/265
     gapi.load('client:auth2', {
         callback: initClient,

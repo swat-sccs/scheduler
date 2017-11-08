@@ -51,7 +51,7 @@ if [ $rv -ne 0 ]; then
 
     ./makeJSON.js
     #Copy schedule into the website's js
-    cp schedule.js ../../
+    cp schedule.js ../../js
 
     #https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
     #Only `mail`s the diff to me if I have mail (i.e. on the sccs server)

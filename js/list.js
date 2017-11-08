@@ -1411,10 +1411,21 @@ var Templater = function(list) {
       if (valueName.data) {
         item.elm.setAttribute('data-'+valueName.data, value);
       } else if (valueName.attr && valueName.name) {
-        elm = list.utils.getByClass(item.elm, valueName.name, true);
-        if (elm) {
-          elm.setAttribute(valueName.attr, value);
-        }
+        //Get multiple class elements
+          if(valueName.forMultiple == true){
+              //Check all elements for classname and do for all
+              //Jonah Changed
+              //False means get multiple
+              elm = list.utils.getByClass(item.elm, valueName.name, false);
+              for(var i = 0; i<elm.length;i++){
+                  elm[i].setAttribute(valueName.attr, value);
+              }
+          }else{
+              elm = list.utils.getByClass(item.elm, valueName.name, true);
+              if(elm){
+                  elm.setAttribute(valueName.attr, value);
+              }
+          }
       } else {
         elm = list.utils.getByClass(item.elm, valueName, true);
         if (elm) {

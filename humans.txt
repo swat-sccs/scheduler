@@ -1,0 +1,15 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    SCCS - The Swarthmore College Computer Society 
+
+# THANKS
+
+    Jonah Langlieb - SCCS Staff Member
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5
+    Apache Server Configs, jQuery, Modernizr, Normalize.css
