@@ -21,90 +21,94 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
 
-        <div id="topNav">
-            <h1>
-                Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
-            </h1>
-            <div class="help-tip">
-                <p>
-                <b><u>How to use:</u></b><br>
-                - Use the search bar at the bottom to find your classes. Add every section with the left checkbox<br>
-                - Use the right column to highlight different combinations of the sections<br>
-                - When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones<br>
-                P.S. You can share your classes with others simply by giving them the URL<br><br>
+        <div id="container">
+            <div class="headFoot" id="header">
+                <h1>
+                    Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
+                </h1>
+                <div class="help-tip">
+                    <p>
+                    <b><u>How to use:</u></b><br>
+                    - Use the search bar at the bottom to find your classes. Add every section with the left checkbox<br>
+                    - Use the right column to highlight different combinations of the sections<br>
+                    - When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones<br>
+                    P.S. You can share your classes with others simply by giving them the URL<br><br>
 
-                This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
-                </p>
-            </div>
-        </div>
-        <div id="calContainer">
-            <table>
-                <tr>
-                    <td id="calendarTd">
-                        <div class="leftCol">
-                            <div id="calendar">
-                            </div>
-                        </div>
-                    </td>
-                    <td id="classTd">
-                        <div id="exportButtons">
-                            <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
-                        </div>
-                        <div id="authorizedButtons">
-                            <div id="waitingForGoogle">
-                                Waiting for Google API's to load (please check your internet connection)
-                            </div>
-                            <div id="notAuthorized">
-                                <button class="fullWidth" id="authorize-button">Authorize then export again</button>
-                            </div>
-                            <div id="isAuthorized">
-                                <button class="fullWidth" id="signout-button">Sign Out</button>
-                                <div id="sayHi"></div>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="rightCol">
-                            Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-            <br>
-
-
-        </div>
-        <br>
-        <button id="showCal" class="fullWidth" onclick="toggleCal()">Toggle Calendar</button>
-
-        <br>
-        <br>
-        <div id="hacker-list">
-            <div class = "middleCol">
-                <input class="search" id="search" placeholder="Find Classes!" />
-                <br>
-                <div id="classTable">
-                    <!-- Sort is confusing and clutters
-                        <button class="sort" data-sort="ref">Sort by Reference</button>
-                        <button class="sort" data-sort="subj">Sort by Subject</button>
-                    -->
-                    <table id="classResultsTable" class="fullWidth centering">
-                        <thead>
-                            <tr>
-                                <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
-                            </tr>
-                        </thead>
-                        <form id="classForm">
-                            <tbody class="scrolling list"></tbody>
-                        </form>
-                    </table>
+                    This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
+                    </p>
                 </div>
             </div>
-        </div>
-        <div id="footer">
-            <h5>
-                Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
-            </h5>
+            <div id="body">
+                <div id="calContainer">
+                    <table>
+                        <tr>
+                            <td id="calendarTd">
+                                <div class="leftCol">
+                                    <div id="calendar">
+                                    </div>
+                                </div>
+                            </td>
+                            <td id="classTd">
+                                <div id="exportButtons">
+                                    <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
+                                </div>
+                                <div id="authorizedButtons">
+                                    <div id="waitingForGoogle">
+                                        Waiting for Google API's to load (please check your internet connection)
+                                    </div>
+                                    <div id="notAuthorized">
+                                        <button class="fullWidth" id="authorize-button">Authorize then export again</button>
+                                    </div>
+                                    <div id="isAuthorized">
+                                        <button class="fullWidth" id="signout-button">Sign Out</button>
+                                        <div id="sayHi"></div>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="rightCol">
+                                    Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+
+                </div>
+                <br>
+                <button id="showCal" class="fullWidth" onclick="toggleCal()">Toggle Calendar</button>
+
+                <br>
+                <br>
+                <div id="hacker-list">
+                    <div class = "middleCol">
+                        <input class="search" id="search" placeholder="Find Classes!" />
+                        <br>
+                        <div id="classTable">
+                            <!-- Sort is confusing and clutters
+                                <button class="sort" data-sort="ref">Sort by Reference</button>
+                                <button class="sort" data-sort="subj">Sort by Subject</button>
+                            -->
+                            <table id="classResultsTable" class="fullWidth centering">
+                                <thead>
+                                    <tr>
+                                        <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
+                                    </tr>
+                                </thead>
+                                <form id="classForm">
+                                    <tbody class="scrolling list"></tbody>
+                                </form>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="headFoot" id="footer">
+                <h5>
+                    Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
+                </h5>
+            </div>
         </div>
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>

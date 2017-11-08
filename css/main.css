@@ -108,6 +108,36 @@ body {
     font-size: 1em;
     font-weight: lighter;
     margin: 0px;
+    height: 100%;
+}
+/* From http://matthewjamestaylor.com/blog/keeping-footers-at-the-bottom-of-the-page for footer */
+#container{
+    min-height:100%;
+    position:relative;
+}
+#body{
+    padding-bottom: 60px; /*Height of footer */
+}
+
+.headFoot{
+    background-color: #31425F;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 1em;
+    text-align: center;
+    color: #ffffff;
+}
+
+#header>h1{
+    margin: 0px;
+}
+
+#footer{
+    /* Always position at bottom
+    position: absolute; */
+    bottom:   0px;
+    width: 100%;
+    height: 60px /*See height above for footer */
 }
 #calendarTd{
     vertical-align: top; 
@@ -221,14 +251,6 @@ thead>tr>td{
 }
 
 
-#topNav,#footer{
-    background-color: #31425F;
-    overflow: hidden;
-    padding: 0px;
-    font-size: 1em;
-    text-align: center;
-    color: #ffffff;
-}
 
 a{
     color: #B3EFB2;
@@ -242,7 +264,7 @@ a:hover{
 /* Modified from https://tutorialzine.com/2014/07/css-inline-help-tips */
 .help-tip{
     position: absolute;
-    top: 18px;
+    top: 10px;
     right: 18px;
     text-align: center;
     background-color: #001A23;
