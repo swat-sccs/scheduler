@@ -4,7 +4,9 @@
     <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.css"></script>
     <link type="text/css" rel='stylesheet' href='node_modules/fullcalendar/dist/fullcalendar.css' />
     <link type="text/css" rel='stylesheet' href='style.css' />
+    <!-- TODO remove but speed development
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    -->
 
     <script src='schedule.js'></script>
 
@@ -12,8 +14,11 @@
 
     <script src='node_modules/fullcalendar/dist/fullcalendar.js'></script>
 
-        <!--Allow custom search by modifying-->
-        <script src='list.js'></script>
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+     
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
 <title>SCCS's Scheduler</title>
     </head>
     <div class="topnav">
@@ -74,29 +79,7 @@
 
     <br>
     <br>
-    <div id="hacker-list">
-        <div class = "middleCol">
-            <input class="search" id="search" placeholder="Find Classes!" />
-<br>
-            <div id="classTable">
-                <!-- Sort is confusing and clutters
-            <button class="sort" data-sort="ref">Sort by Reference</button>
-            <button class="sort" data-sort="subj">Sort by Subject</button>
-                -->
-                <table id="classResultsTable" class="fullWidth centering">
-                <thead>
-                        <tr>
-                    <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
-                        </tr>
-                </thead>
-                <form id="classForm">
-                        <tbody class="scrolling list"></tbody>
-                </form>
-			</table>
-</div>
-        </div>
-    </div>
-
+    <div id="jsGrid"></div>
     <script src="script.js"></script>
 
     <script src="https://apis.google.com/js/api.js"

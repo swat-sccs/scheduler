@@ -6,7 +6,7 @@ var highlightedClasses  = [];
 var allAddedClassObj    = [{},{}];
 
 var CLIENT_ID        = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
-//CAN'T BE ARRAY OF FAILS SILENTLY (Change to new gapi client v2)
+//CAN'T BE ARRAY OR FAILS SILENTLY (Change to new gapi client v2)
 var SCOPES           = "https://www.googleapis.com/auth/calendar.readonly";
 
 var authorized = false;
@@ -51,6 +51,7 @@ $( document ).ready(function() {
             var id = classSchedObj[i][z].id;
             if(id in classSchedObj[2]){
                 /* console.log(id)*/
+                //TODO if export to google calendar, does this come along?
                 classSchedObj[i][z].type += "<br>"+classSchedObj[2][id].type;
                 classSchedObj[i][z].days += "<br>"+classSchedObj[2][id].days;
                 classSchedObj[i][z].time += "<br>"+classSchedObj[2][id].time;
@@ -61,14 +62,13 @@ $( document ).ready(function() {
     }
 
 
+    /*
     var options = {
-        /* valueNames: ["ref", "subj", "num", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],*/
         valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
         item: '<tr><td><input type="checkbox" name="rre" class="longListId id"></td><td class="ref"></td><td class="name"></td><td class="sec"></td><td><p class="title"></p><div class="comment"></div></td><td class="cred"></td><td class="dist"></td><td class="lim"></td><td class="instruct"></td><td class="type"></td><td class="days"></td><td class="time"></td><td class="rm"></td></tr>',
         indexAsync: true
     };
 
-    /* var values = classSchedObj[0].concat(classSchedObj[1])*/
     var hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
     hackerList.on("searchStart", function(){
@@ -82,6 +82,53 @@ $( document ).ready(function() {
             document.getElementById("classTable").style.display = "block";
         }
     })
+    */
+    function onRowClick(arg){
+        console.log(arg)
+    }
+    $("#jsGrid").jsGrid({
+                width: "auto",
+                height: "auto",
+                
+                filtering: true,
+         
+                inserting: false,
+                editing: false,
+                sorting: true,
+                paging: false,
+         
+                data: tableArr,
+                rowClick: onRowClick(),
+         
+        fields: [
+        //valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {name: 'id' ,attr:'value'}, "comment"],
+                        {type: "checkbox"},
+                        {type: "control"},
+                        { name: "ref", title: "Reference #", type: "number"},
+                        { name: "name", title: "Name", type: "text"},
+                        { name: "sec", title: "Sec #", type: "text"},
+                        { name: "title", title: "Title", type: "text"},
+                        { name: "cred", title: "Credits", type: "text"},
+                        { name: "dist", title: "Dist", type: "text"},
+                        { name: "lim", title: "Lim", type: "text"},
+                        { name: "instruct", title: "Instructor", type: "text"},
+                        { name: "type", title: "Type", type: "text"},
+                        { name: "days", title: "DOW", type: "text"},
+                        { name: "time", title: "Time", type: "text"},
+                        { name: "rm", title: "Room #", type: "text"},
+                        { name: "comment", title: "Comment", type: "text"},
+
+            /*
+                        { name: "Age", type: "number", width: 50  },
+                        { name: "Address", type: "text", width: 200  },
+                        { name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name"  },
+                        { name: "Married", type: "checkbox", title: "Is Married", sorting: false  },
+                        { type: "control"  }
+                        */
+                    
+        ]
+            
+    });
 
     // page is now ready, initialize the calendar...
 
