@@ -255,6 +255,13 @@ a:hover{
 .fc-toolbar.fc-header-toolbar{
     margin-bottom:0px;
 }
+.fc-head-container{
+    /* match 30px of right button */
+    height: 30px;
+}
+.fc-day-header{
+    padding-top: 5px!important;
+}
 
 th{
     font-weight: normal;
@@ -305,5 +312,10 @@ th{
 .scrolling{
     display: block;
     overflow-y: auto;
-    height: 500px;
+    max-height: 500px;
+}
+
+#classResultsTable>thead>tr td {
+    /* There are 12 columns, 100/12 = 8.333 so evenly space */
+    width: 8.3%;
 }
