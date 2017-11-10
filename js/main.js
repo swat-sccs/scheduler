@@ -171,7 +171,9 @@ $( document ).ready(function() {
         //needs to be global bc dont want to spam hash event :(
         notFromHash = false;
         for(var q in hashClasses){
-            $("input.longListId[value='"+hashClasses[q]+"']").prop( "checked", true ).trigger("change");
+            if(hashClasses[q]!=""){
+                $("input.longListId#"+hashClasses[q]).prop( "checked", true ).trigger("change");
+            }
         }
         notFromHash = true;
         reloadRightCol();
