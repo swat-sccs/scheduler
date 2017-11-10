@@ -107,13 +107,7 @@ $( document ).ready(function() {
         //contentHeight: 800,
         weekends: false,
         allDaySlot: false,
-        header: {
-            //left: 'prev,next today',
-            //center: 'title',
-            left: '',
-            center: '',
-            right: ''
-        },
+        header: false,
         columnFormat: 'dddd',
         defaultView: 'agendaWeek',
         editable: false,

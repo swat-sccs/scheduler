@@ -183,7 +183,7 @@ input:focus {
 }
 
 button {
-    padding:8px 30px;
+    padding:4px 30px;
     border-radius: 6px;
     border:none;
     display:inline-block;
@@ -193,6 +193,10 @@ button {
     height:30px;
     font-family: 'Raleway', sans-serif;
     margin: 2px;
+    /*Don't overflow, show ellipsis*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 button:hover{
     background-color: #A3DAA2;
@@ -369,6 +373,16 @@ a:hover{
 }
 .fc-day-header.fc-widget-header.fc-mon{
     border-left: none!important;
+}
+
+.fc-widget-header>table>thead>tr{
+    height: 30px!important;
+}
+.fc-widget-header>table>thead>tr>th{
+    padding-top: 4px!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .fc-axis.fc-widget-header, .fc-head-container.fc-widget-header, .fc-body>tr>.fc-widget-content {
     /* Removes border from header */
