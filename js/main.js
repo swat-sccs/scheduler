@@ -280,7 +280,7 @@ function reloadRightCol(){
         if(highlightedClasses.indexOf(i.toString())!=-1){
             checked = 'checked';
         }
-        htmlObj.push({key: i, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'><b>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+"</b>: "+classes[i].title+" ("+i+")<br>"});
+        htmlObj.push({key: i, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+": "+classes[i].title+" ("+i+")<br>"});
     }
     htmlObj = htmlObj.sort(function (a, b) {
         return a.key.localeCompare( b.key );

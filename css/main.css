@@ -430,6 +430,10 @@ th{
 }
 
 .fullWidth{
+    width: 100%;
+}
+/*Button full width want 98%, otherwise want 100%*/
+button.fullWidth{
     width: 98%;
 }
 .centering{
