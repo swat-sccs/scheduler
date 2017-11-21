@@ -154,7 +154,11 @@ html, body{
 
 .rightCol{
     overflow-y: scroll;
+    text-align: left;
     /* x-overflow:visible; */
+}
+.rightCol > label>b{
+    font-weight: 700;
 }
 /* .rightCol{ */
 /*     width:20%; */

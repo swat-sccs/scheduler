@@ -107,6 +107,7 @@ $( document ).ready(function() {
         //contentHeight: 800,
         weekends: false,
         allDaySlot: false,
+        //Don't want a header (title, today, etc buttons)
         header: false,
         columnFormat: 'dddd',
         defaultView: 'agendaWeek',
@@ -279,7 +280,7 @@ function reloadRightCol(){
         if(highlightedClasses.indexOf(i.toString())!=-1){
             checked = 'checked';
         }
-        htmlObj.push({key: classes[i].subj+classes[i].num, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+": "+classes[i].title+" ("+i+")<br>"});
+        htmlObj.push({key: i, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'><b>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+"</b>: "+classes[i].title+" ("+i+")<br>"});
     }
     htmlObj = htmlObj.sort(function (a, b) {
         return a.key.localeCompare( b.key );
