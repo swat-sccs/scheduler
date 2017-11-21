@@ -160,6 +160,9 @@ html, body{
 .rightCol > label>b{
     font-weight: 700;
 }
+#sayHi b{
+    font-weight: 700;
+}
 /* .rightCol{ */
 /*     width:20%; */
 /*     float:right; */
@@ -456,6 +459,11 @@ th{
 #classResultsTable>thead>tr>td{
     /* 100%/11 columns */
     width: 8.33%; 
+}
+
+.flashWhite{
+    opacity: 0;
+    transition:all .7s;
 }
 
 

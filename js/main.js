@@ -524,8 +524,8 @@ function addToCal(calId, addClass){
         console.log("delete batch")
         batch.execute(function(resp){
             console.log("deleted")
-            console.log(resp)
-            $("#exportReady").append('<br><b>Success! You now have a new calendar called "SCCS Class Schedule" in your Google Calendar with events starting next semester, September 4. (you\'ll need to refresh) </b><br>')
+            flashWhite();
+            $("#sayHi").append('<br><b>Success!</b> You now have a new calendar called "SCCS Class Schedule" in your Google Calendar with events starting next semester. (You\'ll need to refresh)')
         })
     })
 }
@@ -618,4 +618,11 @@ function handleClientLoad() {
 
 function toggleCal(){
     $("#calContainer").slideToggle("slow");
+}
+
+function flashWhite(){
+    document.body.classList.add("flashWhite")
+    setTimeout(function(){
+        document.body.classList.remove("flashWhite")
+    }, 700)
 }
