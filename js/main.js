@@ -136,17 +136,6 @@ $( document ).ready(function() {
                 $("#calendar").fullCalendar('option', { maxTime: maxTime });
             }
         }
-        /* events: json[0]*/
-        /* events: [*/
-        /* {*/
-        /* title  : 'event3',*/
-        /* dow: [2],*/
-        /* start  : '10:00',*/
-        /* end  : '13:00',*/
-        /* allDay : false // will make the time show*/
-        /* }*/
-        /* ]*/
-        /* })*/
 
     });
     window.dataLayer = window.dataLayer || [];
