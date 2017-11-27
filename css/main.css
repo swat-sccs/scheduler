@@ -145,6 +145,8 @@ html, body{
 }
 #calendarTd{
     vertical-align: top; 
+    margin: 1px;
+    border: rgb(220, 220, 220) solid 1px
 }
 #classTd{
     vertical-align: top; 
@@ -413,9 +415,7 @@ th{
     display: none;
 }
 #calContainer{
-    /*Initially hide calendar, ft. Tobin 
-    display: none;
-    */
+    padding-top: 10px;
 }
 
 #showCal{
