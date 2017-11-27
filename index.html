@@ -49,46 +49,40 @@ gtag('config', 'UA-90553706-1');
             </div>
             <div id="body">
                 <div id="calContainer">
-                    <table>
-                        <tr>
-                            <td id="calendarTd">
-                                <div class="leftCol">
-                                    <div id="calendar">
-                                    </div>
-                                </div>
-                            </td>
-                            <td id="classTd">
-                                <div id="exportButtons">
-                                    <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
-                                </div>
-                                <div id="authorizedButtons">
-                                    <div id="waitingForGoogle">
-                                        Waiting for Google API's to load (please check your internet connection)
-                                    </div>
-                                    <div id="notAuthorized">
-                                        <button class="fullWidth" id="authorize-button">Authorize then export again</button>
-                                    </div>
-                                    <div id="isAuthorized">
-                                        <button class="fullWidth" id="signout-button">Sign Out</button>
-                                        <div id="sayHi"></div>
-                                    </div>
-                                    <hr>
-                                </div>
-                                <div class="rightCol">
-                                    Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-
+                    <div id="calendarTd">
+                        <div class="leftCol">
+                            <div id="calendar">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="classTd">
+                        <h4>Highlight classes to try out different schedules</h4>
+                        <div class="rightCol">
+                            Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
+                        </div>
+                        <div id="exportButtons">
+                            <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
+                        </div>
+                        <div id="authorizedButtons">
+                            <div id="waitingForGoogle">
+                                Waiting for Google API's to load (please check your internet connection)
+                            </div>
+                            <div id="notAuthorized" style="display: none">
+                                <button class="fullWidth" id="authorize-button">Authorize then export again</button>
+                            </div>
+                            <div id="isAuthorized" style="display: none">
+                                <button class="fullWidth" id="signout-button">Sign Out</button>
+                            </div>
+                        </div>
+                    </div>
                     <br>
 
 
                 </div>
                 <br>
                 <button id="showCal" class="fullWidth" onclick="toggleCal()">Toggle Calendar</button>
-
-                <br>
+                <hr>
                 <br>
                 <div id="hacker-list">
                     <div class = "middleCol">
@@ -135,12 +129,13 @@ gtag('config', 'UA-90553706-1');
         <script src="js/list.js"></script>
 
         <script src="js/main.js"></script>
+
+
+
         <script src="https://apis.google.com/js/api.js"
                 onload="this.onload=function(){};handleClientLoad()"
                 onreadystatechange="if (this.readyState === 'complete') this.onload()">
         </script>
-
-
 
     </body>
 </html>

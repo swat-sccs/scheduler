@@ -147,15 +147,20 @@ html, body{
     vertical-align: top; 
 }
 #classTd{
-    width:20%;
     vertical-align: top; 
 }
 
 
 .rightCol{
-    overflow-y: scroll;
     text-align: left;
-    /* x-overflow:visible; */
+}
+/* Added dynamically by reloadRightCol so if no classes, doesn't look weird*/
+.threeCol{
+    /* Very cool, pretty good browser-support*/
+    /* TODO polyfill? */
+    -moz-column-count:    3;
+    -webkit-column-count: 3;
+    column-count:         3;
 }
 .rightCol > label>b{
     font-weight: 700;
@@ -163,11 +168,6 @@ html, body{
 #sayHi b{
     font-weight: 700;
 }
-/* .rightCol{ */
-/*     width:20%; */
-/*     float:right; */
-/* } */
-
 
 thead {
     color: #001A23;
@@ -419,7 +419,7 @@ th{
 }
 
 #showCal{
-    width: 98%;
+    width: 99%;
 }
 
 #search{
@@ -439,7 +439,13 @@ button.fullWidth{
 .centering{
     margin: 0 auto;
 }
-#exportButtons>button{
+/* Make side by side buttons */
+#exportButtons, #authorizedButtons{
+    display: inline;
+    width: 50%;
+    float: left;
+}
+#exportButtons>button, #authorizedButtons button{
     /*Remove margin from top of top button so aligns better with header*/
     margin-top: 0px;
 }

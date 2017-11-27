@@ -288,6 +288,11 @@ function reloadRightCol(){
     for(var z in htmlObj){
         html+="<label>"+htmlObj[z].val+"</label>";
     }
+    if(htmlObj.length!=0){
+        $(".rightCol").addClass("threeCol")
+    }else{
+        $(".rightCol").removeClass("threeCol")
+    }
     $(".rightCol").html(html);
     $('.highlightCheck').off("change").change(highlightCallback);
 }
@@ -578,7 +583,8 @@ function updateSigninStatus(isSignedIn) {
         isAuthorizedDiv .style.display = 'block';
 
         //Put email so know which calendar
-        document.getElementById("sayHi").innerHTML = "Hi, "+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()+"!<br>("+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()+")!";
+        $("#signout-button").text("Sign out ("+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()+")")
+        //document.getElementById("sayHi").innerHTML = "Hi, "+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()+"!<br>("+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()+")!";
 
         //If signed in, automatically show all
         document.getElementById("authorizedButtons").style.display = 'block';
