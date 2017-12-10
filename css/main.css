@@ -476,6 +476,11 @@ button.fullWidth{
     transition:all .7s;
 }
 
+.threeCol>label{
+    /* Make not break in column*/
+    display: inline-block;
+}
+
 
 /* ==========================================================================
    Helper classes
