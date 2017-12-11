@@ -296,6 +296,7 @@ function getReadyForExport(){
     //Show either log out or authorize
     document.getElementById("authorizedButtons").style.display = "block";
     document.getElementById("notAuthorized").style.display = "block";
+    document.getElementById("exportButtons").style.width = "50%";
     if(authorized){
         //Already authorized, can go right in
         exportToGoogle();
@@ -592,6 +593,7 @@ function updateSigninStatus(isSignedIn) {
         /* wait for getReadyForExport so not too many buttons
         notAuthorizedDiv.style.display = 'block';
         */
+        document.getElementById("exportButtons").style.width = "100%";
         isAuthorizedDiv .style.display = 'none';
     }
 }
