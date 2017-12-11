@@ -21,7 +21,9 @@ var startSemesterTime = Date.UTC(2018,0,22,0,0,0);
 //YEARMONTHDAY+"T000000Z", pad with 0s
 //Dec 12
 //May 4 for Spring 2018 end
-var endSemesterISO   = "20170504T000000Z";
+//Make sure change year
+//Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
+var endSemesterISO   = "20180504T235959Z";
 var globalFromButton = false;
 
 var startSemDate = new Date(startSemesterTime);
