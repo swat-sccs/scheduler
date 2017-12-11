@@ -54,13 +54,14 @@
                         <div class="rightCol">
                             Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
                         </div>
-                        <div id="exportButtons">
+                        <br><br>
+                        <div id="waitingForGoogle">
+                            Loading Google API's...
+                        </div>
+                        <div style="display: none;" id="exportButtons">
                             <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
                         </div>
                         <div id="authorizedButtons">
-                            <div id="waitingForGoogle">
-                                Loading Google API's...
-                            </div>
                             <div id="notAuthorized" style="display: none">
                                 <button class="fullWidth" id="authorize-button">Authorize then export again</button>
                             </div>

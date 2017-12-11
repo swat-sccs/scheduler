@@ -295,6 +295,7 @@ function reloadRightCol(){
 function getReadyForExport(){
     //Show either log out or authorize
     document.getElementById("authorizedButtons").style.display = "block";
+    document.getElementById("notAuthorized").style.display = "block";
     if(authorized){
         //Already authorized, can go right in
         exportToGoogle();
@@ -588,7 +589,7 @@ function updateSigninStatus(isSignedIn) {
         //Set global authorized so know (so that user doesn't have to sign in unless exporting)
         authorized                     = true;
     } else {
-        /* wait for getRadyForExport so not too many buttons
+        /* wait for getReadyForExport so not too many buttons
         notAuthorizedDiv.style.display = 'block';
         */
         isAuthorizedDiv .style.display = 'none';
