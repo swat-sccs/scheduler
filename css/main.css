@@ -163,6 +163,7 @@ html, body{
     -moz-column-count:    3;
     -webkit-column-count: 3;
     column-count:         3;
+    display: inline-block;
 }
 .rightCol > label>b{
     font-weight: 700;
