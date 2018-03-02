@@ -6,7 +6,8 @@ var allAddedClassObj    = [{},{}];
 
 var CLIENT_ID        = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
 //CAN'T BE ARRAY OF FAILS SILENTLY (Change to new gapi client v2)
-var SCOPES           = "https://www.googleapis.com/auth/calendar.readonly";
+//Can't be readonly because needs to be able to create cals and change events
+var SCOPES           = "https://www.googleapis.com/auth/calendar";
 
 var authorized = false;
 
