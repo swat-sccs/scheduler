@@ -433,22 +433,17 @@ th{
 .fullWidth{
     width: 100%;
 }
-/*Button full width want 98%, otherwise want 100%*/
-button.fullWidth{
-    width: 98%;
-}
 .centering{
     margin: 0 auto;
 }
 /* Make side by side buttons */
 #exportButtons, #authorizedButtons{
     display: inline;
-    width: 50%;
-    float: left;
 }
 #exportButtons>button, #authorizedButtons button{
     /*Remove margin from top of top button so aligns better with header*/
     margin-top: 0px;
+    width: 35%;
 }
 
 .list tr:hover{
@@ -480,6 +475,22 @@ button.fullWidth{
 .threeCol>label{
     /* Make not break in column*/
     display: inline-block;
+}
+#hrToggle{
+    width: 100%;
+    height: 8px;
+    border-bottom: 1px solid black;
+    text-align: center;
+    cursor: row-resize
+}
+#hrToggle>span{
+    background-color: white;
+    padding: 0 10px;
+    font-weight: normal;
+}
+#hrToggle:hover{
+    font-weight: bold;
+    border-bottom: 2px solid black;
 }
 
 

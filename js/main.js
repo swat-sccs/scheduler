@@ -1,4 +1,3 @@
-var authorized = false;
 //TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
 var term                = "spring17";
 var classes             = {};
@@ -294,9 +293,6 @@ function reloadRightCol(){
 }
 function getReadyForExport(){
     //Show either log out or authorize
-    document.getElementById("authorizedButtons").style.display = "block";
-    document.getElementById("notAuthorized").style.display = "block";
-    document.getElementById("exportButtons").style.width = "50%";
     if(authorized){
         //Already authorized, can go right in
         exportToGoogle();
@@ -551,13 +547,10 @@ function initClient() {
         // Listen for sign-in state changes.
         gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
-        document.getElementById("authorize-button").onclick = handleAuthClick;
-        document.getElementById("signout-button")  .onclick = handleSignoutClick;
 
         // Handle the initial sign-in state.
         updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
 
-        document.getElementById("exportButtons").style.display = "block";
     }, function(error){
         console.log(error)
     })
@@ -571,10 +564,12 @@ function initClient() {
  *  appropriately. After a sign-in, the API is called.
  */
 function updateSigninStatus(isSignedIn) {
+
+    //Go from "loading gapis -> authorize"
+    document.getElementById("waitingForGoogle").style.display = "none";
+
     var notAuthorizedDiv = document.getElementById('notAuthorized');
     var isAuthorizedDiv  = document.getElementById('isAuthorized');
-
-    document.getElementById("waitingForGoogle").style.display = "none";
 
     if (isSignedIn) {
         notAuthorizedDiv.style.display = 'none';
@@ -582,19 +577,17 @@ function updateSigninStatus(isSignedIn) {
 
         //Put email so know which calendar
         $("#signout-button").text("Sign out ("+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()+")")
-        //document.getElementById("sayHi").innerHTML = "Hi, "+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()+"!<br>("+gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()+")!";
-
-        //If signed in, automatically show all
-        document.getElementById("authorizedButtons").style.display = 'block';
 
         //Set global authorized so know (so that user doesn't have to sign in unless exporting)
-        authorized                     = true;
+        authorized = true;
     } else {
         /* wait for getReadyForExport so not too many buttons
         notAuthorizedDiv.style.display = 'block';
         */
-        document.getElementById("exportButtons").style.width = "100%";
+        notAuthorizedDiv.style.display = 'block';
         isAuthorizedDiv .style.display = 'none';
+
+        authorized = false;
     }
 }
 
@@ -611,6 +604,7 @@ function handleAuthClick(event) {
 function handleSignoutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
 }
+//Start from onLoad
 function handleClientLoad() {
     //https://github.com/google/google-api-javascript-client/issues/265
     gapi.load('client:auth2', {

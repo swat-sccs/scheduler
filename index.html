@@ -58,15 +58,13 @@
                         <div id="waitingForGoogle">
                             Loading Google API's...
                         </div>
-                        <div style="display: none;" id="exportButtons">
-                            <button class="fullWidth" onclick="getReadyForExport(0)">Export All Events to gCal</button>
-                        </div>
                         <div id="authorizedButtons">
                             <div id="notAuthorized" style="display: none">
-                                <button class="fullWidth" id="authorize-button">Authorize then export again</button>
+                                <button id="authorize-button" onclick="handleAuthClick()">Authorize then export again</button>
                             </div>
                             <div id="isAuthorized" style="display: none">
-                                <button class="fullWidth" id="signout-button">Sign Out</button>
+                                <button onclick="getReadyForExport()">Export All Events to gCal</button>
+                                <button id="signout-button" onclick="handleSignoutClick()">Sign Out</button>
                             </div>
                         </div>
                     </div>
@@ -75,8 +73,12 @@
 
                 </div>
                 <br>
-                <button id="showCal" class="fullWidth" onclick="toggleCal()">Toggle Calendar</button>
-                <hr>
+                <div onclick="toggleCal()"id="hrToggle">
+                    <span>
+                        Toggle Calendar
+                    </span>
+                </div>
+                <br>
                 <br>
                 <div id="hacker-list">
                     <div class = "middleCol">
