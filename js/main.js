@@ -553,8 +553,7 @@ function initClient() {
 
     }, function(error){
         console.log(error)
-    })
-        .catch(function(e){
+    }).catch(function(e){
             console.log(e)
         })
 }

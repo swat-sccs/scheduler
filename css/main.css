@@ -215,6 +215,24 @@ button {
 button:hover{
     background-color: #A3DAA2;
 }
+
+button#sharp{
+    /*#B3EFB2 is 66%*/
+    background-color: hsla(119, 96%, 82%, 1);
+}
+button#sharp:hover{
+    /*#A3DAA2 hsl(119, 43%, 75%)*/
+    background-color: hsla(119, 63%, 75%, 1);
+}
+
+button#dull{
+    /*#B3EFB2 is 66%*/
+    background-color: hsla(119, 56%, 82%, 1);
+}
+button#dull:hover{
+    /*#B3EFB2 is 66%*/
+    background-color: hsla(119, 33%, 75%, 1);
+}
 .sort {
     padding:8px 30px;
     border-radius: 6px;
@@ -489,8 +507,10 @@ th{
     font-weight: normal;
 }
 #hrToggle:hover{
-    font-weight: bold;
     border-bottom: 2px solid black;
+}
+#hrToggle:hover>span{
+    font-weight: bold;
 }
 
 
