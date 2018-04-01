@@ -475,7 +475,6 @@ th{
 }
 
 .scrolling{
-    display: block;
     overflow-y: auto;
     height: 500px;
 }
