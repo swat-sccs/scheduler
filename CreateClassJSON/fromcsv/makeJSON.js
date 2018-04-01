@@ -1,5 +1,8 @@
 #!/usr/bin/nodejs
 
+//Copy from 1st line of XLS
+var COLS = "TERM	DEPT	CRN	SUBJ	CRSE#	SEC	TITLE	CR	DISTR	PROJ	COMMENT	INSTR1	INSTR2	PTRM	DESC1	TIME1	DAYS1	BLDG_RM1	DESC2	TIME2	DAYS2	BLDG_RM2".split(/\s+/)
+
 var fs = require("fs");
 fs.readFile("./schedule.csv", "utf8", function(err, results){
     var prevRef = [];
@@ -12,49 +15,93 @@ fs.readFile("./schedule.csv", "utf8", function(err, results){
         //From FilterOptions 124 from doAll.sh
         spreadArr[d] = spreadArr[d].split("|");
     }
+	
+	//check 1st line columns
+	for(var i = 0; i<spreadArr[0].length;i++){
+		if(spreadArr[0][i]!=COLS[i]){
+			throw "IN COL "+(i+1)+", expected '"+COLS[i]+"', has '"+spreadArr[0][i];
+		}
+	}
     //hasTimes, hasNoTimes, multipleTimes
     var outArr = [{},{}, {}];
     for(var i = 1; i<spreadArr.length;i++){
         if(spreadArr[i] == ""){
             continue
         }
-        // console.log(spreadArr[i].join("|"));
-        if(spreadArr[i][14] != "" && spreadArr[i][15]!=""){
-            //has time and dates
-            var daysArr = timeStrToTime(spreadArr[i][15]);
-            //      console.log(spreadArr[i][10].length)
-            if(spreadArr[i][17]!=""){
+        //has time and dates
+        if(spreadArr[i][COLS.indexOf("TIME1")] != "" || spreadArr[i][COLS.indexOf("TIME2")]!=""){
+            var daysArr = timeStrToTime(spreadArr[i][COLS.indexOf("DAYS1")]);
+            if(spreadArr[i][COLS.indexOf("DESC2")]!=""){
                 //Has desc2, time2, ...*2
-                var timeStr = spreadArr[i][18];
-                /* outArr[2][spreadArr[i][1]] = {title:spreadArr[i][5]+" "+spreadArr[i][17],id: spreadArr[i][1], start: toArmy(timeStr.substring(0, timeStr.indexOf("-"))), end: toArmy(timeStr.substring(timeStr.indexOf("-"))+3), dow: timeStrToTime(spreadArr[i][19]), type: spreadArr[i][17],days: spreadArr[i][18],time: timeStr,rm: spreadArr[i][20]}; */
-            outArr[2][spreadArr[i][1]] = {name: spreadArr[i][2]+" "+spreadArr[i][3], comment: spreadArr[i][9], id: spreadArr[i][1], start: toArmy(timeStr.substring(0, timeStr.indexOf("-"))), end: toArmy(timeStr.substring(timeStr.indexOf("-"))+3), dow: JSON.stringify(timeStrToTime(spreadArr[i][19])), title: spreadArr[i][5]+" "+spreadArr[i][17],time: timeStr,rm: spreadArr[i][16], type:spreadArr[i][17], days:spreadArr[i][18]};
+                var timeStr = spreadArr[i][COLS.indexOf("TIME2")];
+
+				outArr[2][spreadArr[i][COLS.indexOf("CRN")]] = {
+					name:    spreadArr[i][COLS.indexOf("SUBJ")]+" "+spreadArr[i][COLS.indexOf("CRSE#")],
+					comment: spreadArr[i][COLS.indexOf("COMMENT")],
+					id:      spreadArr[i][COLS.indexOf("CRN")],
+					start:   toArmy(timeStr.substring(0, timeStr.indexOf("-"))),
+					end:     toArmy(timeStr.substring(timeStr.indexOf("-"))+3),
+					dow:     JSON.stringify(timeStrToTime(spreadArr[i][COLS.indexOf("DAYS2")])),
+					title:   spreadArr[i][COLS.indexOf("TITLE")]+" "+spreadArr[i][COLS.indexOf("DESC2")],
+					time:    timeStr,
+					rm:      spreadArr[i][COLS.indexOf("BLDG_RM2")]+"(Main: "+spreadArr[i][COLS.indexOf("BLDG_RM1")]+")",
+					type:    spreadArr[i][COLS.indexOf("DESC2")],
+					days:    spreadArr[i][COLS.indexOf("DAYS2")],
+					dpt:     spreadArr[i][COLS.indexOf("DEPT")],
+				};
             }
             
-            
-            var timeStr = spreadArr[i][14];
+			//TODO duplicates?
             /* console.log("timestr"+timeStr); */
             /* if(prevRef.indexOf(spreadArr[i][0])!=-1){ */
             /*     throw "Duplicate ref's: "+spreadArr[i][0]; */
             /* } */
-            /* var comment = ""; */
-            /* if(spreadArr[i][14]!==""){ */
-            /*     comment = spreadArr[i][14].replace(/\|\|\s*g, ""); */
-            /* } */
-            //      var comment = ""
-            //      if(spreadArr[i][14]!==""){
-            //        comment = spreadArr[i][14].replace(/\|\|\s*/g, "")
-            //      }
-            
-            //      outArr[0].push({comment: comment, id: spreadArr[i][0], start: toArmy(timeStr.substring(0, timeStr.indexOf("-"))), end: toArmy(timeStr.substring(timeStr.indexOf("-"))+3), dow: daysArr, ref: spreadArr[i][0], subj: spreadArr[i][1],num: spreadArr[i][2],sec: spreadArr[i][3], title: spreadArr[i][4],cred: spreadArr[i][5],dist: spreadArr[i][6],lim: spreadArr[i][7],instruct: spreadArr[i][8],type: spreadArr[i][9],days: spreadArr[i][10],time: spreadArr[i][11],rm: spreadArr[i][12]})
-            outArr[0][spreadArr[i][1]] = {name: spreadArr[i][2]+" "+spreadArr[i][3], comment: spreadArr[i][9], id: spreadArr[i][1], start: toArmy(timeStr.substring(0, timeStr.indexOf("-"))), end: toArmy(timeStr.substring(timeStr.indexOf("-"))+3), dow: JSON.stringify(daysArr), ref: spreadArr[i][1], subj: spreadArr[i][2],num: spreadArr[i][3],sec: spreadArr[i][4], title: spreadArr[i][5],cred: spreadArr[i][6],dist: spreadArr[i][7],lim: spreadArr[i][8],instruct: (spreadArr[i][10]+", "+spreadArr[i][11]).replace(/, $/, ""),type: spreadArr[i][13],days: spreadArr[i][15],time: spreadArr[i][14],rm: spreadArr[i][16]};
-            
-            // console.log(daysArr);
+
+			//Normal
+            var timeStr = spreadArr[i][COLS.indexOf("TIME1")];
+
+			outArr[0][spreadArr[i][COLS.indexOf("CRN")]] = {
+				name:     spreadArr[i][COLS.indexOf("SUBJ")]+" "+spreadArr[i][COLS.indexOf("CRSE#")],
+				comment:  spreadArr[i][COLS.indexOf("COMMENT")],
+				id:       spreadArr[i][COLS.indexOf("CRN")],
+				start:    toArmy(timeStr.substring(0, timeStr.indexOf("-"))),
+				end:      toArmy(timeStr.substring(timeStr.indexOf("-"))+3),
+				dow:      JSON.stringify(daysArr),
+				ref:      spreadArr[i][COLS.indexOf("CRN")],
+				subj:     spreadArr[i][COLS.indexOf("SUBJ")],
+				num:      spreadArr[i][COLS.indexOf("CRSE#")],
+				sec:      spreadArr[i][COLS.indexOf("SEC")],
+				title:    spreadArr[i][COLS.indexOf("TITLE")],
+				cred:     spreadArr[i][COLS.indexOf("CR")],
+				dist:     spreadArr[i][COLS.indexOf("DISTR")],
+				lim:      spreadArr[i][COLS.indexOf("PROJ")],
+				instruct: (spreadArr[i][COLS.indexOf("INSTR1")]+", "+spreadArr[i][COLS.indexOf("INSTR2")]).replace(/, $/, ""),
+				type:     spreadArr[i][COLS.indexOf("DESC1")],
+				days:     spreadArr[i][COLS.indexOf("DAYS1")],
+				time:     spreadArr[i][COLS.indexOf("TIME1")],
+				rm:       spreadArr[i][COLS.indexOf("BLDG_RM1")],
+                dpt:      spreadArr[i][COLS.indexOf("DEPT")],
+			};
         }else{
                 //No time given
-            /* outArr[1][spreadArr[i][0]] = {id: spreadArr[i][0], ref: spreadArr[i][0], subj: spreadArr[i][1],num: spreadArr[i][2],sec: spreadArr[i][3], title: spreadArr[i][4],cred: spreadArr[i][5],dist: spreadArr[i][6],lim: spreadArr[i][7],instruct: spreadArr[i][8],type: spreadArr[i][9],days: spreadArr[i][10],time: spreadArr[i][11],rm: spreadArr[i][12]}; */
-            // console.log(JSON.stringify(spreadArr[i]))
-            outArr[1][spreadArr[i][1]] = {name: spreadArr[i][2]+" "+spreadArr[i][3], comment: spreadArr[i][9], id: spreadArr[i][1],  ref: spreadArr[i][1], subj: spreadArr[i][2],num: spreadArr[i][3],sec: spreadArr[i][4], title: spreadArr[i][5],cred: spreadArr[i][6],dist: spreadArr[i][7],lim: spreadArr[i][8],instruct: (spreadArr[i][10]+", "+spreadArr[i][10]).replace(/, $/, ""),type: spreadArr[i][13],rm: spreadArr[i][16]};
-            //      outArr[1].push({ref: spreadArr[i][0], subj: spreadArr[i][1],num: spreadArr[i][2],sec: spreadArr[i][3], title: spreadArr[i][4],cred: spreadArr[i][5],dist: spreadArr[i][6],lim: spreadArr[i][7],instruct: spreadArr[i][8],type: spreadArr[i][9],days: spreadArr[i][10],time: spreadArr[i][11],rm: spreadArr[i][12]})
+			outArr[1][spreadArr[i][COLS.indexOf("CRN")]] = {
+				name:     spreadArr[i][COLS.indexOf("SUBJ")]+" "+spreadArr[i][COLS.indexOf("CRSE#")]+" (NO TIME SLOT)",
+				comment:  spreadArr[i][COLS.indexOf("COMMENT")],
+				id:       spreadArr[i][COLS.indexOf("CRN")],
+				ref:      spreadArr[i][COLS.indexOf("CRN")],
+				subj:     spreadArr[i][COLS.indexOf("SUBJ")],
+				num:      spreadArr[i][COLS.indexOf("CRSE#")],
+				sec:      spreadArr[i][COLS.indexOf("SEC")],
+				title:    spreadArr[i][COLS.indexOf("TITLE")],
+				cred:     spreadArr[i][COLS.indexOf("CR")],
+				dist:     spreadArr[i][COLS.indexOf("DISTR")],
+				lim:      spreadArr[i][COLS.indexOf("PROJ")],
+				instruct: (spreadArr[i][COLS.indexOf("INSTR1")]+", "+spreadArr[i][COLS.indexOf("INSTR2")]).replace(/, $/, ""),
+				type:     spreadArr[i][COLS.indexOf("DESC1")],
+				rm:       spreadArr[i][COLS.indexOf("BLDG_RM1")],
+				time:     "No Time Given",
+                dpt:      spreadArr[i][COLS.indexOf("DEPT")],
+			};
         }
     }
         fs.writeFile("schedule.json", JSON.stringify(outArr), function(err){
@@ -105,7 +152,6 @@ function timeStrToTime(timeStr){
         throw ("there is an invalid weekly days:'"+timeStr+"'");
     }
     for(var z=0; z<timeStr.length;z++){
-        //        console.log(spreadArr[i][10][z])
         if(!(timeStr[z] in weekConversion)){
             throw ("there is an invalid for loop weekly days:'"+timeStr+"'");
         }

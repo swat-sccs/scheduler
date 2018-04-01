@@ -6,7 +6,7 @@
 #Verbose for debugging, set =1 if want to see more printline echoing (crontab
 #emails all echoed stdout so want to keep to a minumum)
 VERBOSE=0
-URL="https://www.swarthmore.edu/sites/default/files/assets/documents/registrar/201802CSV.xls"
+URL="https://www.swarthmore.edu/sites/default/files/assets/documents/registrar/201804CSV.xls"
 
 if [ $VERBOSE -eq 1 ]; then
     echo "Hardcoded URL: $URL"
