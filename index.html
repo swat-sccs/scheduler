@@ -24,6 +24,7 @@
         <![endif]-->
 
         <div id="container">
+            <header>
             <div class="headFoot" id="header">
                 <h1>
                     Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
@@ -40,6 +41,8 @@
                     </p>
                 </div>
             </div>
+            </header>
+            <main>
             <div id="body">
                 <div id="calContainer">
                     <div id="calendarTd">
@@ -50,7 +53,7 @@
                     </div>
                     <br>
                     <div id="classTd">
-                        <h4>Highlight classes to try out different schedules</h4>
+                        <h2>Highlight classes to try out different schedules</h2>
                         <div class="rightCol">
                             Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
                         </div>
@@ -93,9 +96,21 @@
                             -->
                             <table id="classResultsTable" class="fullWidth">
                                 <thead>
-                                    <tr>
-                                        <td></td><td>ref</td><td>class</td><td>sec</td><td>title</td><td>cred</td><td>dist</td><td>lim</td><td>instruct</td><td>type</td><td>days</td><td>time</td><td>rm</td>
-                                    </tr>
+                                        <tr>
+                                                <th></th>
+                                                <th>Ref</th>
+                                                <th>Class</th>
+                                                <th>Sec</th>
+                                                <th class="wide">Title</th>
+                                                <th>Cred</th>
+                                                <th>Dist</th>
+                                                <th>Lim</th>
+                                                <th>Instruct</th>
+                                                <th>Type</th>
+                                                <th>Days</th>
+                                                <th>Time</th>
+                                                <th>Rm</th>
+                                        </tr>
                                 </thead>
                                 <tbody class="scrolling list"></tbody>
                             </table>
@@ -103,10 +118,11 @@
                     </div>
                 </div>
             </div>
+            </main>
             <footer class="headFoot" id="footer">
-                <h5>
+                <h2>
                     Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
-                </h5>
+                </h2>
             </div>
         </footer>
 
