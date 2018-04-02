@@ -178,11 +178,8 @@ thead {
 }
 
 
-td {
-    padding:10px; 
-    /*
-    border:solid 1px #eee;
-     */
+td, th {
+    padding:10px 1px 10px 1px; 
 }
 
 input {
@@ -334,13 +331,13 @@ a:hover{
     text-align: left;
     background-color: #1E2021;
     padding: 20px;
-    width: 300px;
+    width: 500px;
     position: absolute;
     border-radius: 3px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     right: -4px;
     color: #FFF;
-    font-size: 13px;
+    font-size: 16px;
     line-height: 1.4;
 }
 
@@ -362,6 +359,10 @@ a:hover{
     position: absolute;
     top:-40px;
     left:0;
+}
+
+h2{
+    font-size: 1.1em;
 }
 
 /* CSS animation */
@@ -479,9 +480,15 @@ th{
     height: 500px;
 }
 
-#classResultsTable>thead>tr>td{
+#classResultsTable>thead>tr>th{
     /* 100%/11 columns */
-    width: 8.33%; 
+    /* width: 8.33%; */
+    /* Default Small cols, will make fit if 1 work (most are)*/
+    width: 1%;
+}
+
+#classResultsTable>thead>tr>th.wide{
+    width: 15%;
 }
 
 .flashWhite{
