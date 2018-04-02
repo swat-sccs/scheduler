@@ -10,6 +10,10 @@
     "fullcalendar": "^3.6.2",
     "jquery": "^3.2.1",
     "list.js": "^1.5.0",
+    "list.js": "git://github.com/jzl/list.js",
     "moment": "^2.19.1"
+  },
+  "dependencyComments":{
+    "list.js": "I needed to make a small modification to list.js so that, by default, all the class nodes wouldn't show (this had huge performance ramifications. However, this means that I am not on list.js master - it has not been updated in a while but, if it is updated, my list.js needs to be updated (look at the commit history, it's 1 commit of 1 line deleation (<3 well functioned libraries)"
   }
 }

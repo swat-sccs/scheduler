@@ -1,3 +1,4 @@
+//NOTE: CHANGED JS/LIST.JS BY 1 LINE TO MAKE DEFAULT NO-SHOW SEARCHING WORK. IF UPGRADE, NEED TO KEEP CHANGE OVER
 //TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
 var term                = "spring17";
 var classes             = {};
@@ -78,13 +79,6 @@ $( document ).ready(function() {
     /* var values = classSchedObj[0].concat(classSchedObj[1])*/
     var hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
-    hackerList.on("searchStart", function(){
-        if(searchId.value==""){
-            document.getElementById("classTable").style.display = "none";
-        }else{
-            document.getElementById("classTable").style.display = "block";
-        }
-    })
 
     $(".trClickable").on("click", function(e){
         //Click checkbox if click row

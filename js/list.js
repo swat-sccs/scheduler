@@ -334,8 +334,9 @@ module.exports = function(list) {
       return (
         (list.filtered && list.searched && item.found && item.filtered) ||
         (list.filtered && !list.searched && item.filtered) ||
-        (!list.filtered && list.searched && item.found) ||
-        (!list.filtered && !list.searched)
+        (!list.filtered && list.searched && item.found) //||
+        //This makes it so items that don't search (init and if nothing matches) matches this. Want to match nothing because big
+        //(!list.filtered && !list.searched)
       );
     };
 

@@ -446,7 +446,8 @@ th{
     width: 90%;
 }
 #classTable {
-    display: none;
+    /* display: none;*/
+    margin-bottom: 30px;
 }
 
 .fullWidth{
