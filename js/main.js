@@ -1,6 +1,6 @@
 //NOTE: CHANGED JS/LIST.JS BY 1 LINE TO MAKE DEFAULT NO-SHOW SEARCHING WORK. IF UPGRADE, NEED TO KEEP CHANGE OVER
 //TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
-var term                = "spring17";
+var term                = "fall18";
 var classes             = {};
 var highlightedClasses  = [];
 var allAddedClassObj    = [{},{}];
@@ -15,20 +15,23 @@ var authorized = false;
 //Needs to be global so can i.e. search from the window location hash
 var hackerList;
 
+//Needs to be global so hacker list can tell when classes do not fit
+var daysTimesRanges;
+
 
 
 //Jan 17 start sem
 //Fall 2017 start sem = Sep 4
-//month and day number are 0 indexed! so -1
 //Jan 22 2018 = Spring 2018 start
-var startSemesterTime = Date.UTC(2018,0,22,0,0,0);
+//month and day number are 0 indexed! so -1
+var startSemesterTime = Date.UTC(2018,8,4,0,0,0);
 //Apr 28 start sem
 //YEARMONTHDAY+"T000000Z", pad with 0s
 //Dec 12
 //May 4 for Spring 2018 end
 //Make sure change year
 //Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
-var endSemesterISO   = "20180504T235959Z";
+var endSemesterISO   = "20181211T235959Z";
 var globalFromButton = false;
 
 var startSemDate = new Date(startSemesterTime);
