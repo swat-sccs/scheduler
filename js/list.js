@@ -1115,24 +1115,36 @@ module.exports = function(list) {
   };
   var search = {
     list: function() {
+        var only_fitting = false;
+        if(document.getElementById("onlyFit").checked){
+            only_fitting = true;
+        }
       for (var k = 0, kl = list.items.length; k < kl; k++) {
-        search.item(list.items[k]);
+        search.item(list.items[k], only_fitting);
       }
     },
-    item: function(item) {
-      item.found = false;
-        //ADDED BY JONAH
-        if(item.elm.children[0].children[0].children[0].checked == true){
-            item.found = true;
-            return true;
-        }
-      for (var j = 0, jl = columns.length; j < jl; j++) {
-        if (search.values(item.values(), columns[j])) {
-          item.found = true;
-          return;
-        }
-      }
-    },
+      item: function(item, only_fitting) {
+          item.found = false;
+          //ADDED BY JONAH
+          if(item.elm.children[0].children[0].children[0].checked){
+              item.found = true;
+              return true;
+          }
+          for (var j = 0, jl = columns.length; j < jl; j++) {
+              if (search.values(item.values(), columns[j])) {
+                  //JONAH
+                  if(only_fitting){
+                      if(doesFit(item)){
+                          item.found = true;
+                          return;
+                      } 
+                  }else{
+                      item.found = true;
+                      return;
+                  }
+              }
+          }
+      },
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
         text = list.utils.toString(values[column]).toLowerCase();

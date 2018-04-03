@@ -83,6 +83,9 @@ $( document ).ready(function() {
     /* var values = classSchedObj[0].concat(classSchedObj[1])*/
     hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
+	$("#onlyFit").on("click", function(){
+		hackerList.search(searchId.value)
+})
 
 
 	function addRowClickHandlers(){
@@ -98,7 +101,6 @@ $( document ).ready(function() {
 	}
     hackerList.on("searchComplete", addRowClickHandlers)
 	hackerList.sortFunction = function(A, B, options){
-
 		A_checked = A.elm.children[0].children[0].children[0].checked
 		B_checked = B.elm.children[0].children[0].children[0].checked
 		if(A_checked!=B_checked){
@@ -186,6 +188,7 @@ $( document ).ready(function() {
             $("input.highlightCheck[value='"+highlight[z]+"']").prop( "checked", true ).trigger("change");
         }
         window.location.hash=Object.keys(classes).join(",")+";"+highlightedClasses.join(",");
+		generateDayTimeRanges();
 		hackerList.search("");
     }
 })
@@ -194,7 +197,6 @@ function longListCallback() {
     var id = this.getAttribute("id");
     if (this.checked) {
         if(id in classSchedObj[2]){
-
             $('#calendar').fullCalendar('addEventSource', [classSchedObj[2][id]]);
             allAddedClassObj[0][id+"extra"] = classSchedObj[2][id];
             /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")*/
@@ -227,6 +229,8 @@ function longListCallback() {
             delete allAddedClassObj[0][id+"extra"];
         }
         reloadRightCol();
+		generateDayTimeRanges();
+		hackerList.search(document.getElementById("search").value)
     }
 }
 
@@ -655,3 +659,40 @@ function debounce(func, wait, immediate) {
 		if (callNow) func.apply(context, args);
 	};
 };
+
+function generateDayTimeRanges(){
+	//aray with 5 buckets (M-F), with range of times CAN NOT do
+	//Want empty start because makes 1 off incides much cleaner
+	daysTimesRanges = ["", [], [], [], [], [], [], []];
+	for(var j = 0; j<2;j++){
+		for(var i in allAddedClassObj[j]){
+			var dow = JSON.parse(allAddedClassObj[j][i].dow)
+			var startEnd = [parseInt(allAddedClassObj[0][i].start.replace(":", "")), parseInt(allAddedClassObj[0][i].end.replace(":", ""))]
+			for(var d in dow){
+				daysTimesRanges[dow[d]].push(startEnd)
+			}
+		}
+	}
+}
+function doesFit(item){
+	if(item._values.dow == null || item._values.start == null ||item._values.end == null){
+		return false;
+	}
+	try{
+		var dow = JSON.parse(item._values.dow);
+		var start = parseInt(item._values.start.replace(":", ""))
+		var end = parseInt(item._values.end.replace(":", ""))
+	}catch(e){
+		console.log("ERROR IN DOES FIT: "+e )
+		return false;
+	}
+	for(var dow_index in dow){
+		var d = dow[dow_index];
+		for(var r in daysTimesRanges[d]){
+			if(start >= daysTimesRanges[d][r][0] &&  end <= daysTimesRanges[d][r][1]){
+				return false;
+			}
+		}
+	}
+	return true;
+}
