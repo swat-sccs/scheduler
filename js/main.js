@@ -13,6 +13,7 @@ var SCOPES           = "https://www.googleapis.com/auth/calendar";
 var authorized = false;
 
 
+
 //Jan 17 start sem
 //Fall 2017 start sem = Sep 4
 //month and day number are 0 indexed! so -1
@@ -80,14 +81,33 @@ $( document ).ready(function() {
     var hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
 
-    $(".trClickable").on("click", function(e){
-        //Click checkbox if click row
-        c = event;
-        if(e.target.type != "checkbox"){
-            var cb = $(this).find("input[type=checkbox]")
-            cb.trigger("click");
-        }
-    })
+
+	function addRowClickHandlers(){
+        $(".trClickable").off().on("click", function(e){
+            //Click checkbox if click row
+            c = event;
+            if(e.target.type != "checkbox"){
+                var cb = $(this).find("input[type=checkbox]")
+                cb.trigger("click");
+            }
+        })
+	}
+
+	var debounceAddRowClickHandlers = debounce(function(){
+		addRowClickHandlers()
+	}, 100)
+
+	//TODO what is the best qualitative feel?
+	function possibleDebounceRowClick(){
+		if(searchId.value.length > 3){
+			addRowClickHandlers()
+		}else{
+			setTimeout(debounceAddRowClickHandlers, 500)
+		}
+	}
+
+    hackerList.on("searchComplete", possibleDebounceRowClick)
+
 
     // page is now ready, initialize the calendar...
 
@@ -619,3 +639,18 @@ function flashWhite(){
         document.body.classList.remove("flashWhite")
     }, 700)
 }
+
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
