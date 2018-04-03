@@ -12,6 +12,9 @@ var SCOPES           = "https://www.googleapis.com/auth/calendar";
 
 var authorized = false;
 
+//Needs to be global so can i.e. search from the window location hash
+var hackerList;
+
 
 
 //Jan 17 start sem
@@ -78,35 +81,32 @@ $( document ).ready(function() {
 
 
     /* var values = classSchedObj[0].concat(classSchedObj[1])*/
-    var hackerList = new List('hacker-list', options, tableArr);
+    hackerList = new List('hacker-list', options, tableArr);
     var searchId   = document.getElementById("search");
 
 
 	function addRowClickHandlers(){
-        $(".trClickable").off().on("click", function(e){
-            //Click checkbox if click row
-            c = event;
-            if(e.target.type != "checkbox"){
-                var cb = $(this).find("input[type=checkbox]")
-                cb.trigger("click");
-            }
-        })
+		hackerList.sort("")
+		$(".trClickable").off("click").on("click", function(e){
+			//Click checkbox if click row
+			if(e.target.type != "checkbox"){
+				var cb = $(this).find("input[type=checkbox]")
+				cb.trigger("click");
+			}
+		})
+		$('.longListId').off("change").on("change", longListCallback);
 	}
+    hackerList.on("searchComplete", addRowClickHandlers)
+	hackerList.sortFunction = function(A, B, options){
 
-	var debounceAddRowClickHandlers = debounce(function(){
-		addRowClickHandlers()
-	}, 100)
-
-	//TODO what is the best qualitative feel?
-	function possibleDebounceRowClick(){
-		if(searchId.value.length > 3){
-			addRowClickHandlers()
+		A_checked = A.elm.children[0].children[0].children[0].checked
+		B_checked = B.elm.children[0].children[0].children[0].checked
+		if(A_checked!=B_checked){
+			return A_checked?-1:1;
 		}else{
-			setTimeout(debounceAddRowClickHandlers, 500)
+			return A._values.name.localeCompare(B._values.name)
 		}
 	}
-
-    hackerList.on("searchComplete", possibleDebounceRowClick)
 
 
     // page is now ready, initialize the calendar...
@@ -159,7 +159,6 @@ $( document ).ready(function() {
     gtag('js', new Date());
     gtag('config', 'UA-90553706-1'); 
 
-    $('.longListId').change(longListCallback);
     notFromHash = true;
     if(window.location.hash!==""){
 
@@ -175,17 +174,19 @@ $( document ).ready(function() {
         }
         //needs to be global bc dont want to spam hash event :(
         notFromHash = false;
-        for(var q in hashClasses){
-            if(hashClasses[q]!=""){
-                $("input.longListId#"+hashClasses[q]).prop( "checked", true ).trigger("change");
-            }
-        }
+		for(var item in hackerList.items){
+			if(hashClasses.indexOf(hackerList.items[item]._values.id)!=-1){
+				hackerList.items[item].elm.children[0].children[0].children[0].checked = true
+				longListCallback.call(hackerList.items[item].elm.children[0].children[0].children[0])
+			}	
+		}
         notFromHash = true;
         reloadRightCol();
         for(var z in highlight){
             $("input.highlightCheck[value='"+highlight[z]+"']").prop( "checked", true ).trigger("change");
         }
         window.location.hash=Object.keys(classes).join(",")+";"+highlightedClasses.join(",");
+		hackerList.search("");
     }
 })
 function longListCallback() {

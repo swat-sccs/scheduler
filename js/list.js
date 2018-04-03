@@ -869,11 +869,17 @@ module.exports = function(id, options, values) {
       }
       return self;
     },
-    search: function() {
+    search: function(list) {
       var is = self.items,
         il = is.length;
       while (il--) {
-        is[il].found = false;
+          //JONAH
+          if(is[il].elm.children[0].children[0].children[0].checked == true){
+              list.searched = true;
+              is[il].found = true;
+          }else{
+              is[il].found = false;
+          }
       }
       return self;
     }
@@ -1115,7 +1121,8 @@ module.exports = function(list) {
     },
     item: function(item) {
       item.found = false;
-        if(item.elm.children[0].children[0].checked == true){
+        //ADDED BY JONAH
+        if(item.elm.children[0].children[0].children[0].checked == true){
             item.found = true;
             return true;
         }
@@ -1136,8 +1143,8 @@ module.exports = function(list) {
       return false;
     },
     reset: function() {
-      list.reset.search();
       list.searched = false;
+      list.reset.search(list);
     }
   };
 
@@ -1172,7 +1179,14 @@ module.exports = function(list) {
     var target = e.target || e.srcElement, // IE have srcElement
       alreadyCleared = (target.value === "" && !list.searched);
     if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
-      searchMethod(target.value);
+        //ADDED BY JONAH
+        if(target.value.length>2){
+            searchMethod(target.value);
+        }else{
+            setTimeout(function(){
+                searchMethod(target.value);
+            }, 500)
+        }        
     }
   });
 
