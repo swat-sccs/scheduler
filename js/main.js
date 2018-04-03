@@ -638,7 +638,9 @@ function handleClientLoad() {
 }
 
 function toggleCal(){
-    $("#calContainer").slideToggle("slow");
+    $("#calContainer").slideToggle("slow", function(){
+		$('#calendar').fullCalendar('render');
+	});
 }
 
 function flashWhite(){
