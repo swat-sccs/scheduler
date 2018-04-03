@@ -178,8 +178,11 @@ thead {
 }
 
 
-td, th {
-    padding:10px 1px 10px 1px; 
+td{
+    padding: 0px;
+}
+th{
+    padding:10px 1px 10px 1px;
 }
 
 input {
@@ -485,7 +488,7 @@ th{
     /* 100%/11 columns */
     /* width: 8.33%; */
     /* Default Small cols, will make fit if 1 work (most are)*/
-    width: 1%;
+    width: 1.5%;
 }
 
 #classResultsTable>thead>tr>th.wide{
