@@ -119,7 +119,7 @@ $( document ).ready(function() {
 
     //Can use string comparison to compare because is 24 hour time
     minTime = "09:00:00";
-    maxTime = "18:00:00";
+    maxTime = "16:00:00";
     fullCal = $('#calendar').fullCalendar({
         // put your options and callbacks here
         height: 'auto',
