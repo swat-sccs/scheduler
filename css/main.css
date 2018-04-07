@@ -488,11 +488,14 @@ th{
     /* 100%/11 columns */
     /* width: 8.33%; */
     /* Default Small cols, will make fit if 1 work (most are)*/
-    width: 1.5%;
+    /* width: 1.5%;*/
+	width: auto;
+	padding: 5px;
 }
 
-#classResultsTable>thead>tr>th.wide{
-    width: 15%;
+/* So checkbox not right against margin*/
+#classResultsTable > thead > tr > th:nth-child(1){
+	padding-left: 3%;
 }
 
 .flashWhite{
@@ -521,6 +524,24 @@ th{
 }
 #hrToggle:hover>span{
     font-weight: bold;
+}
+
+tr.trClickable{
+		border-bottom: #c7c7c7 solid 1px;
+}
+
+/* Don't want border on last row*/
+tr.trClickable:last-child{
+		border-bottom-width: 0px;
+}
+
+#onlyFit_Cont{
+	width: 90%;
+	/* Magic number, I wish it would just align with the search box TODO*/
+	padding-left: 4%;
+}
+#onlyFit_Cont>label{
+	float: left;
 }
 
 
