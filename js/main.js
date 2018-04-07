@@ -16,7 +16,7 @@ var authorized = false;
 var hackerList;
 
 //Needs to be global so hacker list can tell when classes do not fit
-var daysTimesRanges;
+var daysTimesRanges = [[], [], [], [], [], [], [], []];
 
 
 
@@ -668,7 +668,7 @@ function debounce(func, wait, immediate) {
 function generateDayTimeRanges(){
 	//aray with 5 buckets (M-F), with range of times CAN NOT do
 	//Want empty start because makes 1 off incides much cleaner
-	daysTimesRanges = ["", [], [], [], [], [], [], []];
+	//daysTimesRanges = [[], [], [], [], [], [], [], []];
 	for(var j = 0; j<2;j++){
 		for(var i in allAddedClassObj[j]){
 			var dow = JSON.parse(allAddedClassObj[j][i].dow)
