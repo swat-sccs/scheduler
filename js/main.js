@@ -88,6 +88,7 @@ $( document ).ready(function() {
     var searchId   = document.getElementById("search");
 	$("#onlyFit").on("click", function(){
 		hackerList.search(searchId.value)
+		hackerList.sort("");
 })
 
 
@@ -233,7 +234,6 @@ function longListCallback() {
         }
         reloadRightCol();
 		generateDayTimeRanges();
-		hackerList.search(document.getElementById("search").value)
     }
 }
 
