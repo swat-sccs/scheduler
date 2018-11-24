@@ -1,6 +1,6 @@
 //NOTE: CHANGED JS/LIST.JS BY 1 LINE TO MAKE DEFAULT NO-SHOW SEARCHING WORK. IF UPGRADE, NEED TO KEEP CHANGE OVER
 //TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
-var term                = "fall18";
+var term                = "spring19";
 var classes             = {};
 var highlightedClasses  = [];
 var allAddedClassObj    = [{},{}];
@@ -23,15 +23,19 @@ var daysTimesRanges = [[], [], [], [], [], [], [], []];
 //Jan 17 start sem
 //Fall 2017 start sem = Sep 4
 //Jan 22 2018 = Spring 2018 start
+//Sept 3 2018 = Fall 2018 start
+//Jan 22 2019 = Spring 2019 start
 //month and day number are 0 indexed! so -1
-var startSemesterTime = Date.UTC(2018,8,4,0,0,0);
+var startSemesterTime = Date.UTC(2019,0,21,0,0,0);
 //Apr 28 start sem
 //YEARMONTHDAY+"T000000Z", pad with 0s
 //Dec 12
 //May 4 for Spring 2018 end
+//Dec 11 for Fall 2018 end
+//May 3 for Spring 2019 end
 //Make sure change year
 //Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
-var endSemesterISO   = "20181211T235959Z";
+var endSemesterISO   = "20190503T235959Z";
 var globalFromButton = false;
 
 var startSemDate = new Date(startSemesterTime);
