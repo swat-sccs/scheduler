@@ -302,7 +302,7 @@ function reloadRightCol(){
         if(highlightedClasses.indexOf(i.toString())!=-1){
             checked = 'checked';
         }
-        htmlObj.push({key: i, val: "<input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'>"+classes[i].subj+" "+classes[i].num+" "+classes[i].sec+": "+classes[i].title+" ("+i+")<br>"});
+        htmlObj.push({key: classes[i].name+classes[i].sec, val: "<div class='chosenClass'><i class='icon-trash-1'></i><i class='icon-brush'></i><input type='checkbox' "+checked+" class='highlightCheck' value='"+i+"'>&nbsp;<span class='chosenClassLeft'>"+classes[i].name+" "+classes[i].sec+": </span><span class='chosenClassRight'>"+classes[i].title+" ("+i+")</span></div>"})
     }
     htmlObj = htmlObj.sort(function (a, b) {
         return a.key.localeCompare( b.key );
@@ -311,9 +311,9 @@ function reloadRightCol(){
         html+="<label>"+htmlObj[z].val+"</label>";
     }
     if(htmlObj.length!=0){
-        $(".rightCol").addClass("threeCol")
+        $(".rightCol").addClass("multiCol")
     }else{
-        $(".rightCol").removeClass("threeCol")
+        $(".rightCol").removeClass("multiCol")
     }
     $(".rightCol").html(html);
     $('.highlightCheck').off("change").change(highlightCallback);

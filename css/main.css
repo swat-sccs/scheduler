@@ -156,14 +156,41 @@ html, body{
 .rightCol{
     text-align: left;
 }
+.chosenClass{
+    margin-left: 10px;
+}
+.chosenClassRight{
+    font-size: 13px;
+}
 /* Added dynamically by reloadRightCol so if no classes, doesn't look weird*/
-.threeCol{
-    /* Very cool, pretty good browser-support*/
-    /* TODO polyfill? */
-    -moz-column-count:    3;
-    -webkit-column-count: 3;
-    column-count:         3;
-    display: inline-block;
+/* Very cool, pretty good browser-support*/
+/* TODO polyfill? */
+
+/* Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+
+}
+*/
+
+
+/* Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+    .multiCol{
+        -moz-column-count:    2;
+        -webkit-column-count: 2;
+        column-count:         2;
+        display: inline-block;
+    }
+}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+    .multiCol{
+        -moz-column-count:    3;
+        -webkit-column-count: 3;
+        column-count:         3;
+        display: inline-block;
+    }
 }
 .rightCol > label>b{
     font-weight: 700;
