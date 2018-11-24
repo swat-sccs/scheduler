@@ -476,6 +476,10 @@ th{
 
 #classResultsTable{
     display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
     background-color: #FCFCFC;
 }
 
@@ -489,7 +493,7 @@ th{
     /* width: 8.33%; */
     /* Default Small cols, will make fit if 1 work (most are)*/
     /* width: 1.5%;*/
-	width: auto;
+	/*width: auto;*/
 	padding: 5px;
 }
 
@@ -539,6 +543,16 @@ tr.trClickable:last-child{
 }
 #onlyFit_Cont>label{
 	float: left;
+}
+
+.wide{
+    width: auto;
+}
+.narrowest{
+    width: 0.1%;
+}
+.narrow{
+    width: 7%;
 }
 
 
