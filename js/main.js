@@ -317,7 +317,7 @@ function updateHash_Cookie(){
 
     MicroModal.init()
 
-    $.getJSON("https://www.sccs.swarthmore.edu/users/20/jzl/schedule/js/trico_scraped.json", function(data){
+    $.getJSON("js/trico_scraped.json", function(data){
         //classSchedObj from included schedule.js file (made with `doAll` in folder)
         //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
         classSchedObj = data;
