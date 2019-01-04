@@ -475,7 +475,7 @@ function reloadRightCol() {
         htmlObj.push({
             key: thisClass.name + thisClass.sec,
             // todo deleteval: "<div class='chosenClass'><button class='icon_button icon-trash-1'></button><button class='icon_button icon-brush'></button><input type='checkbox' " + checked + " class='highlightCheck' value='" + thisClass.id + "'>&nbsp;<span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + " (" + thisClass.id + ")</span></div>"
-            val: "<div class='chosenClass'><button class='icon_button icon-trash-1' value='"+thisClass.id+"'></button><button class='icon_button icon-brush "+highlightClass+"' value='"+thisClass.id + "'></button><span><span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + "&nbsp;(" + thisClass.id + ")</span></span></div>"
+            val: "<div class='chosenClass'><button class='icon_button icon-trash-1' aria-label='remove class' value='"+thisClass.id+"'></button><button aria-label='highlight class' class='icon_button icon-brush "+highlightClass+"' value='"+thisClass.id + "'></button><span><span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + "&nbsp;(" + thisClass.id + ")</span></span></div>"
         })
     }
     htmlObj = htmlObj.sort(function(a, b) {
