@@ -873,13 +873,8 @@ module.exports = function(id, options, values) {
       var is = self.items,
         il = is.length;
       while (il--) {
-          //JONAH
-          if(is[il].elm.children[0].children[0].children[0].checked == true){
-              list.searched = true;
-              is[il].found = true;
-          }else{
-              is[il].found = false;
-          }
+          //JONAH - if want to show checked values/etc, put it here (check commit history)
+          is[il].found = false;
       }
       return self;
     }
@@ -1115,21 +1110,20 @@ module.exports = function(list) {
   };
   var search = {
     list: function() {
+        /* Jonah for only show fitting class
         var only_fitting = false;
         if(document.getElementById("onlyFit").checked){
             only_fitting = true;
         }
+        */
+        var only_fitting = false
       for (var k = 0, kl = list.items.length; k < kl; k++) {
         search.item(list.items[k], only_fitting);
       }
     },
       item: function(item, only_fitting) {
           item.found = false;
-          //ADDED BY JONAH
-          if(item.elm.children[0].children[0].children[0].checked){
-              item.found = true;
-              return true;
-          }
+          //Jonah -- If want to show checked values, add here (check commit history)
           for (var j = 0, jl = columns.length; j < jl; j++) {
               if (search.values(item.values(), columns[j])) {
                   //JONAH

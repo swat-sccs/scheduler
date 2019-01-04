@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>SCCS' Scheduler</title>
-        <meta name="description" content="SCCS' Course Scheduler for Swarthmore College">
+        <title>SCCS Class Planner</title>
+        <meta name="description" content="SCCS Class Planner for Swarthmore College">
         <!-- TODO: check https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -15,8 +15,8 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.min.css">
         <link rel="stylesheet" href="css/main.css">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90553706-1"></script>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+
     </head>
     <body>
         <!--[if lte IE 9]>
@@ -27,7 +27,7 @@
             <header>
             <div class="headFoot" id="header">
                 <h1>
-                    Welcome to the <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Scheduler! 
+                    <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Planner 
                 </h1>
                 <i>Spring 2019</i>
                 <div class="help-tip">
@@ -48,52 +48,53 @@
                 <div id="calContainer">
                     <div id="calendarTd">
                         <div class="leftCol">
-                            <div id="calendar">
-                            </div>
+                            <div id="calendar"></div>
                         </div>
                     </div>
-                    <br>
-                    <div id="classTd">
-                        <i>This page's link saves your classes (for sharing and bookmarking)</i><br><h2>Highlight selected classes to try out different schedules</h2>
-                        <div class="rightCol">
-                            Use the search box below to add any/all classes you are thinking about. Then, use the checkboxes in this area to highlight classes in red to try out different schedules.
-                        </div>
-                        <br><br>
-                        <div id="waitingForGoogle">
-                            Loading Google API's...
-                        </div>
-                        <div id="authorizedButtons">
-                            <div id="notAuthorized" style="display: none">
-                                <button id="authorize-button" onclick="handleAuthClick()">Authorize then export again</button>
+                </div>
+		<button id="toggleCal" onclick="toggleCal()">Toggle Calendar </button>
+		<div class="shadow" id="class_and_clear">
+		    <div class="large_inline" id="rightCol_par">
+			<!--Also change in js-->
+			<div id="rightCol">Search for classes below to plan your schedule</div>
+		    </div>
+		    <div id="clearAll_par"></div>
+		</div>
+                <br> <br>
+                    <div>
+                        <div class="thirds">
+                            <div id="waitingForGoogle">
+                                <i>Loading Google API's...</i>
                             </div>
-                            <div id="isAuthorized" style="display: none">
-                                <button id="sharp" onclick="getReadyForExport()">Export All Events to gCal</button>
-                                <button id="dull signout-button" onclick="handleSignoutClick()">Sign Out</button>
+                            <div id="authorizedButtons">
+                                <div id="notAuthorized" style="display: none">
+                                    <button id="authorize-button" onclick="handleAuthClick()">Login to Export to GCal</button>
+                                </div>
+                                <div id="isAuthorized" style="display: none">
+                                    <button id="export-button" class="sharp" onclick="getReadyForExport()">Export Events to GCal</button>
+                                    <!--<button class="dull" id="signout-button" onclick="handleSignoutClick()">Sign Out</button>-->
+                                    <button class="likeLink" id="signout-button" onclick="handleSignoutClick()">Sign Out</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <br>
+                <hr>
                     <div id="sayHi"></div>
 
 
                 </div>
-                <br>
-		<span id="hrToggle">
-			<button onclick="toggleCal()">
-				Toggle Calendar
-			</button>
-		</span>
-                <br>
-                <br>
-				<div id="onlyFit_Cont">
-						<label><input id="onlyFit" type="checkbox"> Only Show Classes Which Fit In This Schedule</label>
-				</div>
                 <div id="hacker-list">
                     <div class = "middleCol">
-                        <input name="search" class="search" id="search" placeholder="Find Classes!" />
-                        <label class="visuallyhidden" for="search">Search for Classes</label>
-                        <br>
-                        <div id="classTable">
+                        <!-- Grey out ones which dont fit
+                        <div id="onlyFit_Cont">
+                            <label><input id="onlyFit" type="checkbox"> Only Show Classes Which Fit</label>
+                        </div>
+                        -->
+                        <div>
+                            <input name="search" class="search searchMargin" id="search" placeholder="Find Classes!" />
+                            <label class="visuallyhidden" for="search">Search for Classes</label>
+                        </div>
+                        <div class="shadow hideClass" id="classTable">
                             <!-- Sort is confusing and clutters
                                 <button class="sort" data-sort="ref">Sort by Reference</button>
                                 <button class="sort" data-sort="subj">Sort by Subject</button>
@@ -115,7 +116,7 @@
                                                 <th class="narrow"   >Rm</th>
                                         </tr>
                                 </thead>
-                                <tbody class="scrolling list"></tbody>
+                                <tbody class="list"></tbody>
                             </table>
                         </div>
                     </div>
@@ -123,7 +124,7 @@
             </div>
             </main>
             <footer class="headFoot" id="footer">
-                <h2>
+                <h2 class="headFoot">
                     Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
                 </h2>
             </div>
@@ -150,20 +151,14 @@
 	    </div>
 	</div>
 
-        <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="js/vendor/micromodal.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <!-- Unneed from HTML5BP but for reference
-        <script src="js/plugins.js"></script>
-        -->
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
         <script src="node_modules/moment/min/moment.min.js"></script>
         <script src="node_modules/fullcalendar/dist/fullcalendar.min.js"></script>
 
-        <script src="js/schedule.js"></script>
-        <!-- Made changes to vendor so moved to js folder -->
         <script src="js/list.js"></script>
 
         <script src="js/main.js"></script>
@@ -173,6 +168,14 @@
         <script src="https://apis.google.com/js/api.js"
                 onload="this.onload=function(){};handleClientLoad()"
                 onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90553706-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-90553706-1');
         </script>
     </body>
 </html>

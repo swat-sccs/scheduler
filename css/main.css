@@ -107,6 +107,7 @@ body {
     font-family: 'Raleway', sans-serif;
     font-size: 1em;
     font-weight: lighter;
+    background-color: #F2F2F2
 }
 html, body{
     margin: 0px;
@@ -128,6 +129,7 @@ html, body{
     font-size: 1em;
     text-align: center;
     color: #ffffff;
+    margin: 0px;
 }
 
 #header>h1{
@@ -145,8 +147,8 @@ html, body{
 }
 #calendarTd{
     vertical-align: top; 
-    margin: 1px;
-    border: rgb(220, 220, 220) solid 1px
+    border: rgb(220, 220, 220) solid 1px;
+    margin: 10px;
 }
 #classTd{
     vertical-align: top; 
@@ -158,9 +160,32 @@ html, body{
 }
 .chosenClass{
     margin-left: 10px;
+    text-align: left;
+}
+.chosenClass>span{
+    display: inline-grid;
 }
 .chosenClassRight{
     font-size: 13px;
+}
+
+.thirds{
+    /* On mobile, show 100% width*/
+    width: 100%;
+    display: inline-block;
+}
+.thirds>button{
+    margin: 10px;
+    margin-left: 30px;
+}
+.leftAlign{
+    display: block;
+}
+#clearClasses{
+    text-align: left;
+    /* Just a little smaller than the 16px body size*/
+    font-size: 14px;
+    cursor: pointer;
 }
 /* Added dynamically by reloadRightCol so if no classes, doesn't look weird*/
 /* Very cool, pretty good browser-support*/
@@ -171,7 +196,32 @@ html, body{
 
 }
 */
+#middle-row{
+    text-align: unset;
+}
+.large_inline{
+    display: block;
+    vertical-align: top;
+}
 
+#rightCol_par{
+     max-height: 200px;
+     overflow-y: auto;
+     overflow-x: hidden;
+     height: 200px;
+}
+#class_and_clear{
+     display: inline-block;
+     padding: 10px;
+     margin: 10px;
+     background-color: white;
+}
+.shadow{
+     -webkit-box-shadow: -1px 3px 1px 0px rgba(0,0,0,0.1);
+     -moz-box-shadow: -1px 3px 1px 0px rgba(0,0,0,0.1);
+     box-shadow: -1px 3px 1px 0px rgba(0,0,0,0.1);
+     border-radius: 6px;
+}
 
 /* Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
@@ -179,7 +229,21 @@ html, body{
         -moz-column-count:    2;
         -webkit-column-count: 2;
         column-count:         2;
-        display: inline-block;
+    }
+    #rightCol_par{
+	height: auto;
+    }
+    .thirds{
+        width: 33%;
+    }
+    .thirds.left{
+        text-align: left;
+    }
+    #clearClasses{
+	text-align: right;
+    }
+    #middle-row{
+         text-align: left;
     }
 }
 
@@ -189,7 +253,6 @@ html, body{
         -moz-column-count:    3;
         -webkit-column-count: 3;
         column-count:         3;
-        display: inline-block;
     }
 }
 .rightCol > label>b{
@@ -234,29 +297,52 @@ button {
     height:30px;
     font-family: 'Raleway', sans-serif;
     margin: 2px;
-    /*Don't overflow, show ellipsis*/
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 button:hover{
     background-color: #A3DAA2;
 }
-
-button#sharp{
-    /*#B3EFB2 is 66%*/
-    background-color: hsla(119, 96%, 82%, 1);
+.icon_button{
+    padding: 1px;
+    background-color: white;
+    margin-left: 0px;
+    margin-right: 0px;
 }
-button#sharp:hover{
-    /*#A3DAA2 hsl(119, 43%, 75%)*/
+.icon_button.icon-brush:hover{
+    color: hsl(119, 63%, 50%);
+    background-color:white;
+}
+.icon_button.icon-brush.highlight{
+    color: hsl(119, 63%, 50%);
+    background-color: white;
+}
+.icon_button.icon-brush.highlight:hover{
+    color: hsl(119, 63%, 30%);
+    background-color:white;
+}
+
+.icon_button.icon-trash-1:hover{
+    color: red;
+    background-color:white;
+}
+
+button.sharp{
+    /*#B3EFB2 is 66%*/
     background-color: hsla(119, 63%, 75%, 1);
 }
+button.sharp:hover{
+    /*#A3DAA2 hsl(119, 43%, 75%)*/
+    background-color: hsla(119, 63%, 50%, 1);
+}
+button.likeLink{
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
 
-button#dull{
+button.dull{
     /*#B3EFB2 is 66%*/
     background-color: hsla(119, 56%, 82%, 1);
 }
-button#dull:hover{
+button.dull:hover{
     /*#B3EFB2 is 66%*/
     background-color: hsla(119, 33%, 75%, 1);
 }
@@ -336,7 +422,7 @@ a:hover{
     height: 40px;
     font-size: 14px;
     line-height: 40px;
-    cursor: default;
+    cursor: pointer;
 }
 
 .help-tip:before{
@@ -464,20 +550,32 @@ th{
 #authorizedButtons{
     display: none;
 }
-#calContainer{
-    padding-top: 10px;
-}
 
 #showCal{
     width: 99%;
 }
 
 #search{
-    width: 90%;
+    width: 60%;
+    margin-bottom: 5px;
+}
+#search.searchMargin{
+   margin-bottom: 5%;
+}
+#onlyFit_Cont{
+    display: inline-block;
 }
 #classTable {
     /* display: none;*/
     margin-bottom: 30px;
+    -webkit-box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
+    box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    margin: 10px;
+}
+.hideClass{
+    display: none;
 }
 
 .fullWidth{
@@ -493,9 +591,14 @@ th{
 #exportButtons>button, #authorizedButtons button{
     /*Remove margin from top of top button so aligns better with header*/
     margin-top: 0px;
-    width: 35%;
+    /*min-width: 35%;*/
 }
 
+#signout-button{
+    /* Needs to be important to override the above min-width*/
+    min-width: auto;
+    padding: 0px;
+}
 .list tr:hover{
     /* #B3EFB2 b with 50% opacity */
     background-color: rgba(179, 239, 178, .5)
@@ -538,24 +641,26 @@ th{
     /* Make not break in column*/
     display: inline-block;
 }
-#hrToggle{
-	height: 15px;
-	border-bottom: 1px solid black;
-	width: 100%;
-	display: block; 
+
+
+#toggleCal{
+    display: block;
+    margin-left: 10px;
+    margin-top: 10px;
 }
-#hrToggle > button{
-	background-color: white;
+.bold{
+    font-weight: bold;
 }
-#hrToggle:hover{
-    border-bottom: 2px solid black;
-}
-#hrToggle:hover>button{
+b{
+    /* normalize css makes it bolder which doesn't work for raleway */
     font-weight: bold;
 }
 
 tr.trClickable{
 		border-bottom: #c7c7c7 solid 1px;
+}
+tr.trClickable.trHigh{
+    background-color: rgba(179, 239, 178, .5)
 }
 
 /* Don't want border on last row*/
@@ -563,20 +668,12 @@ tr.trClickable:last-child{
 		border-bottom-width: 0px;
 }
 
-#onlyFit_Cont{
-	width: 90%;
-	/* Magic number, I wish it would just align with the search box TODO*/
-	padding-left: 4%;
-}
-#onlyFit_Cont>label{
-	float: left;
-}
 
 .wide{
     width: auto;
 }
 .narrowest{
-    width: 0.1%;
+    width: 3%;
 }
 .narrow{
     width: 7%;

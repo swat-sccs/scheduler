@@ -1,15 +1,16 @@
 //NOTE: CHANGED JS/LIST.JS BY 1 LINE TO MAKE DEFAULT NO-SHOW SEARCHING WORK. IF UPGRADE, NEED TO KEEP CHANGE OVER
 //TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
 var term = "spring19";
-var classes = {};
-var highlightedClasses = [];
-var allAddedClassObj = [{}, {}];
+
+var selectedClasses= [];
+var classSchedObj;
 var CLIENT_ID = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
 //Can't be readonly scope because needs to be able to create cals and change events
 var SCOPES = "https://www.googleapis.com/auth/calendar";
 var authorized = false;
 //Needs to be global so can i.e. search from the window location hash
 var hackerList;
+var fullCal
 //Needs to be global so hacker list can tell when classes do not fit
 //TODO too long?
 var daysTimesRanges = [ [], [], [], [], [], [], [], [] ];
@@ -42,29 +43,13 @@ var startSemDay = startSemDate.getUTCDay();
    exceptionDays = exceptionDays.substring(0,exceptionDays.length-1);
  */
 var quotes = ["The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr", "It always seems impossible until it is done\n - Nelson Mandela", "Education is what survives when what has been learned has been forgotten.\n - BF Skinner", "Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein", "No pressure, no diamonds\n - Thomas Carlyle", "One kind word can change someone's entire day", "When nothing goes right ...  go left"];
-$(document).ready(function() {
-    //classSchedObj from included schedule.js file (made with `doAll` in folder)
-    //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
-    tableArr = [];
-    //Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
-    for (var i = 0; i <= 1; i++) {
-        for (var z in classSchedObj[i]) {
-            var id = classSchedObj[i][z].id;
-            //classSchedObj[i][z].idCopy = id;
-            //TODO what should the ADA label be?
-            classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + " " + classSchedObj[i][z].name;
-            //In multipleTimes so add below the main item
-            if (id in classSchedObj[2]) {
-                classSchedObj[i][z].type += "<br>" + classSchedObj[2][id].type;
-                classSchedObj[i][z].days += "<br>" + classSchedObj[2][id].days;
-                classSchedObj[i][z].time += "<br>" + classSchedObj[2][id].time;
-                classSchedObj[i][z].rm   += "<br>" + classSchedObj[2][id].rm;
-            }
-            tableArr.push(classSchedObj[i][z]);
-        }
-    }
+var normalEventColor    = "#31425F"
+var highlightEventColor = "#6bec69"
+
+function initList(tableArr){
+    //Initialize hacker news
     var hacker_list_options = {
-        valueNames: ["ref", "name", "sec", "title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {
+        valueNames: ["ref", "name", "sec", "c_title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {
             name: 'idCopy',
             attr: "for" /*, forMultiple: true*/
         }, {
@@ -72,41 +57,43 @@ $(document).ready(function() {
             attr: 'id'
         }, "comment", "labelSummary"],
         //W/o labels on all, just on rref number
-        item: '<tr class="trClickable"> <td><label><input class="longListId id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <div class="ref"> </div> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
-        indexAsync: true
+        //item: '<tr class="trClickable" onclick="rowClickHandler()"> <td><label><input onclick="rowCheckboxHandler()" class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <div class="ref"> </div> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
+        item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <div class="ref"> </div> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
+        indexAsync: true,
+        //Can't do pagination because doens't allow to modify the
+        //elements (check the checkbox)
     };
     hackerList = new List('hacker-list', hacker_list_options, tableArr);
-    var searchId = document.getElementById("search");
-    $("#onlyFit").on("click", function() {
-        hackerList.search(searchId.value)
-        hackerList.sort("");
-    })
-
-    function addRowClickHandlers() {
-        hackerList.sort("")
-        $(".trClickable").off("click").on("click", function(e) {
-            //Click checkbox if click row
-            if (e.target.type != "checkbox") {
-                var cb = $(this).find("input[type=checkbox]")
-                cb.trigger("click");
-            }
-        })
-        $('.longListId').off("change").on("change", longListCallback);
-    }
-    hackerList.on("searchComplete", addRowClickHandlers)
+    /*
     hackerList.sortFunction = function(A, B, options) {
         A_checked = A.elm.children[0].children[0].children[0].checked
         B_checked = B.elm.children[0].children[0].children[0].checked
         if (A_checked != B_checked) {
             return A_checked ? -1 : 1;
         } else {
-            return A._values.name.localeCompare(B._values.name)
+            return A.values().name.localeCompare(B.values().name)
         }
     }
+    */
+    hackerList.on("searchComplete", function(){
+        if(hackerList.visibleItems.length==0){
+            document.getElementById("classTable").classList.add("hideClass")
+            document.getElementById("search").classList.add("searchMargin")
+        }else{
+            document.getElementById("classTable").classList.remove("hideClass")
+            document.getElementById("search").classList.remove("searchMargin")
+        }
+    })
+    for(var i=0; i<hackerList.items.length;i++){
+        $(hackerList.items[i].elm).on("click",rowClickHandler)
+    }
+}
+
+function initCalendar(){
     // page is now ready, initialize the calendar...
     //Can use string comparison to compare because is 24 hour time
-    minTime = "09:00:00";
-    maxTime = "16:00:00";
+    var minTime = "09:00:00";
+    var maxTime = "16:00:00";
     fullCal = $('#calendar').fullCalendar({
         // put your options and callbacks here
         height: 'auto',
@@ -121,11 +108,12 @@ $(document).ready(function() {
         columnFormat: 'dddd',
         defaultView: 'agendaWeek',
         editable: false,
-        eventColor: "purple",
+        eventColor:normalEventColor,
         eventAfterAllRender: function(view) {
             var events = $('#calendar').fullCalendar('clientEvents')
             var newMinTime = minTime;
             var newMaxTime = maxTime;
+            //TODO weekend?
             for (var i in events) {
                 //Can use string comparison natively
                 if (events[i].start.format("HH:mm:ss") < newMinTime) {
@@ -147,175 +135,375 @@ $(document).ready(function() {
                     maxTime: maxTime
                 });
             }
+        },
+        eventRender: function(event, element){
+            element[0].children[0].children[1].innerHTML =  "<b>"+event.name + " "+event.sec+"</b>: "+event.c_title
         }
     });
-    window.dataLayer = window.dataLayer || [];
+}
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-90553706-1');
-    notFromHash = true;
-    if (window.location.hash !== "") {
-        //Want to show classTable bc there will be classes
-        document.getElementById("classTable").style.display = "block";
-        var bothHash = window.location.hash.replace("#", "").split(";");
-        var hashClasses = bothHash[0].split(",");
-        if (bothHash[1] != null) {
-            var highlight = bothHash[1].split(",");
-        } else {
-            highlight = [];
-        }
-        //needs to be global bc dont want to spam hash event :(
-        notFromHash = false;
-        for (var item in hackerList.items) {
-            if (hashClasses.indexOf(hackerList.items[item]._values.id) != -1) {
-                hackerList.items[item].elm.children[0].children[0].children[0].checked = true
-                longListCallback.call(hackerList.items[item].elm.children[0].children[0].children[0])
-            }
-        }
-        notFromHash = true;
-        reloadRightCol();
-        for (var z in highlight) {
-            $("input.highlightCheck[value='" + highlight[z] + "']").prop("checked", true).trigger("change");
-        }
-        window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
-        generateDayTimeRanges();
-        hackerList.search("");
-    }
-})
-
-function longListCallback() {
+function selectClass(id, bulk) {
+    //If bulk, don't save to cookie/hash so don't hammer in initial load
     // this will contain a reference to the checkbox   
-    var id = this.getAttribute("id");
-    if (this.checked) {
-        if (id in classSchedObj[2]) {
-            $('#calendar').fullCalendar('addEventSource', [classSchedObj[2][id]]);
-            allAddedClassObj[0][id + "extra"] = classSchedObj[2][id];
-            /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")*/
-        }
-        if (id in classSchedObj[1]) {
-            alert("No set times to meet");
-        } else {
-            $('#calendar').fullCalendar('addEventSource', [classSchedObj[0][id]]);
-            allAddedClassObj[0][id] = classSchedObj[0][id];
-            /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[0][id].join("\t")+"<br>")*/
-        }
-        if (!(id in classes)) {
-            classes[id] = classSchedObj[0][id];
-            if (notFromHash) {
-                window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
+    
+    //Selected a new class
+    if (selectedClasses.indexOf(id)==-1) {
+        var thisClass = classSchedObj[0][id];
+        //in classSchedObj[0] so not in classSchedObj[1] so has a time
+        if(thisClass!=null){
+            if (thisClass.multiTime != null) {
+                $('#calendar').fullCalendar('addEventSource', {
+                    id: id,
+                    events:[thisClass, thisClass.multiTime]
+                });
+            }else{
+                $('#calendar').fullCalendar('addEventSource', {
+                    id: id,
+                    events:[thisClass]
+                });
             }
-            reloadRightCol();
         }
+        
+        selectedClasses.push(id)
+
+        //window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
     } else {
-        $('#calendar').fullCalendar('removeEvents', this.getAttribute("id"));
-        delete classes[id];
-        delete allAddedClassObj[0][id];
-        if (highlightedClasses.indexOf(id) != -1) {
-            highlightedClasses.splice(highlightedClasses.indexOf(id), 1);
+        //selected an old class (if multitime, will delete both TODO)
+        var thisClass = classSchedObj[0][id];
+        //in classSchedObj[0] so not in classSchedObj[1] so has a time
+        if(thisClass!=null){
+            $('#calendar').fullCalendar('removeEventSource', id);
+            thisClass.highlighted = false
         }
-        if (notFromHash) {
-            window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
+
+        selectedClasses.splice(selectedClasses.indexOf(id), 1);
+
+        //If deleting in bulk, then can do one for loop
+        //Technically, this doesn't work if you are doing a bulk select which
+        //invovles *both* addition and removal of classes but, we only use bulk
+        //when initally adding all classes (all adds) or removing all classes
+        //(all removes) so should be safe
+        if(!bulk){
+            for (var item in hackerList.items) {
+                if (hackerList.items[item].values().id == id) {
+                    console.log("FOUND IT "+ item)
+                    hackerList.items[item].elm.children[0].children[0].children[0].checked = false
+                    hackerList.items[item].elm.classList.remove("trHigh")
+                }
+            }
         }
-        if (id in classSchedObj[2]) {
-            delete allAddedClassObj[0][id + "extra"];
-        }
+    }
+    if(!bulk){
+        //generateDayTimeRanges();
         reloadRightCol();
-        generateDayTimeRanges();
+        updateHash_Cookie()
     }
 }
 
-function highlightCallback() {
-    var id = this.getAttribute("value");
-    if (this.checked) {
-        if (id in classSchedObj[2]) {
-            $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-            allAddedClassObj[1][id + "extra"] = classSchedObj[2][id];
-            $('#calendar').fullCalendar('addEventSource', {
-                events: [classSchedObj[2][id]],
-                color: "red"
-            });
-            /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")*/
-        }
-        if (id in classSchedObj[1]) {
-            alert("No set times to meet");
-        } else {
-            /* $('#calendar').fullCalendar('addEventSource', [classSchedObj[0][id]]);*/
-            if (!(id in classSchedObj[2])) {
-                $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-            }
-            allAddedClassObj[1][id] = classSchedObj[0][id];
-            $('#calendar').fullCalendar('addEventSource', {
-                events: [classSchedObj[0][id]],
-                color:  "red"
-            });
-            /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[0][id].join("\t")+"<br>")*/
-        }
-        if (highlightedClasses.indexOf(id) == -1) {
-            highlightedClasses.push(id);
-            window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
-        }
-    } else {
-        delete allAddedClassObj[1][id];
-        $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-        highlightedClasses.splice(highlightedClasses.indexOf(id), 1);
-        if (id in classSchedObj[2]) {
-            var addEvent = classSchedObj[2][id];
-            delete allAddedClassObj[1][id + "extra"]
-            $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-            $('#calendar').fullCalendar('addEventSource', {
-                events: [classSchedObj[2][id]]
-            });
-            /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[2][id].join("\t")+"<br>")*/
-        }
-        if (id in classSchedObj[1]) {
-            alert("No set times to meet");
-        } else {
-            /* $('#calendar').fullCalendar('addEventSource', [classSchedObj[0][id]]);*/
-            if (!(id in classSchedObj[2])) {
-                $('#calendar').fullCalendar('removeEvents', this.getAttribute("value"));
-            }
-            $('#calendar').fullCalendar('addEventSource', {
-                events: [classSchedObj[0][id]]
-            });
-            /* $('.rightCol').html("<input type='checkbox' id='"+id+"'>"+classSchedObj[0][id].join("\t")+"<br>")*/
-        }
-        /* delete classes[id]*/
-        /* window.location.hash=Object.keys(classes).join(",")*/
-        /* reloadRightCol()*/
-        window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
+function rowClickHandler(event) {
+    /*
+    //Click checkbox if click row
+    var clicked_elem = event.currentTarget
+    if (clicked_elem.tagName != "INPUT") {
+        var cb = $(clicked_elem).find("input")
+        cb.trigger("click")
     }
+    */
+    var classID = parseInt(event.currentTarget.getElementsByClassName("id")[0].id)
+    event.currentTarget.querySelector("input").checked = true;
+    event.currentTarget.classList.add("trHigh")
+    selectClass(classID, false)
+}
+function rowCheckboxHandler(event){
+    //never called but might be needed for some browsers
+    var classID = parseInt(event.currentTarget.id)
+    
+    
+    selectClass(classID, false)
+    //Stop DOM bubbling up to hit rowClickHandler event (will be
+    //caught by its if statement but simplifies logic)
+    event.stopPropagation()
+}
+
+function load_init_URL(){
+    //if (window.location.hash !== "") 
+    var hash_array = window.location.hash.replace("#", "").replace(/.*__/, "").split(",");
+    var hashClasses = []
+    var highlighedClasses = []
+    for(var i=0; i<hash_array.length; i++){
+        if(hash_array[i] == ""){
+            continue;
+        }
+        if(hash_array[i].slice(-1) == "_"){
+            var class_id = hash_array[i].replace("_", "")
+            hashClasses.push(class_id)
+            highlighedClasses.push(class_id)
+        }else{
+            hashClasses.push(hash_array[i])
+        }
+    }
+
+    //Check all the boxes for these items w/in the hacker list (and, while
+    //we're there, `select' these classes)
+    for (var item in hackerList.items) {
+        if (hashClasses.indexOf(hackerList.items[item].values().id) != -1) {
+            //Check the checkbox for this list item, doesn't call the callback
+            //because, for now, nothing is shown (just startup)
+            console.log(item)
+            hackerList.items[item].elm.children[0].children[0].children[0].checked = true
+            //TODO don't update hash values for these bc wasteful
+            //TODO don't update rightcol, do it afterward
+            hackerList.items[item].elm.classList.add("trHigh")
+            hackerList.items[item].elm.children[0].children[0].children[0].checked = true
+            selectClass(parseInt(hackerList.items[item].values().id), true)
+        }
+    }
+    for(var i=0; i<highlighedClasses.length;i++){
+        highlightClass(highlighedClasses[i], true)
+    }
+    reloadRightCol()
+    updateHash_Cookie()
+    //TODO generateDayTimeRanges();
+}
+
+function load_init_cookie(){
+    //TODO
+    var cookieStr = Cookies.get('classes')
+    if(cookieStr != null){
+        console.log("Taking from cookie")
+        window.location.hash = cookieStr
+        load_init_URL()
+    }
+}
+
+//TODO
+function urlChangeHandler(){
+}
+
+
+function set_hash(hash){
+    if('replaceState' in history){
+        history.replaceState("", "", hash)
+    }else{
+        window.location.hash = hash
+    }
+}
+function updateHash_Cookie(){
+    var hashStrArr = []
+    for(var i=0; i<selectedClasses.length;i++){
+        var classStr=selectedClasses[i]
+        //If has mult
+        if((selectedClasses[i] in classSchedObj[0] && classSchedObj[0][selectedClasses[i]].highlighted == true)|| 
+           (selectedClasses[i] in classSchedObj[1] && classSchedObj[1][selectedClasses[i]].highlighted == true)){
+            classStr+="_"
+        }
+        hashStrArr.push(classStr)
+    }
+    //So when adds in, keeps most of the order
+    hashStrArr.sort()
+    var hashStr = term+"__"+hashStrArr.join(",")
+    if(hashStrArr.length>0){
+        set_hash("#"+hashStr)
+    }else{
+        //. clears
+        set_hash("#")
+    }
+    Cookies.set('classes', hashStr, {expires: 365})
+}
+
+
+
+    initCalendar()
+
+    MicroModal.init()
+
+    $.getJSON("https://www.sccs.swarthmore.edu/users/20/jzl/schedule/js/trico_scraped.json", function(data){
+        //classSchedObj from included schedule.js file (made with `doAll` in folder)
+        //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
+        classSchedObj = data;
+        var tableArr = [];
+
+        //Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
+        for (var i = 0; i <= 1; i++) {
+            for (var z in classSchedObj[i]) {
+                var id = classSchedObj[i][z].id;
+                //classSchedObj[i][z].idCopy = id;
+                //TODO what should the ADA label be?
+                classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + " " + classSchedObj[i][z].name;
+                //In multipleTimes so add below the main item
+
+                classSchedObj[i][z].multipleTimes = null
+                classSchedObj[i][z].highlighted = false
+                classSchedObj[i][z].title = classSchedObj[i][z].name + " "+classSchedObj[i][z].sec+": "+classSchedObj[i][z].c_title
+
+
+                    if (id in classSchedObj[2]) {
+                        classSchedObj[i][z].type += "<br>" + classSchedObj[2][id].type;
+                        classSchedObj[i][z].days += "<br>" + classSchedObj[2][id].days;
+                        classSchedObj[i][z].time += "<br>" + classSchedObj[2][id].time;
+                        classSchedObj[i][z].rm   += "<br>" + classSchedObj[2][id].rm;
+                        classSchedObj[i][z].rm   += "<br>" + classSchedObj[2][id].rm;
+
+                        classSchedObj[i][z].multiTime = classSchedObj[2][id]
+                            //Needed for calendar to know how to delete
+                        classSchedObj[i][z].multiTime.id+="extra"
+                    }
+                tableArr.push(classSchedObj[i][z]);
+            }
+        }
+
+        initList(tableArr)
+            //Prioritize URL over cookie
+            if(window.location.hash!=""){
+                var win_split = window.location.hash.split("__")
+                //Make sure is new style URL and is for this term
+                if(!(win_split.length>1 && win_split[0] == "#"+term)){
+                    //TODO be able to look at previous semesters?
+                    //If old style or for old term, clear hash
+
+                    //Take the old style (class,class,...;highlightClass, highlightClass, ...)
+                    if(window.location.hash.indexOf(";")!=-1){
+                        //Has old style so convert
+                        var bothHash = window.location.hash.replace("#", "").split(";")
+                        bothHash[0] = bothHash[0].split(",")
+                        bothHash[1] = bothHash[1].split(",")
+                        var updatedHashArr = bothHash[0]
+                        for(var k=0; k<bothHash[1].length;k++){
+                            updatedHashArr[updatedHashArr.indexOf(bothHash[1][k])]+="_"
+                        }
+                        var updatedHash = "#"+term+"__"+updatedHashArr.join(",")
+                        set_hash(updatedHash)
+                    }else{
+                        set_hash("#")
+                    }
+                }
+                load_init_URL()
+            }else{
+                load_init_cookie()
+            }
+        //hackerList.search("cpsc");
+        /* TODO if put back onlyFit
+        $("#onlyFit").on("click", function() {
+            hackerList.search(document.getElementById("search").value)
+                hackerList.sort("");
+        })
+        */
+    })
+
+
+
+function highlightClass(id, bulk){
+    //if bulk, don't change cookie/hash (from beginning)
+    var thisClass = classSchedObj[0][id]
+    if(thisClass!=null){
+        //Add highlight, if has time
+        $('#calendar').fullCalendar('removeEventSource', id);
+        if (!thisClass.highlighted) {
+            if(thisClass.multiTime!= null){
+                $('#calendar').fullCalendar('addEventSource', {
+                    id: id,
+                    color: highlightEventColor,
+                    textColor: "#222",
+                    events:[thisClass, thisClass.multiTime]
+                });
+            }else{
+                $('#calendar').fullCalendar('addEventSource', {
+                    id: id,
+                    color: highlightEventColor,
+                    textColor: "#222",
+                    events:[thisClass]
+                });
+            }
+        } else {
+            if(thisClass.multiTime!= null){
+                $('#calendar').fullCalendar('addEventSource', {
+                    id: id,
+                    events:[thisClass, thisClass.multiTime]
+                });
+            }else{
+                $('#calendar').fullCalendar('addEventSource', {
+                    id: id,
+                    events:[thisClass]
+                });
+            }
+        }
+    }else{
+        //Has no time
+        thisClass = classSchedObj[1][id]
+    }
+    if(thisClass!=null){
+        thisClass.highlighted = !thisClass.highlighted
+    }
+
+    if(!bulk){
+        updateHash_Cookie()
+        reloadRightCol()
+    }
+}
+function highlightCallback(event) {
+    var clicked_elem_val = parseInt(event.currentTarget.value)
+    highlightClass(clicked_elem_val, false)
+}
+function trashCallback(event) {
+    var clicked_elem_val = parseInt(event.currentTarget.value)
+    selectClass(clicked_elem_val, false)
 }
 
 function reloadRightCol() {
     htmlObj = [];
     var html = "";
-    for (var i in classes) {
-        var checked = '';
-        if (highlightedClasses.indexOf(i.toString()) != -1) {
-            checked = 'checked';
+    for (var i=0; i<selectedClasses.length;i++) {
+        var noTime = ''
+        var boldClass = ''
+        var highlightClass = ''
+        var thisClass = classSchedObj[0][selectedClasses[i]];
+
+        //No time
+        if(thisClass == null){
+            thisClass = classSchedObj[1][selectedClasses[i]]
+            noTime = " - <i>No&nbsp;Set&nbsp;Time</i>"
+        }
+        if(thisClass == null){
+            //Abort! - neither no time or one time
+            continue;
+        }
+
+        if (thisClass.highlighted) {
+            boldClass = 'bold'
+            highlightClass = 'highlight'
         }
         htmlObj.push({
-            key: classes[i].name + classes[i].sec,
-            val: "<div class='chosenClass'><i class='icon-trash-1'></i><i class='icon-brush'></i><input type='checkbox' " + checked + " class='highlightCheck' value='" + i + "'>&nbsp;<span class='chosenClassLeft'>" + classes[i].name + " " + classes[i].sec + ": </span><span class='chosenClassRight'>" + classes[i].title + " (" + i + ")</span></div>"
+            key: thisClass.name + thisClass.sec,
+            // todo deleteval: "<div class='chosenClass'><button class='icon_button icon-trash-1'></button><button class='icon_button icon-brush'></button><input type='checkbox' " + checked + " class='highlightCheck' value='" + thisClass.id + "'>&nbsp;<span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + " (" + thisClass.id + ")</span></div>"
+            val: "<div class='chosenClass'><button class='icon_button icon-trash-1' value='"+thisClass.id+"'></button><button class='icon_button icon-brush "+highlightClass+"' value='"+thisClass.id + "'></button><span><span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + "&nbsp;(" + thisClass.id + ")</span></span></div>"
         })
     }
     htmlObj = htmlObj.sort(function(a, b) {
         return a.key.localeCompare(b.key);
     });
     for (var z in htmlObj) {
-        html += "<label>" + htmlObj[z].val + "</label>";
+        //For button, don't need label
+        //html += "<label>" + htmlObj[z].val + "</label>";
+        html += htmlObj[z].val;
     }
+    if(html==""){
+        $("#clearAll_par").html("")
+        //Also change in HTML so loads immeditatley
+        $("#rightCol").html("Search for classes below to plan your schedule")
+    }else{
+        $("#clearAll_par").html("<div id='clearClasses' onclick='clearAll()'><b>CLEAR<b></div>")
+        $("#rightCol").html(html);
+    }
+
     if (htmlObj.length != 0) {
-        $(".rightCol").addClass("multiCol")
+        $("#rightCol").addClass("multiCol")
     } else {
-        $(".rightCol").removeClass("multiCol")
+        $("#rightCol").removeClass("multiCol")
     }
-    $(".rightCol").html(html);
-    $('.highlightCheck').off("change").change(highlightCallback);
+    $('.icon-brush').click(highlightCallback);
+    $('.icon-trash-1').click(trashCallback);
 }
+
 
 function getReadyForExport() {
     //Show either log out or authorize
@@ -346,13 +534,13 @@ function exportToGoogle() {
             continue;
         }
         //need to make a new Obj each time bc will overwrite with set hour
-        var startTime = addedClassObj[i].start;
-        var endTime = addedClassObj[i].end;
-        var dow = JSON.parse(addedClassObj[i].dow).sort();
+        var startTime = this_class.start;
+        var endTime = this_class.end;
+        var dow = JSON.parse(this_class.dow).sort();
         console.log(dow);
         var startDate = new Date(startSemesterTime) //.setHours(startTime.substring(0, startTime.indexOf(":")),startTime.substring(startTime.indexOf(":")+1)));
         var endDate   = new Date(startSemesterTime) //.setHours(endTime.substring(0, endTime.indexOf(":")),endTime.substring(endTime.indexOf(":")+1)));
-        console.log(addedClassObj[i].title);
+        console.log(this_class.title);
         console.log(endDate.getUTCDay());
         console.log(dow[0]);
         var dowWanted = false;
@@ -373,32 +561,25 @@ function exportToGoogle() {
         startDate    = addDay(startDate, -endDate.getUTCDay() + dowWanted);
         endDate      = addDay(endDate, -endDate.getUTCDay() + dowWanted);
         /* } */
-        startDateISO = totruncateISOString(startDate) + "T" + addedClassObj[i].start + ":00";
-        endDateISO   = totruncateISOString(endDate) + "T" + addedClassObj[i].end + ":00";
-        /* console.log(addedClassObj[i].start) */
-        /* console.log(addedClassObj[i].end) */
-        console.log(startDateISO);
-        console.log(endDateISO);
-        /* var startDateTimeISO = startDate.toISOString() */
-        /* startDateTimeISO = startDateTimeISO.substring(0, startDateTimeISO.indexOf(".")) */
-        /* var endDateTimeISO = endDate.toISOString() */
-        /* endDateTimeISO = endDateTimeISO.substring(0, endDateTimeISO.indexOf(".")) */
-        var ByDayRepeat = "";
+        startDateISO = totruncateISOString(startDate) + "T" + startTime + ":00";
+        endDateISO   = totruncateISOString(endDate) + "T" + endTime + ":00";
+
+        var ByDayRepeat_arr = [];
         var daysArr = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
         for (var z in dow) {
-            ByDayRepeat += daysArr[dow[z]] + ",";
+            ByDayRepeat_arr.push(daysArr[dow[z]])
         }
-        //remove last ,
-        ByDayRepeat = ByDayRepeat.substring(0, ByDayRepeat.length - 1);
+        var ByDayRepeat = ByDayRepeat_arr.join(",")
         console.log(ByDayRepeat);
-        if (addedClassObj[i].comment != "") {
-            addedClassObj[i].comment += "\n\n";
+        var this_comment = this_class.comment
+        if (this_comment != "") {
+            this_comment += "\n\n";
         }
-        addedClassObj[i].comment += "----\nAnd remember:\n" + randomQuote();
+        this_comment += "----\nAnd remember:\n" + randomQuote()+"\nEnjoy!"
         events.push({
-            'summary': addedClassObj[i].title,
-            'location': addedClassObj[i].rm,
-            'description': addedClassObj[i].comment + "\nEnjoy!",
+            'summary': this_class.title,
+            'location': this_class.rm,
+            'description': this_comment,
             'start': {
                 'dateTime': startDateISO,
                 'timeZone': 'America/New_York'
@@ -611,7 +792,8 @@ function updateSigninStatus(isSignedIn) {
         notAuthorizedDiv.style.display = 'none';
         isAuthorizedDiv.style.display  = 'block';
         //Put email so know which calendar
-        $("#signout-button").text("Sign out (" + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() + ")")
+        //$("#export-button").text("Export to " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() + " GCal")
+        //$("#signout-button").text("Sign out (" + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() + ")")
         //Set global authorized so know (so that user doesn't have to sign in unless exporting)
         authorized = true;
     } else {
@@ -659,6 +841,36 @@ function flashWhite() {
     }, 700)
 }
 
+function clearAll(){
+    console.log("Clearing all")
+    //Check all the boxes for these items w/in the hacker list (and, while
+    //we're there, `select' these classes)
+
+    //The id value of the hackerList is a string so to make .indexOf work,
+    //convert selectedClasses to a string
+    var str_selectedClasses = []
+    for(var i in selectedClasses){
+        str_selectedClasses.push(selectedClasses[i].toString())
+    }
+    for (var item in hackerList.items) {
+        if (str_selectedClasses.indexOf(hackerList.items[item].values().id) != -1) {
+            //Check the checkbox for this list item, doesn't call the callback
+            //because, for now, nothing is shown (just startup)
+            console.log("Clearing an elem")
+            hackerList.items[item].elm.children[0].children[0].children[0].checked = false
+                hackerList.items[item].elm.classList.remove("trHigh")
+            //TODO don't update hash values for these bc wasteful
+            //TODO don't update rightcol, do it afterward
+            selectClass(parseInt(hackerList.items[item].values().id), true)
+        }
+    }
+    selectedClasses = []
+    reloadRightCol()
+    updateHash_Cookie()
+    //TODO generateDayTimeRanges();
+
+}
+
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {
@@ -691,13 +903,13 @@ function generateDayTimeRanges() {
 }
 
 function doesFit(item) {
-    if (item._values.dow == null || item._values.start == null || item._values.end == null) {
+    if (item.values().dow == null || item.values().start == null || item.values().end == null) {
         return false;
     }
     try {
-        var dow = JSON.parse(item._values.dow);
-        var start = parseInt(item._values.start.replace(":", ""))
-        var end = parseInt(item._values.end.replace(":", ""))
+        var dow = JSON.parse(item.values().dow);
+        var start = parseInt(item.values().start.replace(":", ""))
+        var end = parseInt(item.values().end.replace(":", ""))
     } catch (e) {
         console.log("ERROR IN DOES FIT: " + e)
         return false;

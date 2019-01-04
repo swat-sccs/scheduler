@@ -9,7 +9,9 @@
   "dependencies": {
     "fullcalendar": "^3.6.2",
     "jquery": "^3.2.1",
+    "js-cookie": "^2.2.0",
     "list.js": "git://github.com/jzl/list.js",
+    "micromodal": "^0.3.2",
     "moment": "^2.19.1"
   },
   "dependencyComments": {
