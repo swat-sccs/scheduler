@@ -660,7 +660,7 @@ tr.trClickable{
 		border-bottom: #c7c7c7 solid 1px;
 }
 tr.trClickable.trHigh{
-    background-color: rgba(179, 239, 178, .5)
+    background-color: rgba(179, 239, 178, .5);
 }
 
 /* Don't want border on last row*/
