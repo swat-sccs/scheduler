@@ -327,10 +327,24 @@ function getReadyForExport() {
 
 function exportToGoogle() {
     //Only export all events, not highlighted
-    var addedClassObj = allAddedClassObj[0];
+
+    //Keep track of what classes have no time (so not exported) so can show in modal
+    var noTimeClasses = []
+
     var events = [];
-    for (var i in addedClassObj) {
-        console.log("-----");
+    for (var i=0; i<selectedClasses.length;i++) {
+
+        var this_class = classSchedObj[0][selectedClasses[i]]
+        //This class doesn't have a time
+        if(this_class == null){
+            //Try the no_times category and, if find one, add to noTimeClasses
+            this_class = classSchedObj[1][selectedClasses[i]]
+            if(this_class!=null){
+                noTimeClasses.push(this_class.title)
+            }
+            //either way, don't export
+            continue;
+        }
         //need to make a new Obj each time bc will overwrite with set hour
         var startTime = addedClassObj[i].start;
         var endTime = addedClassObj[i].end;
@@ -416,7 +430,7 @@ function exportToGoogle() {
     }
     console.log(events);
     console.log(JSON.stringify(events));
-    getSCCSCal(events);
+    getSCCSCal(events, noTimeClasses);
 }
 
 function addDay(date, days) {
@@ -486,7 +500,7 @@ function randomQuote() {
     return quotes[Math.floor(Math.random() * quotes.length)];
 }
 
-function getSCCSCal(addEvents) {
+function getSCCSCal(addEvents, noTimeClasses) {
     var getCalsReq = gapi.client.calendar.calendarList.list()
     getCalsReq.execute(function(resp) {
         console.log("Get Cal List")
@@ -496,7 +510,7 @@ function getSCCSCal(addEvents) {
             if (resp.items[i].summary == "SCCS Class Schedule") {
                 needsNewCal = false
                 sccsSchedCalId = resp.items[i].id
-                addToCal(sccsSchedCalId, addEvents)
+                addToCal(sccsSchedCalId, addEvents, noTimeClasses)
             }
         }
         if (needsNewCal) {
@@ -508,13 +522,13 @@ function getSCCSCal(addEvents) {
                 console.log("Make New Cal")
                 console.log(resp)
                 sccsSchedCalId = resp.result.id
-                addToCal(sccsSchedCalId, addEvents)
+                addToCal(sccsSchedCalId, addEvents, noTimeClasses)
             })
         }
     });
 }
 
-function addToCal(calId, addClass) {
+function addToCal(calId, addClass, noTimeClasses) {
     console.log("calID: " + calId)
     var getEventsReq = gapi.client.calendar.events.list({
         'calendarId': calId,
@@ -539,8 +553,24 @@ function addToCal(calId, addClass) {
         console.log("delete batch")
         batch.execute(function(resp) {
             console.log("deleted")
-            flashWhite();
-            $("#sayHi").append('<br><b>Success!</b> You now have a new calendar called "SCCS Class Schedule" in your Google Calendar with events starting next semester. (You\'ll need to refresh)')
+            var email = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() 
+
+
+            var export_html = 'You now have a new calendar called <b>SCCS Class Schedule</b> in your '+email+' Google Calendar with events starting at the beginning of the semester ('+startSemDate.toDateString()+').'
+            if(noTimeClasses.length!=0){
+                var class_classes = "The following classes have no registered time so were not exported"
+                if(noTimeClasses.length==1){
+                    class_classes = "The following class has no registered time so was not exported"
+                }
+                export_html+="<br><br>"+class_classes+":<ul>"
+                for(var i=0; i<noTimeClasses.length;i++){
+                    export_html+="<li>"+noTimeClasses+"</li>"
+                }
+                export_html+="</ul>"
+            }
+            $("#export_text").html(export_html)
+            MicroModal.show('modal-export');
+
         })
     })
 }
