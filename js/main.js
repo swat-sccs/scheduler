@@ -50,16 +50,22 @@ var highlightEventColor = "#6bec69"
 function initList(tableArr){
     //Initialize hacker news
     var hacker_list_options = {
-        valueNames: ["ref", "name", "sec", "c_title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {
+        //valueNames: ["ref", "name", "sec", "c_title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {
+        valueNames: ["ref", "subj", "numSec", "c_title", "cred", "dist", "lim", "instruct", "days", "time", "rm", {
             name: 'idCopy',
             attr: "for" /*, forMultiple: true*/
         }, {
             name: 'id',
             attr: 'id'
-        }, "comment", "labelSummary"],
+        }, 
+            {
+                name: 'URL',
+                attr: 'href'
+            },
+            "comment", "labelSummary"],
         //W/o labels on all, just on rref number
         //item: '<tr class="trClickable" onclick="rowClickHandler()"> <td><label><input onclick="rowCheckboxHandler()" class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <div class="ref"> </div> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
-        item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <div class="ref"> </div> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
+        item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></div></label></td> <td> <div class="ref"> </div><a target="_blank" class="URL icon-link"></a> </td> <td> <div class="subj"> </div> </td> <td> <div class="numSec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
         indexAsync: true,
         //Can't do pagination because doens't allow to modify the
         //elements (check the checkbox)
@@ -138,7 +144,7 @@ function initCalendar(){
             }
         },
         eventRender: function(event, element){
-            element[0].children[0].children[1].innerHTML =  "<b>"+event.name + " "+event.sec+"</b>: "+event.c_title
+            element[0].children[0].children[1].innerHTML =  "<b>"+event.subj + " "+event.numSec+"</b>: "+event.c_title
         }
     });
 }
@@ -330,24 +336,22 @@ function updateHash_Cookie(){
                 var id = classSchedObj[i][z].id;
                 //classSchedObj[i][z].idCopy = id;
                 //TODO what should the ADA label be?
-                classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + " " + classSchedObj[i][z].name;
+                classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + " " + classSchedObj[i][z].subj+classSchedObj[i][z].numSec;
                 //In multipleTimes so add below the main item
 
                 classSchedObj[i][z].multipleTimes = null
                 classSchedObj[i][z].highlighted = false
-                classSchedObj[i][z].title = classSchedObj[i][z].name + " "+classSchedObj[i][z].sec+": "+classSchedObj[i][z].c_title
+                classSchedObj[i][z].title = classSchedObj[i][z].subj + " "+classSchedObj[i][z].numSec+": "+classSchedObj[i][z].c_title
 
 
                     if (id in classSchedObj[2]) {
-                        classSchedObj[i][z].type += "<br>" + classSchedObj[2][id].type;
                         classSchedObj[i][z].days += "<br>" + classSchedObj[2][id].days;
                         classSchedObj[i][z].time += "<br>" + classSchedObj[2][id].time;
-                        classSchedObj[i][z].rm   += "<br>" + classSchedObj[2][id].rm;
-                        classSchedObj[i][z].rm   += "<br>" + classSchedObj[2][id].rm;
 
                         classSchedObj[i][z].multiTime = classSchedObj[2][id]
                             //Needed for calendar to know how to delete
                         classSchedObj[i][z].multiTime.id+="extra"
+                        classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
                     }
                 tableArr.push(classSchedObj[i][z]);
             }
@@ -474,9 +478,9 @@ function reloadRightCol() {
             highlightClass = 'highlight'
         }
         htmlObj.push({
-            key: thisClass.name + thisClass.sec,
+            key: thisClass.subj + thisClass.numSec,
             // todo deleteval: "<div class='chosenClass'><button class='icon_button icon-trash-1'></button><button class='icon_button icon-brush'></button><input type='checkbox' " + checked + " class='highlightCheck' value='" + thisClass.id + "'>&nbsp;<span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + " (" + thisClass.id + ")</span></div>"
-            val: "<div class='chosenClass'><button class='icon_button icon-trash-1' aria-label='remove class' value='"+thisClass.id+"'></button><button aria-label='highlight class' class='icon_button icon-brush "+highlightClass+"' value='"+thisClass.id + "'></button><span><span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + "&nbsp;(" + thisClass.id + ")</span></span></div>"
+            val: "<div class='chosenClass'><button class='icon_button icon-trash-1' aria-label='remove class' value='"+thisClass.id+"'></button><button aria-label='highlight class' class='icon_button icon-brush "+highlightClass+"' value='"+thisClass.id + "'></button><span><span class='"+boldClass+" chosenClassLeft'>" + thisClass.subj + " " + thisClass.numSec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + "&nbsp;(" + thisClass.id + ")</span></span></div>"
         })
     }
     htmlObj = htmlObj.sort(function(a, b) {
@@ -710,6 +714,12 @@ function getSCCSCal(addEvents, noTimeClasses) {
     });
 }
 
+function dateToString(d){
+	days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"]
+	months = ["Jan", "Feb", "March", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
+	return days[d.getUTCDay()]+" "+ months[d.getUTCMonth()]+" "+d.getUTCDate()+" "+d.getUTCFullYear()
+}
+
 function addToCal(calId, addClass, noTimeClasses) {
     console.log("calID: " + calId)
     var getEventsReq = gapi.client.calendar.events.list({
@@ -738,7 +748,7 @@ function addToCal(calId, addClass, noTimeClasses) {
             var email = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() 
 
 
-            var export_html = 'You now have a new calendar called <b>SCCS Class Schedule</b> in your '+email+' Google Calendar with events starting at the beginning of the semester ('+startSemDate.toDateString()+').'
+            var export_html = 'You now have a new calendar called <b>SCCS Class Schedule</b> in your '+email+' Google Calendar with events starting at the beginning of the semester ('+dateToString(startSemDate)+').'
             if(noTimeClasses.length!=0){
                 var class_classes = "The following classes have no registered time so were not exported"
                 if(noTimeClasses.length==1){
@@ -831,7 +841,9 @@ function handleClientLoad() {
 
 function toggleCal() {
     $("#calContainer").slideToggle("slow", function() {
-        $('#calendar').fullCalendar('render');
+        setTimeout(function(){
+            $('#calendar').fullCalendar('rerenderEvents');
+        },200)
     });
 }
 
