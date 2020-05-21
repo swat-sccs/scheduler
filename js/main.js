@@ -57,7 +57,7 @@ function initList(tableArr){
         }, {
             name: 'id',
             attr: 'id'
-        }, 
+        },
             {
                 name: 'URL',
                 attr: 'href'
@@ -170,7 +170,7 @@ function selectClass(id, bulk) {
                 });
             }
         }
-        
+
         selectedClasses.push(id)
 
         //window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
@@ -224,8 +224,8 @@ function rowClickHandler(event) {
 function rowCheckboxHandler(event){
     //never called but might be needed for some browsers
     var classID = parseInt(event.currentTarget.id)
-    
-    
+
+
     selectClass(classID, false)
     //Stop DOM bubbling up to hit rowClickHandler event (will be
     //caught by its if statement but simplifies logic)
@@ -233,7 +233,7 @@ function rowCheckboxHandler(event){
 }
 
 function load_init_URL(){
-    //if (window.location.hash !== "") 
+    //if (window.location.hash !== "")
     var hash_array = window.location.hash.replace("#", "").replace(/.*__/, "").split(",");
     var hashClasses = []
     var highlighedClasses = []
@@ -300,7 +300,7 @@ function updateHash_Cookie(){
     for(var i=0; i<selectedClasses.length;i++){
         var classStr=selectedClasses[i]
         //If has mult
-        if((selectedClasses[i] in classSchedObj[0] && classSchedObj[0][selectedClasses[i]].highlighted == true)|| 
+        if((selectedClasses[i] in classSchedObj[0] && classSchedObj[0][selectedClasses[i]].highlighted == true)||
            (selectedClasses[i] in classSchedObj[1] && classSchedObj[1][selectedClasses[i]].highlighted == true)){
             classStr+="_"
         }
@@ -362,26 +362,9 @@ function updateHash_Cookie(){
             if(window.location.hash!=""){
                 var win_split = window.location.hash.split("__")
                 //Make sure is new style URL and is for this term
-                if(!(win_split.length>1 && win_split[0] == "#"+term)){
-                    //TODO be able to look at previous semesters?
-                    //If old style or for old term, clear hash
+                //TODO be able to look at previous semesters?
+                //If old style or for old term, clear hash
 
-                    //Take the old style (class,class,...;highlightClass, highlightClass, ...)
-                    if(window.location.hash.indexOf(";")!=-1){
-                        //Has old style so convert
-                        var bothHash = window.location.hash.replace("#", "").split(";")
-                        bothHash[0] = bothHash[0].split(",")
-                        bothHash[1] = bothHash[1].split(",")
-                        var updatedHashArr = bothHash[0]
-                        for(var k=0; k<bothHash[1].length;k++){
-                            updatedHashArr[updatedHashArr.indexOf(bothHash[1][k])]+="_"
-                        }
-                        var updatedHash = "#"+term+"__"+updatedHashArr.join(",")
-                        set_hash(updatedHash)
-                    }else{
-                        set_hash("#")
-                    }
-                }
                 load_init_URL()
             }else{
                 load_init_cookie()
@@ -745,7 +728,7 @@ function addToCal(calId, addClass, noTimeClasses) {
         console.log("delete batch")
         batch.execute(function(resp) {
             console.log("deleted")
-            var email = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() 
+            var email = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
 
 
             var export_html = 'You now have a new calendar called <b>SCCS Class Schedule</b> in your '+email+' Google Calendar with events starting at the beginning of the semester ('+dateToString(startSemDate)+').'

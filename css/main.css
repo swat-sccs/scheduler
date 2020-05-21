@@ -325,6 +325,16 @@ button:hover{
     background-color:white;
 }
 
+.icon-link{
+    color: black;
+}
+.icon-link:hover{
+    color: black;
+}
+.icon-link, .ref{
+    display: inline;
+}
+
 button.sharp{
     /*#B3EFB2 is 66%*/
     background-color: hsla(119, 63%, 75%, 1);
@@ -601,7 +611,11 @@ th{
 }
 .list tr:hover{
     /* #B3EFB2 b with 50% opacity */
-    background-color: rgba(179, 239, 178, .5)
+    background-color: rgba(121,227,120,0.4)
+}
+
+.list tr{
+    cursor: pointer;
 }
 
 #classResultsTable{
@@ -676,7 +690,43 @@ tr.trClickable:last-child{
     width: 3%;
 }
 .narrow{
-    width: 7%;
+    width: 9%;
+}
+
+/* https://developers.google.com/identity/sign-in/web/build-button */
+#customGoogleBtn {
+    display: inline-block;
+    background: white;
+    color: #444;
+    width: 150px;
+    border-radius: 5px;
+    border: thin solid #888;
+    box-shadow: 1px 1px 1px grey;
+    white-space: nowrap;
+}
+#customGoogleBtn:hover {
+    cursor: pointer;
+}
+span.label {
+    font-family: serif;
+    font-weight: normal;
+}
+span.icon {
+    background: url('/img/g-normal.png') transparent 5px 50% no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 42px;
+}
+span.buttonText {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 22px;
+    padding-right: 22px;
+    font-size: 14px;
+    font-weight: bold;
+    /* Use the Roboto font that is loaded in the <head> */
+    font-family: 'Roboto', sans-serif;
 }
 
 
