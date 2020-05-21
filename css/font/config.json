@@ -9,13 +9,19 @@
     {
       "uid": "b3a9e2dab4d19ea3b2f628242c926bfe",
       "css": "brush",
-      "code": 97,
+      "code": 59392,
       "src": "iconic"
     },
     {
       "uid": "2626e3a1bbcd90e45849af3b58a1d594",
-      "css": "trash-1",
-      "code": 98,
+      "css": "trash",
+      "code": 59393,
+      "src": "entypo"
+    },
+    {
+      "uid": "815503841e980c848f55e0271deacead",
+      "css": "link",
+      "code": 59394,
       "src": "entypo"
     }
   ]

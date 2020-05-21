@@ -874,8 +874,9 @@ tr.trClickable:last-child{
   -moz-osx-font-smoothing: grayscale;
 }
  
-.icon-brush:before { content: '\61'; } /* 'a' */
-.icon-trash-1:before { content: '\62'; } /* 'b' */
+.icon-brush:before { content: '\e800'; } /* 'a' */
+.icon-trash-1:before { content: '\e801'; } /* 'b' */
+.icon-link:before { content: '\e802'; } /* 'b' */
 
 
 /* ==========================================================================
