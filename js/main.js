@@ -1,12 +1,17 @@
-//NOTE: CHANGED JS/LIST.JS BY 1 LINE TO MAKE DEFAULT NO-SHOW SEARCHING WORK. IF UPGRADE, NEED TO KEEP CHANGE OVER
 //TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
-var term = "fall19";
+
+//UPDATE NEW SEMESTER HERE
+//helps gCal disambiguate each semester's events so can delete only the newest semeter if change schedule
+var term = "spring21";
 
 var selectedClasses= [];
 var classSchedObj;
-var CLIENT_ID = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
+// var CLIENT_ID = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
+var CLIENT_ID = '67188111758-2l0sr7lpabrkbpbc7nen9ktnk5u71oc3.apps.googleusercontent.com';
+var API_KEY = '3q3gVoDEjU8KVeTKBAxAGnyF';
 //Can't be readonly scope because needs to be able to create cals and change events
-var SCOPES = "https://www.googleapis.com/auth/calendar";
+// var SCOPES = "https://www.googleapis.com/auth/calendar";
+var SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly";
 var authorized = false;
 //Needs to be global so can i.e. search from the window location hash
 var hackerList;
@@ -19,8 +24,12 @@ var daysTimesRanges = [ [], [], [], [], [], [], [], [] ];
 //Jan 22 2018 = Spring 2018 start
 //Sept 3 2018 = Fall 2018 start
 //Jan 22 2019 = Spring 2019 start
+
+//UPDATE NEW SEMESTER HERE
+// Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
 //month number are 0 indexed! so -1
-var startSemesterTime = Date.UTC(2019, 8, 2, 0, 0, 0);
+//test in javascript console by doing `new Date(... below ...)`
+var startSemesterTime = Date.UTC(2021, 1, 15, 0, 0, 0);
 //Apr 28 start sem
 //YEARMONTHDAY+"T000000Z", pad with 0s
 //Dec 12
@@ -28,9 +37,13 @@ var startSemesterTime = Date.UTC(2019, 8, 2, 0, 0, 0);
 //Dec 11 for Fall 2018 end
 //May 3 for Spring 2019 end
 //Make sure change year
+
+//UPDATE NEW SEMESTER HERE
+//Just change the part before "T" as normal, not 0 indexed
 //Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
 //TODO known issue with timezones (Z is UTC) for late running events on the last day
-var endSemesterISO = "20191210T235959Z";
+//test 
+var endSemesterISO = "20210520T235959Z";
 var globalFromButton = false;
 var startSemDate = new Date(startSemesterTime);
 var startSemDay = startSemDate.getUTCDay();
@@ -323,8 +336,10 @@ function updateHash_Cookie(){
     initCalendar()
 
     MicroModal.init()
-
-    $.getJSON("js/trico_scraped.json", function(data){
+    
+    // Tricoschedule may not be updated when the schedule first comes out
+    // If this is the case, use the xls scraped
+    $.getJSON("js/xls_scraped.json", function(data){
         //classSchedObj from included schedule.js file (made with `doAll` in folder)
         //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
         classSchedObj = data;
@@ -541,14 +556,8 @@ function exportToGoogle() {
         if (dowWanted == false) {
             dowWanted = 7 + dow[0];
         }
-        /* if(endDate.getUTCDay() > dow[0]){ */
-        /*     //i.e. endDate is on tues but the class is a monday class */
-        /*     startDate = addDay(startDate, 7-endDate.getUTCDay() + dow[0]) */
-        /*     endDate = addDay(endDate, 7-endDate.getUTCDay() + dow[0]) */
-        /* }else{ */
         startDate    = addDay(startDate, -endDate.getUTCDay() + dowWanted);
         endDate      = addDay(endDate, -endDate.getUTCDay() + dowWanted);
-        /* } */
         startDateISO = totruncateISOString(startDate) + "T" + startTime + ":00";
         endDateISO   = totruncateISOString(endDate) + "T" + endTime + ":00";
 
@@ -582,23 +591,11 @@ function exportToGoogle() {
                 }
             },
             'recurrence': [
-                /* 'EXDATE:'+'20170116,20170117', */
                 'RRULE:FREQ=DAILY;BYDAY=' + ByDayRepeat + ';UNTIL=' + endSemesterISO,
-                /* "EXDATE:20170124" */
-                /* 'EXDATE;TZID=America/New_York:20170117T000000' */
-                /* 'EXDATE;VALUE=DATE:20170123T093000' */
             ],
-            /* 'reminders': {*/
-            /* 'useDefault': false,*/
-            /* 'overrides': [*/
-            /* {'method': 'email', 'minutes': 24 * 60},*/
-            /* {'method': 'popup', 'minutes': 10}*/
-            /* ]*/
-            /* }*/
         });
     }
     console.log(events);
-    console.log(JSON.stringify(events));
     getSCCSCal(events, noTimeClasses);
 }
 
@@ -758,28 +755,49 @@ function addToCal(calId, addClass, noTimeClasses) {
  *  listeners.
  */
 function initClient() {
-    gapi.client.init({
+    gapi.auth2.init({
         discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
         clientId: CLIENT_ID,
+	apiKey: API_KEY,
         scope: SCOPES
-    }).then(function() {
+    })
+        .then(function(a) {
         // Listen for sign-in state changes.
-        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-        // Handle the initial sign-in state.
-        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        // gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+        // // Handle the initial sign-in state.
+            if(a && !a.error){
+                gapi.client.load('calendar','v3', () => {
+                    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+                });
+            }
+        auth2 = a
     }, function(error) {
         console.log(error)
     }).catch(function(e) {
         console.log(e)
     })
+    console.log("attaching")
+    attachSignin()
 }
+
+function attachSignin(){
+    console.log(gapi.auth2.getAuthInstance().isSignedIn.get())
+    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+    var element = document.getElementById("customGoogleBtn")
+    gapi.auth2.getAuthInstance().attachClickHandler(element, {},
+                             function(googleUser) {
+                                 updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
+                             }, function(error) {
+                                 console.log(JSON.stringify(error, undefined, 2));
+                             });
+}
+
 /**
  *  Called when the signed in status changes, to update the UI
  *  appropriately. After a sign-in, the API is called.
  */
 function updateSigninStatus(isSignedIn) {
     //Go from "loading gapis -> authorize"
-    document.getElementById("waitingForGoogle").style.display = "none";
     var notAuthorizedDiv = document.getElementById('notAuthorized');
     var isAuthorizedDiv  = document.getElementById('isAuthorized');
     if (isSignedIn) {
@@ -814,11 +832,8 @@ function handleSignoutClick(event) {
 //Start from onLoad
 function handleClientLoad() {
     //https://github.com/google/google-api-javascript-client/issues/265
-    gapi.load('client:auth2', {
-        callback: initClient,
-        onerror: function(e) {
-            throw e
-        }
+    gapi.load('auth2', function() {
+        initClient()
     });
 }
 
