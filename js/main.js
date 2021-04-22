@@ -3,6 +3,7 @@
 //UPDATE NEW SEMESTER HERE
 //helps gCal disambiguate each semester's events so can delete only the newest semeter if change schedule
 var term = "fall21";
+const termSubtitle = "Fall 2021"; // used as text for #semester-subtitle in index.html
 
 var selectedClasses= [];
 var classSchedObj;
@@ -289,6 +290,8 @@ function updateHash_Cookie(){
 initCalendar()
 
 MicroModal.init()
+
+document.getElementById("semester-subtitle").textContent = termSubtitle;
 
 // Tricoschedule may not be updated when the schedule first comes out
 // If this is the case, use the xls scraped
