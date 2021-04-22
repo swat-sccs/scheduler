@@ -2,7 +2,7 @@
 
 //UPDATE NEW SEMESTER HERE
 //helps gCal disambiguate each semester's events so can delete only the newest semeter if change schedule
-var term = "spring21";
+var term = "fall21";
 
 var selectedClasses= [];
 var classSchedObj;
@@ -29,7 +29,7 @@ var daysTimesRanges = [ [], [], [], [], [], [], [], [] ];
 // Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
 //month number are 0 indexed! so -1
 //test in javascript console by doing `new Date(... below ...)`
-var startSemesterTime = Date.UTC(2021, 1, 15, 0, 0, 0);
+var startSemesterTime = Date.UTC(2021, 7, 30, 0, 0, 0);
 //Apr 28 start sem
 //YEARMONTHDAY+"T000000Z", pad with 0s
 //Dec 12
@@ -43,7 +43,7 @@ var startSemesterTime = Date.UTC(2021, 1, 15, 0, 0, 0);
 //Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
 //TODO known issue with timezones (Z is UTC) for late running events on the last day
 //test 
-var endSemesterISO = "20210520T235959Z";
+var endSemesterISO = "20211218T235959Z";
 var globalFromButton = false;
 var startSemDate = new Date(startSemesterTime);
 var startSemDay = startSemDate.getUTCDay();

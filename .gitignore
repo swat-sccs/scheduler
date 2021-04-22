@@ -2,3 +2,5 @@
 *.swp
 node_modules
 js/schedule.js
+js/*scraped.json
+package-lock.json
