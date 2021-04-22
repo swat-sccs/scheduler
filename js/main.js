@@ -6,11 +6,9 @@ var term = "fall21";
 
 var selectedClasses= [];
 var classSchedObj;
-// var CLIENT_ID = '590889346032-44j8s8s3368lagbb3f9drn3i4rgc73ld.apps.googleusercontent.com';
 var CLIENT_ID = '67188111758-2l0sr7lpabrkbpbc7nen9ktnk5u71oc3.apps.googleusercontent.com';
 var API_KEY = '3q3gVoDEjU8KVeTKBAxAGnyF';
 //Can't be readonly scope because needs to be able to create cals and change events
-// var SCOPES = "https://www.googleapis.com/auth/calendar";
 var SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly";
 var authorized = false;
 //Needs to be global so can i.e. search from the window location hash
@@ -19,30 +17,16 @@ var fullCal
 //Needs to be global so hacker list can tell when classes do not fit
 //TODO too long?
 var daysTimesRanges = [ [], [], [], [], [], [], [], [] ];
-//Jan 17 start sem
-//Fall 2017 start sem = Sep 4
-//Jan 22 2018 = Spring 2018 start
-//Sept 3 2018 = Fall 2018 start
-//Jan 22 2019 = Spring 2019 start
-
 //UPDATE NEW SEMESTER HERE
 // Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
 //month number are 0 indexed! so -1
 //test in javascript console by doing `new Date(... below ...)`
 var startSemesterTime = Date.UTC(2021, 7, 30, 0, 0, 0);
-//Apr 28 start sem
-//YEARMONTHDAY+"T000000Z", pad with 0s
-//Dec 12
-//May 4 for Spring 2018 end
-//Dec 11 for Fall 2018 end
-//May 3 for Spring 2019 end
-//Make sure change year
 
 //UPDATE NEW SEMESTER HERE
 //Just change the part before "T" as normal, not 0 indexed
 //Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
 //TODO known issue with timezones (Z is UTC) for late running events on the last day
-//test 
 var endSemesterISO = "20211218T235959Z";
 var globalFromButton = false;
 var startSemDate = new Date(startSemesterTime);
@@ -63,38 +47,23 @@ var highlightEventColor = "#6bec69"
 function initList(tableArr){
     //Initialize hacker news
     var hacker_list_options = {
-        //valueNames: ["ref", "name", "sec", "c_title", "cred", "dist", "lim", "instruct", "type", "days", "time", "rm", {
         valueNames: ["ref", "subj", "numSec", "c_title", "cred", "dist", "lim", "instruct", "days", "time", "rm", {
             name: 'idCopy',
-            attr: "for" /*, forMultiple: true*/
+            attr: "for"
         }, {
             name: 'id',
             attr: 'id'
+        }, {
+            name: 'URL',
+            attr: 'href'
         },
-            {
-                name: 'URL',
-                attr: 'href'
-            },
-            "comment", "labelSummary"],
+        "comment", "labelSummary"],
         //W/o labels on all, just on rref number
-        //item: '<tr class="trClickable" onclick="rowClickHandler()"> <td><label><input onclick="rowCheckboxHandler()" class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></label></td> <td> <div class="ref"> </div> </td> <td> <div class="name"> </div> </td> <td> <div class="sec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
         item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></div></label></td> <td> <div class="ref"> </div><a target="_blank" class="URL icon-link"></a> </td> <td> <div class="subj"> </div> </td> <td> <div class="numSec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
         indexAsync: true,
-        //Can't do pagination because doens't allow to modify the
-        //elements (check the checkbox)
+        //Can't do pagination because doesn't allow to modify the elements (check the checkbox)
     };
     hackerList = new List('hacker-list', hacker_list_options, tableArr);
-    /*
-    hackerList.sortFunction = function(A, B, options) {
-        A_checked = A.elm.children[0].children[0].children[0].checked
-        B_checked = B.elm.children[0].children[0].children[0].checked
-        if (A_checked != B_checked) {
-            return A_checked ? -1 : 1;
-        } else {
-            return A.values().name.localeCompare(B.values().name)
-        }
-    }
-    */
     hackerList.on("searchComplete", function(){
         if(hackerList.visibleItems.length==0){
             document.getElementById("classTable").classList.add("hideClass")
@@ -119,8 +88,6 @@ function initCalendar(){
         height: 'auto',
         minTime: minTime,
         maxTime: maxTime,
-        //maxTime: "23:00:00",
-        //contentHeight: 800,
         weekends: false,
         allDaySlot: false,
         //Don't want a header (title, today, etc buttons)
@@ -185,8 +152,6 @@ function selectClass(id, bulk) {
         }
 
         selectedClasses.push(id)
-
-        //window.location.hash = Object.keys(classes).join(",") + ";" + highlightedClasses.join(",");
     } else {
         //selected an old class (if multitime, will delete both TODO)
         var thisClass = classSchedObj[0][id];
@@ -221,14 +186,6 @@ function selectClass(id, bulk) {
 }
 
 function rowClickHandler(event) {
-    /*
-    //Click checkbox if click row
-    var clicked_elem = event.currentTarget
-    if (clicked_elem.tagName != "INPUT") {
-        var cb = $(clicked_elem).find("input")
-        cb.trigger("click")
-    }
-    */
     var classID = parseInt(event.currentTarget.getElementsByClassName("id")[0].id)
     event.currentTarget.querySelector("input").checked = true;
     event.currentTarget.classList.add("trHigh")
@@ -238,7 +195,6 @@ function rowCheckboxHandler(event){
     //never called but might be needed for some browsers
     var classID = parseInt(event.currentTarget.id)
 
-
     selectClass(classID, false)
     //Stop DOM bubbling up to hit rowClickHandler event (will be
     //caught by its if statement but simplifies logic)
@@ -246,7 +202,6 @@ function rowCheckboxHandler(event){
 }
 
 function load_init_URL(){
-    //if (window.location.hash !== "")
     var hash_array = window.location.hash.replace("#", "").replace(/.*__/, "").split(",");
     var hashClasses = []
     var highlighedClasses = []
@@ -331,68 +286,57 @@ function updateHash_Cookie(){
     Cookies.set('classes', hashStr, {expires: 365})
 }
 
+initCalendar()
 
+MicroModal.init()
 
-    initCalendar()
+// Tricoschedule may not be updated when the schedule first comes out
+// If this is the case, use the xls scraped
+$.getJSON("js/xls_scraped.json", function(data){
+    //classSchedObj from included schedule.js file (made with `doAll` in folder)
+    //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
+    classSchedObj = data;
+    var tableArr = [];
 
-    MicroModal.init()
-    
-    // Tricoschedule may not be updated when the schedule first comes out
-    // If this is the case, use the xls scraped
-    $.getJSON("js/xls_scraped.json", function(data){
-        //classSchedObj from included schedule.js file (made with `doAll` in folder)
-        //classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
-        classSchedObj = data;
-        var tableArr = [];
+    //Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
+    for (var i = 0; i <= 1; i++) {
+        for (var z in classSchedObj[i]) {
+            var id = classSchedObj[i][z].id;
+            //classSchedObj[i][z].idCopy = id;
+            //TODO what should the ADA label be?
+            classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + " " + classSchedObj[i][z].subj+classSchedObj[i][z].numSec;
+            //In multipleTimes so add below the main item
 
-        //Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
-        for (var i = 0; i <= 1; i++) {
-            for (var z in classSchedObj[i]) {
-                var id = classSchedObj[i][z].id;
-                //classSchedObj[i][z].idCopy = id;
-                //TODO what should the ADA label be?
-                classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + " " + classSchedObj[i][z].subj+classSchedObj[i][z].numSec;
-                //In multipleTimes so add below the main item
+            classSchedObj[i][z].multipleTimes = null;
+            classSchedObj[i][z].highlighted = false;
+            classSchedObj[i][z].title = classSchedObj[i][z].subj + " "+classSchedObj[i][z].numSec+": "+classSchedObj[i][z].c_title;
 
-                classSchedObj[i][z].multipleTimes = null
-                classSchedObj[i][z].highlighted = false
-                classSchedObj[i][z].title = classSchedObj[i][z].subj + " "+classSchedObj[i][z].numSec+": "+classSchedObj[i][z].c_title
+            if (id in classSchedObj[2]) {
+                classSchedObj[i][z].days += "<br>" + classSchedObj[2][id].days;
+                classSchedObj[i][z].time += "<br>" + classSchedObj[2][id].time;
 
-
-                    if (id in classSchedObj[2]) {
-                        classSchedObj[i][z].days += "<br>" + classSchedObj[2][id].days;
-                        classSchedObj[i][z].time += "<br>" + classSchedObj[2][id].time;
-
-                        classSchedObj[i][z].multiTime = classSchedObj[2][id]
-                            //Needed for calendar to know how to delete
-                        classSchedObj[i][z].multiTime.id+="extra"
-                        classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
-                    }
-                tableArr.push(classSchedObj[i][z]);
+                classSchedObj[i][z].multiTime = classSchedObj[2][id]
+                //Needed for calendar to know how to delete
+                classSchedObj[i][z].multiTime.id+="extra"
+                classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
             }
+            tableArr.push(classSchedObj[i][z]);
         }
+    }
 
-        initList(tableArr)
-            //Prioritize URL over cookie
-            if(window.location.hash!=""){
-                var win_split = window.location.hash.split("__")
-                //Make sure is new style URL and is for this term
-                //TODO be able to look at previous semesters?
-                //If old style or for old term, clear hash
+    initList(tableArr);
+    //Prioritize URL over cookie
+    if(window.location.hash!="") {
+        var win_split = window.location.hash.split("__")
+        //Make sure is new style URL and is for this term
+        //TODO be able to look at previous semesters?
+        //If old style or for old term, clear hash
 
-                load_init_URL()
-            }else{
-                load_init_cookie()
-            }
-        //hackerList.search("cpsc");
-        /* TODO if put back onlyFit
-        $("#onlyFit").on("click", function() {
-            hackerList.search(document.getElementById("search").value)
-                hackerList.sort("");
-        })
-        */
-    })
-
+        load_init_URL()
+    }else{
+        load_init_cookie()
+    }
+})
 
 
 function highlightClass(id, bulk){
@@ -477,7 +421,6 @@ function reloadRightCol() {
         }
         htmlObj.push({
             key: thisClass.subj + thisClass.numSec,
-            // todo deleteval: "<div class='chosenClass'><button class='icon_button icon-trash-1'></button><button class='icon_button icon-brush'></button><input type='checkbox' " + checked + " class='highlightCheck' value='" + thisClass.id + "'>&nbsp;<span class='"+boldClass+" chosenClassLeft'>" + thisClass.name + " " + thisClass.sec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + " (" + thisClass.id + ")</span></div>"
             val: "<div class='chosenClass'><button class='icon_button icon-trash-1' aria-label='remove class' value='"+thisClass.id+"'></button><button aria-label='highlight class' class='icon_button icon-brush "+highlightClass+"' value='"+thisClass.id + "'></button><span><span class='"+boldClass+" chosenClassLeft'>" + thisClass.subj + " " + thisClass.numSec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + "&nbsp;(" + thisClass.id + ")</span></span></div>"
         })
     }
@@ -541,8 +484,8 @@ function exportToGoogle() {
         var endTime = this_class.end;
         var dow = JSON.parse(this_class.dow).sort();
         console.log(dow);
-        var startDate = new Date(startSemesterTime) //.setHours(startTime.substring(0, startTime.indexOf(":")),startTime.substring(startTime.indexOf(":")+1)));
-        var endDate   = new Date(startSemesterTime) //.setHours(endTime.substring(0, endTime.indexOf(":")),endTime.substring(endTime.indexOf(":")+1)));
+        var startDate = new Date(startSemesterTime) 
+        var endDate   = new Date(startSemesterTime)
         console.log(this_class.title);
         console.log(endDate.getUTCDay());
         console.log(dow[0]);
@@ -625,16 +568,6 @@ function makeTest(id) {
                     'sccsTerm': term
                 }
             }
-            /* 'recurrence': [*/
-            /* 'RRULE:FREQ=DAILY;COUNT=2'*/
-            /* ]*/
-            /* 'reminders': {*/
-            /* 'useDefault': false,*/
-            /* 'overrides': [*/
-            /* {'method': 'email', 'minutes': 24 * 60},*/
-            /* {'method': 'popup', 'minutes': 10}*/
-            /* ]*/
-            /* }*/
         }
     };
     var makeTestReq = gapi.client.calendar.events.insert(event);
@@ -650,16 +583,10 @@ function twoDigits(value) {
 
 function totruncateISOString(date) {
     return date.getUTCFullYear() + '-' + twoDigits(date.getUTCMonth() + 1) + '-' + twoDigits(date.getUTCDate());
-    /* + 'T' + twoDigits(date.getUTCHours()) */
-    /* + ':' + twoDigits(date.getUTCMinutes()) */
-    /* + ':' + twoDigits(date.getUTCSeconds()) */
-    /* + '.' + (date.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) */
-    /* + 'Z'; */
 };
 
 function toDateStr(date) {
     return date.getUTCFullYear() + twoDigits(date.getUTCMonth() + 1) + twoDigits(date.getUTCDate());
-    /* +'T000000Z' */
 };
 
 function randomQuote() {
@@ -761,15 +688,15 @@ function initClient() {
 	apiKey: API_KEY,
         scope: SCOPES
     })
-        .then(function(a) {
+    .then(function(a) {
         // Listen for sign-in state changes.
         // gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-        // // Handle the initial sign-in state.
-            if(a && !a.error){
-                gapi.client.load('calendar','v3', () => {
-                    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-                });
-            }
+        // Handle the initial sign-in state.
+        if(a && !a.error){
+            gapi.client.load('calendar','v3', () => {
+                updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            });
+        }
         auth2 = a
     }, function(error) {
         console.log(error)
@@ -803,9 +730,6 @@ function updateSigninStatus(isSignedIn) {
     if (isSignedIn) {
         notAuthorizedDiv.style.display = 'none';
         isAuthorizedDiv.style.display  = 'block';
-        //Put email so know which calendar
-        //$("#export-button").text("Export to " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() + " GCal")
-        //$("#signout-button").text("Sign out (" + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail() + ")")
         //Set global authorized so know (so that user doesn't have to sign in unless exporting)
         authorized = true;
     } else {
