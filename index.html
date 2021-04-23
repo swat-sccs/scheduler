@@ -1,43 +1,39 @@
 <!doctype html>
 <html class="no-js" lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>SCCS Class Planner</title>
-        <meta name="description" content="SCCS Class Planner for Swarthmore College">
-        <!-- TODO: check https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <meta http-equiv="expires" content="0">
-        <meta name="google-site-verification" content="lBr_FIobBhF_7T93tZWdV5R7Yt-iaoPULWeeTAJaA0s" />
-
-        <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-        <link rel="manifest" href="/site.webmanifest">
-        <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#5bbad5">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#ffffff">
-
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.min.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
-        <!--Facebook-->
-        <meta property="og:image:width" content="279">
-        <meta property="og:image:height" content="279">
-        <meta property="og:description" content="My Swarthmore course schedule, proudly (or, at least, dutifully) planned with the SCCS Course Planner">
-        <meta property="og:title" content="SCCS Course Planner">
-        <meta property="og:url" content="https://schedule.sccs.swarthmore.edu">
-        <meta property="og:image" content="https://schedule.sccs.swarthmore.edu/img/og-image.jpg">
-    </head>
-    <body>
-        <!--[if lte IE 9]>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>SCCS Class Planner</title>
+    <meta name="description" content="SCCS Class Planner for Swarthmore College">
+    <!-- TODO: check https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="expires" content="0">
+    <meta name="google-site-verification" content="lBr_FIobBhF_7T93tZWdV5R7Yt-iaoPULWeeTAJaA0s" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <!--Facebook-->
+    <meta property="og:image:width" content="279">
+    <meta property="og:image:height" content="279">
+    <meta property="og:description" content="My Swarthmore course schedule, proudly (or, at least, dutifully) planned with the SCCS Course Planner">
+    <meta property="og:title" content="SCCS Course Planner">
+    <meta property="og:url" content="https://schedule.sccs.swarthmore.edu">
+    <meta property="og:image" content="https://schedule.sccs.swarthmore.edu/img/og-image.jpg">
+</head>
+<body>
+    <!--[if lte IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
-
-        <div id="container">
-            <header>
+    <div id="container">
+        <header>
             <div class="headFoot" id="header">
                 <h1>
                     <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Planner 
@@ -45,18 +41,18 @@
                 <i id="semester-subtitle"></i>
                 <div class="help-tip">
                     <p>
-                    <b><u>How to use:</u></b><br>
-                    - Use the search bar at the bottom to find your classes. Add every section with the left checkbox<br>
-                    - Use the right column to highlight different combinations of the sections<br>
-                    - When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones<br>
-                    P.S. You can share your classes with others simply by giving them the URL<br><br>
-
-                    This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
+                        <b><u>How to use:</u></b>
+                        <br>- Use the search bar at the bottom to find your classes. Add every section with the left checkbox
+                        <br>- Use the right column to highlight different combinations of the sections
+                        <br>- When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones
+                        <br>P.S. You can share your classes with others simply by giving them the URL
+                        <br>
+                        <br>This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
                     </p>
                 </div>
             </div>
-            </header>
-            <main>
+        </header>
+        <main>
             <div id="body">
                 <div id="calContainer">
                     <div id="calendarTd">
@@ -65,49 +61,40 @@
                         </div>
                     </div>
                 </div>
-		<button id="toggleCal" onclick="toggleCal()">Toggle Calendar </button>
-		<div class="shadow" id="class_and_clear">
-		    <div class="large_inline" id="rightCol_par">
-			<!--Also change in js-->
-			<div id="rightCol">Search for classes below to plan your schedule</div>
-		    </div>
-		    <div id="clearAll_par"></div>
-		</div>
-                <br> <br>
-                    <div>
-                        <div class="thirds">
-                            <div id="authorizedButtons">
-                                <div id="notAuthorized">
-                                    <!-- <button id="authorize-button" onclick="handleAuthClick()">Login to Export to GCal</button> -->
-                                    <div id="gSignInWrapper">
-                                        <span class="label">Sign in with </span>
-                                        <div id="customGoogleBtn" class="customGPlusSignIn">
-                                            <span class="icon"></span>
-                                            <span class="buttonText">Google</span>
-                                        </div>
-                                        <span class="label">to export to GCal</span>
+                <button id="toggleCal" onclick="toggleCal()">Toggle Calendar</button>
+                <div class="shadow" id="class_and_clear">
+                    <div class="large_inline" id="rightCol_par">
+                        <!--Also change in js-->
+                        <div id="rightCol">Search for classes below to plan your schedule</div>
+                    </div>
+                    <div id="clearAll_par"></div>
+                </div>
+                <br>
+                <br>
+                <div>
+                    <div class="thirds">
+                        <div id="authorizedButtons">
+                            <div id="notAuthorized">
+                                <div id="gSignInWrapper"> <span class="label">Sign in with </span>
+                                    <div id="customGoogleBtn" class="customGPlusSignIn">
+                                        <span class="icon"></span>
+                                        <span class="buttonText">Google</span>
                                     </div>
-                                </div>
-                                <div id="isAuthorized" style="display: none">
-                                    <button id="export-button" class="sharp" onclick="getReadyForExport()">Export Events to GCal</button>
-                                    <!--<button class="dull" id="signout-button" onclick="handleSignoutClick()">Sign Out</button>-->
-                                    <button class="likeLink" id="signout-button" onclick="handleSignoutClick()">Sign Out</button>
+                                    <span class="label">to export to GCal</span>
                                 </div>
                             </div>
+                            <div id="isAuthorized" style="display: none">
+                                <button id="export-button" class="sharp" onclick="getReadyForExport()">Export Events to GCal</button>
+                                <button class="likeLink" id="signout-button" onclick="handleSignoutClick()">Sign Out</button>
+                            </div>
                         </div>
+                    </div>
                     <br>
-                <hr>
+                    <hr>
                     <div id="sayHi"></div>
-
-
                 </div>
                 <div id="hacker-list">
-                    <div class = "middleCol">
-                        <!-- Grey out ones which dont fit
-                        <div id="onlyFit_Cont">
-                            <label><input id="onlyFit" type="checkbox"> Only Show Classes Which Fit</label>
-                        </div>
-                        -->
+                    <div class="middleCol">
                         <div>
                             <input name="search" class="search searchMargin" id="search" placeholder="Find Classes!" />
                             <label class="visuallyhidden" for="search">Search for Classes</label>
@@ -119,20 +106,20 @@
                             -->
                             <table id="classResultsTable" class="fullWidth">
                                 <thead>
-                                        <tr>
-                                                <th class="narrowest"></th>
-                                                <th class="narrowest">Ref</th>
-                                                <th class="narrow"   >Class</th>
-                                                <th class="narrowest">Num/Sec</th>
-                                                <th class="wide">Title</th>
-                                                <th class="narrowest">Cred</th>
-                                                <th class="narrowest">Dist</th>
-                                                <th class="narrowest">Lim</th>
-                                                <th class="narrow"   >Instruct</th>
-                                                <th class="narrowest">Days</th>
-                                                <th class="narrow"   >Time</th>
-                                                <th class="narrow"   >Rm</th>
-                                        </tr>
+                                    <tr>
+                                        <th class="narrowest"></th>
+                                        <th class="narrowest">Ref</th>
+                                        <th class="narrow">Class</th>
+                                        <th class="narrowest">Num/Sec</th>
+                                        <th class="wide">Title</th>
+                                        <th class="narrowest">Cred</th>
+                                        <th class="narrowest">Dist</th>
+                                        <th class="narrowest">Lim</th>
+                                        <th class="narrow">Instruct</th>
+                                        <th class="narrowest">Days</th>
+                                        <th class="narrow">Time</th>
+                                        <th class="narrow">Rm</th>
+                                    </tr>
                                 </thead>
                                 <tbody class="list"></tbody>
                             </table>
@@ -140,73 +127,48 @@
                     </div>
                 </div>
             </div>
-            </main>
-            <footer class="headFoot" id="footer">
-                <h2 class="headFoot">
-                    Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
-                </h2>
-            </div>
+        </main>
+        <footer class="headFoot" id="footer">
+            <h2 class="headFoot">
+                Please email <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a> with any questions, concerns, or if there is inaccurate information
+            </h2>
         </footer>
-        
-	<!--Micromodal for google calendar export -->
-	<div class="modal micromodal-slide" id="modal-export" aria-hidden="true">
-	    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-		<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-		    <header class="modal__header">
-			<h2 class="modal__title" id="modal-1-title">
-				Successfully Exported!
-			</h2>
-			<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-		    </header>
-		    <main class="modal__content" id="modal-1-content">
-		    <div id="export_text">
-		    </div>
-		    </main>
-		    <footer class="modal__footer">
-			<button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
-		    </footer>
-		</div>
-	    </div>
-	</div>
+    </div>
+    <!--Micromodal for google calendar export -->
+    <div class="modal micromodal-slide" id="modal-export" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-1-title">Successfully Exported!</h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-1-content">
+                    <div id="export_text"></div>
+                </main>
+                <footer class="modal__footer">
+                    <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="js/vendor/micromodal.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="node_modules/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="js/list.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://apis.google.com/js/api:client.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9KGTZZ9S07"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-        <script src="js/vendor/micromodal.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-
-        <script src="node_modules/moment/min/moment.min.js"></script>
-        <script src="node_modules/fullcalendar/dist/fullcalendar.min.js"></script>
-
-        <script src="js/list.js"></script>
-
-	<script src="js/main.js"></script>
-
-
-
-  <!-- <script src="https://apis.google.com/js/api.js" -->
-  <script src="https://apis.google.com/js/api:client.js"
-                onload="this.onload=function(){};handleClientLoad()"
-                onreadystatechange="if (this.readyState === 'complete') this.onload()">
-        </script>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KGTZZ9S07"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-
-		gtag('config', 'G-9KGTZZ9S07');
-	</script>
-  
-	<!--
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-90553706-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-90553706-1');
-  </script>
-	-->
-  </body>
+        gtag('config', 'G-9KGTZZ9S07');
+    </script>
+</body>
 </html>
