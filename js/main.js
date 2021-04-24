@@ -170,7 +170,7 @@ function selectClass(id, bulk) {
     // (all removes) so should be safe
     if (!bulk) {
       for (const item in hackerList.items) {
-        if (hackerList.items[item].values().id === id) {
+        if (parseInt(hackerList.items[item].values().id) === id) {
           console.log('FOUND IT ' + item)
           hackerList.items[item].elm.children[0].children[0].children[0].checked = false
           hackerList.items[item].elm.classList.remove('trHigh')
