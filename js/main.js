@@ -4,6 +4,11 @@
 const term = 'fall21'
 const termSubtitle = 'Fall 2021' // used as text for #semester-subtitle in index.html
 
+// Tricoschedule may not be updated when the schedule first comes out
+// If this is the case, use the xls scraped
+const schedule_json = 'js/trico_scraped.json'
+// const schedule_json = 'js/xls_scraped.json'
+
 // Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
 // month number are 0 indexed! so -1
 // test in javascript console by doing `new Date(... below ...)`
@@ -293,9 +298,7 @@ MicroModal.init()
 
 document.getElementById('semester-subtitle').textContent = termSubtitle
 
-// Tricoschedule may not be updated when the schedule first comes out
-// If this is the case, use the xls scraped
-$.getJSON('js/xls_scraped.json', function (data) {
+$.getJSON(schedule_json, function (data) {
   // classSchedObj from included schedule.js file (made with `doAll` in folder)
   // classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
   classSchedObj = data
