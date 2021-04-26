@@ -25,21 +25,12 @@ const SCOPES = 'https://www.googleapis.com/auth/calendar https://www.googleapis.
 let authorized = false
 // Needs to be global so can i.e. search from the window location hash
 let hackerList
-let fullCal
+let fullCalendar
 // Needs to be global so hacker list can tell when classes do not fit
 // TODO too long?
 const daysTimesRanges = [[], [], [], [], [], [], [], []]
 
 const startSemDate = new Date(startSemesterTime)
-/* TODO add holidays manually
-   var exceptionDays = "";
-   var i = -1;
-   for(var q = startSemDate.getUTCDay()-1; q>=1;q--){
-   exceptionDays+=toDateStr(addDay(startSemDate,i))+",";
-   i--;
-   }
-   exceptionDays = exceptionDays.substring(0,exceptionDays.length-1);
- */
 const quotes = ['The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr', 'It always seems impossible until it is done\n - Nelson Mandela', 'Education is what survives when what has been learned has been forgotten.\n - BF Skinner', 'Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein', 'No pressure, no diamonds\n - Thomas Carlyle', "One kind word can change someone's entire day", 'When nothing goes right ...  go left']
 const normalEventColor = '#31425F'
 const highlightEventColor = '#6bec69'
@@ -83,24 +74,25 @@ function initCalendar() {
   // Can use string comparison to compare because is 24 hour time
   let minTime = '09:00:00'
   let maxTime = '16:00:00'
-  fullCal = $('#calendar').fullCalendar({
-    // put your options and callbacks here
+  const calendarElement = document.getElementById('calendar')
+
+  fullCalendar = new FullCalendar.Calendar(calendarElement, {
     height: 'auto',
-    minTime: minTime,
-    maxTime: maxTime,
+    slotMinTime: minTime,
+    slotMaxTime: maxTime,
     weekends: false,
     allDaySlot: false,
     // Don't want a header (title, today, etc buttons)
-    header: false,
-    columnFormat: 'dddd',
-    defaultView: 'agendaWeek',
+    headerToolbar: false,
+    dayHeaderFormat: {weekday: 'long'},
+    initialView: 'timeGridWeek',
     editable: false,
     eventColor: normalEventColor,
+    /*
     eventAfterAllRender: function (view) {
       const events = $('#calendar').fullCalendar('clientEvents')
       let newMinTime = minTime
       let newMaxTime = maxTime
-      // TODO weekend?
       for (const i in events) {
         // Can use string comparison natively
         if (events[i].start.format('HH:mm:ss') < newMinTime) {
@@ -113,20 +105,30 @@ function initCalendar() {
       if (newMinTime !== minTime) {
         minTime = newMinTime
         $('#calendar').fullCalendar('option', {
-          minTime: minTime
+          slotMinTime: minTime
         })
       }
       if (newMaxTime !== maxTime) {
         maxTime = newMaxTime
         $('#calendar').fullCalendar('option', {
-          maxTime: maxTime
+          slotMaxTime: maxTime
         })
       }
     },
+    */
+    eventDidMount: function (arg) {
+      console.log('eventDidMount: ', arg)
+    },
+    eventContent: function(arg) {
+      console.log('eventContent: ', arg)
+    }
+    /*
     eventRender: function (event, element) {
       element[0].children[0].children[1].innerHTML = '<b>' + event.subj + ' ' + event.numSec + '</b>: ' + event.c_title
     }
+    */
   })
+  fullCalendar.render()
 }
 
 function selectClass(id, bulk) {
@@ -139,15 +141,27 @@ function selectClass(id, bulk) {
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
       if (thisClass.multiTime != null) {
+      /*
         $('#calendar').fullCalendar('addEventSource', {
           id: id,
           events: [thisClass, thisClass.multiTime]
         })
+        */
+        console.log(thisClass)
       } else {
+        let p = {}
+        p.start = new Date('1970-07-01T0' + thisClass.start)
+        p.end = new Date('2100-12-01T' + thisClass.end)
+        p.title = thisClass.title
+        p.id = thisClass.id
+        const evnt = fullCalendar.addEventSource({id: id, events: [p]})
+        console.log(evnt)
+        /*
         $('#calendar').fullCalendar('addEventSource', {
           id: id,
           events: [thisClass]
         })
+        */
       }
     }
 
@@ -170,7 +184,7 @@ function selectClass(id, bulk) {
     // (all removes) so should be safe
     if (!bulk) {
       for (const item in hackerList.items) {
-        if (hackerList.items[item].values().id === id) {
+        if (parseInt(hackerList.items[item].values().id) === id) {
           console.log('FOUND IT ' + item)
           hackerList.items[item].elm.children[0].children[0].children[0].checked = false
           hackerList.items[item].elm.classList.remove('trHigh')
@@ -305,7 +319,6 @@ $.getJSON('js/xls_scraped.json', function (data) {
   for (let i = 0; i <= 1; i++) {
     for (const z in classSchedObj[i]) {
       const id = classSchedObj[i][z].id
-      // classSchedObj[i][z].idCopy = id;
       // TODO what should the ADA label be?
       classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + ' ' + classSchedObj[i][z].subj + classSchedObj[i][z].numSec
       // In multipleTimes so add below the main item
@@ -697,9 +710,9 @@ function initClient () {
         })
       }
     }, function (error) {
-      console.log(error)
+      console.error(error)
     }).catch(function (e) {
-      console.log(e)
+      console.error(e)
     })
   console.log('attaching')
   attachSignin()
@@ -713,7 +726,7 @@ function attachSignin () {
     function (googleUser) {
       updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
     }, function (error) {
-      console.log(JSON.stringify(error, undefined, 2))
+      console.error(JSON.stringify(error, undefined, 2))
     })
 }
 
@@ -844,7 +857,7 @@ function doesFit(item) {
     start = parseInt(item.values().start.replace(':', ''))
     end = parseInt(item.values().end.replace(':', ''))
   } catch (e) {
-    console.log('ERROR IN DOES FIT: ' + e)
+    console.error('ERROR IN DOES FIT: ' + e)
     return false
   }
   for (const dowIndex in dow) {

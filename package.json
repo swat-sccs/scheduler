@@ -7,12 +7,12 @@
   "author": "Jonah Langlieb <jonahmail1@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "fullcalendar": "^3.6.2",
-    "jquery": "^3.2.1",
-    "js-cookie": "^2.2.0",
-    "list.js": "git://github.com/jzl/list.js",
-    "micromodal": "^0.3.2",
-    "moment": "^2.19.1"
+    "fullcalendar": "^5.6.0",
+    "jquery": "^3.6.0",
+    "js-cookie": "^2.2.1",
+    "list.js": "git://github.com/jzl/list.js.git",
+    "micromodal": "^0.4.6",
+    "moment": "^2.29.1"
   },
   "dependencyComments": {
     "list.js": "I needed to make a small modification to list.js so that, by default, all the class nodes wouldn't show (this had huge performance ramifications. However, this means that I am not on list.js master - it has not been updated in a while but, if it is updated, my list.js needs to be updated (look at the commit history, it's 1 commit of 1 line deleation (<3 well functioned libraries)"
