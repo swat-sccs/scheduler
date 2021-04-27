@@ -82,51 +82,42 @@ function initCalendar() {
     slotMaxTime: maxTime,
     weekends: false,
     allDaySlot: false,
-    // Don't want a header (title, today, etc buttons)
     headerToolbar: false,
     dayHeaderFormat: {weekday: 'long'},
     initialView: 'timeGridWeek',
     editable: false,
     eventColor: normalEventColor,
-    /*
-    eventAfterAllRender: function (view) {
-      const events = $('#calendar').fullCalendar('clientEvents')
+    eventDidMount: function (arg) {
+      const events = fullCalendar.getEvents()
       let newMinTime = minTime
       let newMaxTime = maxTime
       for (const i in events) {
-        // Can use string comparison natively
-        if (events[i].start.format('HH:mm:ss') < newMinTime) {
-          newMinTime = events[i].start.format('HH:mm:ss')
+        const evnt = events[i]
+        const start = evnt.start.toTimeString().split(' ')[0]
+        const end = evnt.end.toTimeString().split(' ')[0]
+        if (start < newMinTime) {
+          newMinTime = start
         }
-        if (events[i].end.format('HH:mm:ss') > newMaxTime) {
-          newMaxTime = events[i].end.format('HH:mm:ss')
+        if (end > newMaxTime) {
+          newMaxTime = end
         }
       }
       if (newMinTime !== minTime) {
         minTime = newMinTime
-        $('#calendar').fullCalendar('option', {
-          slotMinTime: minTime
-        })
+        fullCalendar.setOption('slotMinTime', minTime)
       }
       if (newMaxTime !== maxTime) {
         maxTime = newMaxTime
-        $('#calendar').fullCalendar('option', {
-          slotMaxTime: maxTime
-        })
+        fullCalendar.setOption('slotMaxTime', maxTime)
       }
     },
-    */
-    eventDidMount: function (arg) {
-      console.log('eventDidMount: ', arg)
-    },
     eventContent: function(arg) {
-      console.log('eventContent: ', arg)
+      const props = arg.event.extendedProps
+      const time = props.time.replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
+      return {html: '<div class="fc-event-main-frame"><div class="fc-event-time">' + time +
+        '</div><div class="fc-event-title-container"><div class="fc-event-title fc-sticky"><b>' + props.subj +
+        ' ' + props.numSec + '</b>: ' + props.c_title + "</div></div></div>"}
     }
-    /*
-    eventRender: function (event, element) {
-      element[0].children[0].children[1].innerHTML = '<b>' + event.subj + ' ' + event.numSec + '</b>: ' + event.c_title
-    }
-    */
   })
   fullCalendar.render()
 }
@@ -141,27 +132,13 @@ function selectClass(id, bulk) {
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
       if (thisClass.multiTime != null) {
-      /*
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass, thisClass.multiTime]
-        })
-        */
-        console.log(thisClass)
+        console.error('What\'s multitime?', thisClass)
       } else {
-        let p = {}
-        p.start = new Date('1970-07-01T0' + thisClass.start)
-        p.end = new Date('2100-12-01T' + thisClass.end)
-        p.title = thisClass.title
-        p.id = thisClass.id
-        const evnt = fullCalendar.addEventSource({id: id, events: [p]})
-        console.log(evnt)
-        /*
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass]
-        })
-        */
+        let newEvent = {...thisClass}
+        newEvent.daysOfWeek = thisClass.dow
+        newEvent.startTime = thisClass.start
+        newEvent.endTime = thisClass.end
+        fullCalendar.addEvent(newEvent)
       }
     }
 
@@ -171,7 +148,8 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
-      $('#calendar').fullCalendar('removeEventSource', id)
+      const evnt = fullCalendar.getEventById(id)
+      evnt.remove()
       thisClass.highlighted = false
     }
 
@@ -351,43 +329,26 @@ $.getJSON('js/xls_scraped.json', function (data) {
   } else {
     loadInitCookie()
   }
-})
 
 function highlightClass(id, bulk) {
   // if bulk, don't change cookie/hash (from beginning)
   let thisClass = classSchedObj[0][id]
   if (thisClass != null) {
-    // Add highlight, if has time
-    $('#calendar').fullCalendar('removeEventSource', id)
+    // Add highlight, if has 
+    // we'd love to use event.setProp but it doesn't seem to rerender so we remove event and add it back w/ right colors
+    fullCalendar.getEventById(id).remove()
+    let newEvent = {...thisClass}
+    newEvent.daysOfWeek = thisClass.dow
+    newEvent.startTime = thisClass.start
+    newEvent.endTime = thisClass.end
     if (!thisClass.highlighted) {
-      if (thisClass.multiTime != null) {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          color: highlightEventColor,
-          textColor: '#222',
-          events: [thisClass, thisClass.multiTime]
-        })
-      } else {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          color: highlightEventColor,
-          textColor: '#222',
-          events: [thisClass]
-        })
-      }
+      newEvent.backgroundColor = highlightEventColor
+      newEvent.borderColor = highlightEventColor
+      newEvent.textColor = '#222'
     } else {
-      if (thisClass.multiTime != null) {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass, thisClass.multiTime]
-        })
-      } else {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass]
-        })
-      }
+      newEvent.backgroundColor = normalEventColor
     }
+    fullCalendar.addEvent(newEvent)
   } else {
     // Has no time
     thisClass = classSchedObj[1][id]
@@ -395,7 +356,7 @@ function highlightClass(id, bulk) {
   if (thisClass != null) {
     thisClass.highlighted = !thisClass.highlighted
   }
-
+  
   if (!bulk) {
     updateHashCookie()
     reloadRightCol()
@@ -775,7 +736,7 @@ function handleClientLoad () {
 function toggleCal() {
   $('#calContainer').slideToggle('slow', function () {
     setTimeout(function () {
-      $('#calendar').fullCalendar('rerenderEvents')
+      fullCalendar.render()
     }, 200)
   })
 }
