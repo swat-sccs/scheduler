@@ -287,7 +287,7 @@ document.getElementById('semester-subtitle').textContent = termSubtitle
 
 // Tricoschedule may not be updated when the schedule first comes out
 // If this is the case, use the xls scraped
-$.getJSON('js/xls_scraped.json', function (data) {
+$.getJSON('js/xls_scraped.json', function(data) {
   // classSchedObj from included schedule.js file (made with `doAll` in folder)
   // classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
   classSchedObj = data
@@ -324,11 +324,11 @@ $.getJSON('js/xls_scraped.json', function (data) {
     // Make sure is new style URL and is for this term
     // TODO be able to look at previous semesters?
     // If old style or for old term, clear hash
-
     loadInitURL()
   } else {
     loadInitCookie()
   }
+})
 
 function highlightClass(id, bulk) {
   // if bulk, don't change cookie/hash (from beginning)
