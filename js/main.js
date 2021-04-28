@@ -79,7 +79,6 @@ let minimumEndTime = '16:00:00'
 
 function initCalendar() {
   // page is now ready, initialize the calendar...
-  // Can use string comparison to compare because is 24 hour time
   const calendarElement = document.getElementById('calendar')
 
   fullCalendar = new FullCalendar.Calendar(calendarElement, {
@@ -109,10 +108,10 @@ function updateSlotTimes() {
   let minTime = maximumStartTime
   let maxTime = minimumEndTime
   for (const i in events) {
+    // Can use string comparison to compare because is 24 hour time
     const evnt = events[i]
     const start = evnt.start.toTimeString().split(' ')[0]
     const end = evnt.end.toTimeString().split(' ')[0]
-    console.log('in events: ', evnt.id)
     if (start < minTime) {
       minTime = start
     }
