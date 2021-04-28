@@ -94,7 +94,8 @@ function initCalendar() {
     eventColor: normalEventColor,
     eventContent: function(arg) {
       const props = arg.event.extendedProps
-      const time = props.time.replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
+      // need the split since multitime objects have both times in props.time, making everything ugly
+      const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
       return {html: '<div class="fc-event-main-frame"><div class="fc-event-time">' + time +
         '</div><div class="fc-event-title-container"><div class="fc-event-title fc-sticky"><b>' + props.subj +
         ' ' + props.numSec + '</b>: ' + props.c_title + "</div></div></div>"}
@@ -169,7 +170,6 @@ function selectClass(id, bulk) {
     if (!bulk) {
       for (const item in hackerList.items) {
         if (parseInt(hackerList.items[item].values().id) === id) {
-          console.log('FOUND IT ' + item)
           hackerList.items[item].elm.children[0].children[0].children[0].checked = false
           hackerList.items[item].elm.classList.remove('trHigh')
         }
@@ -223,7 +223,6 @@ function loadInitURL() {
     if (hashClasses.indexOf(hackerList.items[item].values().id) !== -1) {
       // Check the checkbox for this list item, doesn't call the callback
       // because, for now, nothing is shown (just startup)
-      console.log(item)
       hackerList.items[item].elm.children[0].children[0].children[0].checked = true
       hackerList.items[item].elm.classList.add('trHigh')
       hackerList.items[item].elm.children[0].children[0].children[0].checked = true
