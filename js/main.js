@@ -69,17 +69,18 @@ function initList(tableArr) {
   }
 }
 
+let maximumStartTime = '09:00:00'
+let minimumEndTime = '16:00:00'
+
 function initCalendar() {
   // page is now ready, initialize the calendar...
   // Can use string comparison to compare because is 24 hour time
-  let minTime = '09:00:00'
-  let maxTime = '16:00:00'
   const calendarElement = document.getElementById('calendar')
 
   fullCalendar = new FullCalendar.Calendar(calendarElement, {
     height: 'auto',
-    slotMinTime: minTime,
-    slotMaxTime: maxTime,
+    slotMinTime: maximumStartTime,
+    slotMaxTime: minimumEndTime,
     weekends: false,
     allDaySlot: false,
     headerToolbar: false,
@@ -87,30 +88,6 @@ function initCalendar() {
     initialView: 'timeGridWeek',
     editable: false,
     eventColor: normalEventColor,
-    eventDidMount: function (arg) {
-      const events = fullCalendar.getEvents()
-      let newMinTime = minTime
-      let newMaxTime = maxTime
-      for (const i in events) {
-        const evnt = events[i]
-        const start = evnt.start.toTimeString().split(' ')[0]
-        const end = evnt.end.toTimeString().split(' ')[0]
-        if (start < newMinTime) {
-          newMinTime = start
-        }
-        if (end > newMaxTime) {
-          newMaxTime = end
-        }
-      }
-      if (newMinTime !== minTime) {
-        minTime = newMinTime
-        fullCalendar.setOption('slotMinTime', minTime)
-      }
-      if (newMaxTime !== maxTime) {
-        maxTime = newMaxTime
-        fullCalendar.setOption('slotMaxTime', maxTime)
-      }
-    },
     eventContent: function(arg) {
       const props = arg.event.extendedProps
       const time = props.time.replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
@@ -120,6 +97,26 @@ function initCalendar() {
     }
   })
   fullCalendar.render()
+}
+
+function updateSlotTimes() {
+  const events = fullCalendar.getEvents()
+  let minTime = maximumStartTime
+  let maxTime = minimumEndTime
+  for (const i in events) {
+    const evnt = events[i]
+    const start = evnt.start.toTimeString().split(' ')[0]
+    const end = evnt.end.toTimeString().split(' ')[0]
+    console.log('in events: ', evnt.id)
+    if (start < minTime) {
+      minTime = start
+    }
+    if (end > maxTime) {
+      maxTime = end
+    }
+  }
+  fullCalendar.setOption('slotMinTime', minTime)
+  fullCalendar.setOption('slotMaxTime', maxTime)
 }
 
 function selectClass(id, bulk) {
@@ -139,6 +136,7 @@ function selectClass(id, bulk) {
         newEvent.startTime = thisClass.start
         newEvent.endTime = thisClass.end
         fullCalendar.addEvent(newEvent)
+        updateSlotTimes()
       }
     }
 
@@ -148,9 +146,9 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
-      const evnt = fullCalendar.getEventById(id)
-      evnt.remove()
+      fullCalendar.getEventById(id).remove()
       thisClass.highlighted = false
+      updateSlotTimes()
     }
 
     selectedClasses.splice(selectedClasses.indexOf(id), 1)
@@ -219,8 +217,6 @@ function loadInitURL() {
       // because, for now, nothing is shown (just startup)
       console.log(item)
       hackerList.items[item].elm.children[0].children[0].children[0].checked = true
-      // TODO don't update hash values for these bc wasteful
-      // TODO don't update rightcol, do it afterward
       hackerList.items[item].elm.classList.add('trHigh')
       hackerList.items[item].elm.children[0].children[0].children[0].checked = true
       selectClass(parseInt(hackerList.items[item].values().id), true)
@@ -423,8 +419,8 @@ function reloadRightCol() {
   } else {
     $('#rightCol').removeClass('multiCol')
   }
-  $('.icon-brush').click(highlightCallback)
-  $('.icon-trash-1').click(trashCallback)
+  $('.icon-brush').on("click", highlightCallback)
+  $('.icon-trash-1').on("click", trashCallback)
 }
 
 function getReadyForExport() {
