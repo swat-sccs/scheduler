@@ -132,16 +132,20 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
+      let newEvent = {...thisClass}
+      newEvent.daysOfWeek = thisClass.dow
+      newEvent.startTime = thisClass.start
+      newEvent.endTime = thisClass.end
+      let source = {id: id, events: [newEvent]}
       if (thisClass.multiTime != null) {
-        console.error('What\'s multitime?', thisClass)
-      } else {
-        let newEvent = {...thisClass}
-        newEvent.daysOfWeek = thisClass.dow
-        newEvent.startTime = thisClass.start
-        newEvent.endTime = thisClass.end
-        fullCalendar.addEvent(newEvent)
-        updateSlotTimes()
+        let multiEvent = {...thisClass.multiTime}
+        multiEvent.daysOfWeek = thisClass.multiTime.dow
+        multiEvent.startTime = thisClass.multiTime.start
+        multiEvent.endTime = thisClass.multiTime.end
+        source.events.push(multiEvent)
       }
+      fullCalendar.addEventSource(source)
+      updateSlotTimes()
     }
 
     selectedClasses.push(id)
@@ -150,7 +154,7 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
-      fullCalendar.getEventById(id).remove()
+      fullCalendar.getEventSourceById(id).remove()
       thisClass.highlighted = false
       updateSlotTimes()
     }
@@ -332,21 +336,30 @@ function highlightClass(id, bulk) {
   // if bulk, don't change cookie/hash (from beginning)
   let thisClass = classSchedObj[0][id]
   if (thisClass != null) {
-    // Add highlight, if has 
     // we'd love to use event.setProp but it doesn't seem to rerender so we remove event and add it back w/ right colors
-    fullCalendar.getEventById(id).remove()
+    fullCalendar.getEventSourceById(id).remove()
+    let source = {id: id, events: []}
     let newEvent = {...thisClass}
     newEvent.daysOfWeek = thisClass.dow
     newEvent.startTime = thisClass.start
     newEvent.endTime = thisClass.end
-    if (!thisClass.highlighted) {
-      newEvent.backgroundColor = highlightEventColor
-      newEvent.borderColor = highlightEventColor
-      newEvent.textColor = '#222'
-    } else {
-      newEvent.backgroundColor = normalEventColor
+    source.events.push(newEvent)
+    if (thisClass.multiTime != null) {
+      let multiEvent = {...thisClass.multiTime}
+      multiEvent.daysOfWeek = thisClass.multiTime.dow
+      multiEvent.startTime = thisClass.multiTime.start
+      multiEvent.endTime = thisClass.multiTime.end
+      source.events.push(multiEvent)
     }
-    fullCalendar.addEvent(newEvent)
+    if (!thisClass.highlighted) {
+      source.backgroundColor = highlightEventColor
+      source.borderColor = highlightEventColor
+      source.textColor = '#222'
+    } else {
+      source.backgroundColor = normalEventColor
+    }
+
+    fullCalendar.addEventSource(source)
   } else {
     // Has no time
     thisClass = classSchedObj[1][id]
