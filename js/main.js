@@ -30,21 +30,12 @@ const SCOPES = 'https://www.googleapis.com/auth/calendar https://www.googleapis.
 let authorized = false
 // Needs to be global so can i.e. search from the window location hash
 let hackerList
-let fullCal
+let fullCalendar
 // Needs to be global so hacker list can tell when classes do not fit
 // TODO too long?
 const daysTimesRanges = [[], [], [], [], [], [], [], []]
 
 const startSemDate = new Date(startSemesterTime)
-/* TODO add holidays manually
-   var exceptionDays = "";
-   var i = -1;
-   for(var q = startSemDate.getUTCDay()-1; q>=1;q--){
-   exceptionDays+=toDateStr(addDay(startSemDate,i))+",";
-   i--;
-   }
-   exceptionDays = exceptionDays.substring(0,exceptionDays.length-1);
- */
 const quotes = ['The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr', 'It always seems impossible until it is done\n - Nelson Mandela', 'Education is what survives when what has been learned has been forgotten.\n - BF Skinner', 'Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein', 'No pressure, no diamonds\n - Thomas Carlyle', "One kind word can change someone's entire day", 'When nothing goes right ...  go left']
 const normalEventColor = '#31425F'
 const highlightEventColor = '#6bec69'
@@ -83,55 +74,54 @@ function initList(tableArr) {
   }
 }
 
+let maximumStartTime = '09:00:00'
+let minimumEndTime = '16:00:00'
+
 function initCalendar() {
   // page is now ready, initialize the calendar...
-  // Can use string comparison to compare because is 24 hour time
-  let minTime = '09:00:00'
-  let maxTime = '16:00:00'
-  fullCal = $('#calendar').fullCalendar({
-    // put your options and callbacks here
+  const calendarElement = document.getElementById('calendar')
+
+  fullCalendar = new FullCalendar.Calendar(calendarElement, {
     height: 'auto',
-    minTime: minTime,
-    maxTime: maxTime,
+    slotMinTime: maximumStartTime,
+    slotMaxTime: minimumEndTime,
     weekends: false,
     allDaySlot: false,
-    // Don't want a header (title, today, etc buttons)
-    header: false,
-    columnFormat: 'dddd',
-    defaultView: 'agendaWeek',
+    headerToolbar: false,
+    dayHeaderFormat: {weekday: 'long'},
+    initialView: 'timeGridWeek',
     editable: false,
     eventColor: normalEventColor,
-    eventAfterAllRender: function (view) {
-      const events = $('#calendar').fullCalendar('clientEvents')
-      let newMinTime = minTime
-      let newMaxTime = maxTime
-      // TODO weekend?
-      for (const i in events) {
-        // Can use string comparison natively
-        if (events[i].start.format('HH:mm:ss') < newMinTime) {
-          newMinTime = events[i].start.format('HH:mm:ss')
-        }
-        if (events[i].end.format('HH:mm:ss') > newMaxTime) {
-          newMaxTime = events[i].end.format('HH:mm:ss')
-        }
-      }
-      if (newMinTime !== minTime) {
-        minTime = newMinTime
-        $('#calendar').fullCalendar('option', {
-          minTime: minTime
-        })
-      }
-      if (newMaxTime !== maxTime) {
-        maxTime = newMaxTime
-        $('#calendar').fullCalendar('option', {
-          maxTime: maxTime
-        })
-      }
-    },
-    eventRender: function (event, element) {
-      element[0].children[0].children[1].innerHTML = '<b>' + event.subj + ' ' + event.numSec + '</b>: ' + event.c_title
+    eventContent: function(arg) {
+      const props = arg.event.extendedProps
+      // need the split since multitime objects have both times in props.time, making everything ugly
+      const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
+      return {html: '<div class="fc-event-main-frame"><div class="fc-event-time">' + time +
+        '</div><div class="fc-event-title-container"><div class="fc-event-title fc-sticky"><b>' + props.subj +
+        ' ' + props.numSec + '</b>: ' + props.c_title + "</div></div></div>"}
     }
   })
+  fullCalendar.render()
+}
+
+function updateSlotTimes() {
+  const events = fullCalendar.getEvents()
+  let minTime = maximumStartTime
+  let maxTime = minimumEndTime
+  for (const i in events) {
+    // Can use string comparison to compare because is 24 hour time
+    const evnt = events[i]
+    const start = evnt.start.toTimeString().split(' ')[0]
+    const end = evnt.end.toTimeString().split(' ')[0]
+    if (start < minTime) {
+      minTime = start
+    }
+    if (end > maxTime) {
+      maxTime = end
+    }
+  }
+  fullCalendar.setOption('slotMinTime', minTime)
+  fullCalendar.setOption('slotMaxTime', maxTime)
 }
 
 function selectClass(id, bulk) {
@@ -143,17 +133,20 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
+      let newEvent = {...thisClass}
+      newEvent.daysOfWeek = thisClass.dow
+      newEvent.startTime = thisClass.start
+      newEvent.endTime = thisClass.end
+      let source = {id: id, events: [newEvent]}
       if (thisClass.multiTime != null) {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass, thisClass.multiTime]
-        })
-      } else {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass]
-        })
+        let multiEvent = {...thisClass.multiTime}
+        multiEvent.daysOfWeek = thisClass.multiTime.dow
+        multiEvent.startTime = thisClass.multiTime.start
+        multiEvent.endTime = thisClass.multiTime.end
+        source.events.push(multiEvent)
       }
+      fullCalendar.addEventSource(source)
+      updateSlotTimes()
     }
 
     selectedClasses.push(id)
@@ -162,8 +155,9 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
-      $('#calendar').fullCalendar('removeEventSource', id)
+      fullCalendar.getEventSourceById(id).remove()
       thisClass.highlighted = false
+      updateSlotTimes()
     }
 
     selectedClasses.splice(selectedClasses.indexOf(id), 1)
@@ -176,7 +170,6 @@ function selectClass(id, bulk) {
     if (!bulk) {
       for (const item in hackerList.items) {
         if (parseInt(hackerList.items[item].values().id) === id) {
-          console.log('FOUND IT ' + item)
           hackerList.items[item].elm.children[0].children[0].children[0].checked = false
           hackerList.items[item].elm.classList.remove('trHigh')
         }
@@ -230,10 +223,7 @@ function loadInitURL() {
     if (hashClasses.indexOf(hackerList.items[item].values().id) !== -1) {
       // Check the checkbox for this list item, doesn't call the callback
       // because, for now, nothing is shown (just startup)
-      console.log(item)
       hackerList.items[item].elm.children[0].children[0].children[0].checked = true
-      // TODO don't update hash values for these bc wasteful
-      // TODO don't update rightcol, do it afterward
       hackerList.items[item].elm.classList.add('trHigh')
       hackerList.items[item].elm.children[0].children[0].children[0].checked = true
       selectClass(parseInt(hackerList.items[item].values().id), true)
@@ -308,7 +298,6 @@ $.getJSON(schedule_json, function (data) {
   for (let i = 0; i <= 1; i++) {
     for (const z in classSchedObj[i]) {
       const id = classSchedObj[i][z].id
-      // classSchedObj[i][z].idCopy = id;
       // TODO what should the ADA label be?
       classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + ' ' + classSchedObj[i][z].subj + classSchedObj[i][z].numSec
       // In multipleTimes so add below the main item
@@ -336,7 +325,6 @@ $.getJSON(schedule_json, function (data) {
     // Make sure is new style URL and is for this term
     // TODO be able to look at previous semesters?
     // If old style or for old term, clear hash
-
     loadInitURL()
   } else {
     loadInitCookie()
@@ -347,37 +335,30 @@ function highlightClass(id, bulk) {
   // if bulk, don't change cookie/hash (from beginning)
   let thisClass = classSchedObj[0][id]
   if (thisClass != null) {
-    // Add highlight, if has time
-    $('#calendar').fullCalendar('removeEventSource', id)
-    if (!thisClass.highlighted) {
-      if (thisClass.multiTime != null) {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          color: highlightEventColor,
-          textColor: '#222',
-          events: [thisClass, thisClass.multiTime]
-        })
-      } else {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          color: highlightEventColor,
-          textColor: '#222',
-          events: [thisClass]
-        })
-      }
-    } else {
-      if (thisClass.multiTime != null) {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass, thisClass.multiTime]
-        })
-      } else {
-        $('#calendar').fullCalendar('addEventSource', {
-          id: id,
-          events: [thisClass]
-        })
-      }
+    // we'd love to use event.setProp but it doesn't seem to rerender so we remove event and add it back w/ right colors
+    fullCalendar.getEventSourceById(id).remove()
+    let source = {id: id, events: []}
+    let newEvent = {...thisClass}
+    newEvent.daysOfWeek = thisClass.dow
+    newEvent.startTime = thisClass.start
+    newEvent.endTime = thisClass.end
+    source.events.push(newEvent)
+    if (thisClass.multiTime != null) {
+      let multiEvent = {...thisClass.multiTime}
+      multiEvent.daysOfWeek = thisClass.multiTime.dow
+      multiEvent.startTime = thisClass.multiTime.start
+      multiEvent.endTime = thisClass.multiTime.end
+      source.events.push(multiEvent)
     }
+    if (!thisClass.highlighted) {
+      source.backgroundColor = highlightEventColor
+      source.borderColor = highlightEventColor
+      source.textColor = '#222'
+    } else {
+      source.backgroundColor = normalEventColor
+    }
+
+    fullCalendar.addEventSource(source)
   } else {
     // Has no time
     thisClass = classSchedObj[1][id]
@@ -385,7 +366,7 @@ function highlightClass(id, bulk) {
   if (thisClass != null) {
     thisClass.highlighted = !thisClass.highlighted
   }
-
+  
   if (!bulk) {
     updateHashCookie()
     reloadRightCol()
@@ -452,8 +433,8 @@ function reloadRightCol() {
   } else {
     $('#rightCol').removeClass('multiCol')
   }
-  $('.icon-brush').click(highlightCallback)
-  $('.icon-trash-1').click(trashCallback)
+  $('.icon-brush').on("click", highlightCallback)
+  $('.icon-trash-1').on("click", trashCallback)
 }
 
 function getReadyForExport() {
@@ -700,9 +681,9 @@ function initClient () {
         })
       }
     }, function (error) {
-      console.log(error)
+      console.error(error)
     }).catch(function (e) {
-      console.log(e)
+      console.error(e)
     })
   console.log('attaching')
   attachSignin()
@@ -716,7 +697,7 @@ function attachSignin () {
     function (googleUser) {
       updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
     }, function (error) {
-      console.log(JSON.stringify(error, undefined, 2))
+      console.error(JSON.stringify(error, undefined, 2))
     })
 }
 
@@ -765,7 +746,7 @@ function handleClientLoad () {
 function toggleCal() {
   $('#calContainer').slideToggle('slow', function () {
     setTimeout(function () {
-      $('#calendar').fullCalendar('rerenderEvents')
+      fullCalendar.render()
     }, 200)
   })
 }
@@ -847,7 +828,7 @@ function doesFit(item) {
     start = parseInt(item.values().start.replace(':', ''))
     end = parseInt(item.values().end.replace(':', ''))
   } catch (e) {
-    console.log('ERROR IN DOES FIT: ' + e)
+    console.error('ERROR IN DOES FIT: ' + e)
     return false
   }
   for (const dowIndex in dow) {

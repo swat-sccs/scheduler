@@ -17,7 +17,7 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.min.css">
+    <link rel="stylesheet" href="node_modules/fullcalendar/main.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
     <!--Facebook-->
@@ -30,8 +30,8 @@
 </head>
 <body>
     <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
     <div id="container">
         <header>
             <div class="headFoot" id="header">
@@ -100,10 +100,6 @@
                             <label class="visuallyhidden" for="search">Search for Classes</label>
                         </div>
                         <div class="shadow hideClass" id="classTable">
-                            <!-- Sort is confusing and clutters
-                                <button class="sort" data-sort="ref">Sort by Reference</button>
-                                <button class="sort" data-sort="subj">Sort by Subject</button>
-                            -->
                             <table id="classResultsTable" class="fullWidth">
                                 <thead>
                                     <tr>
@@ -151,24 +147,13 @@
             </div>
         </div>
     </div>
-    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="js/vendor/micromodal.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/js-cookie/src/js.cookie.js"></script>
+    <script src="node_modules/micromodal/dist/micromodal.min.js"></script>
     <script src="node_modules/moment/min/moment.min.js"></script>
-    <script src="node_modules/fullcalendar/dist/fullcalendar.min.js"></script>
-    <script src="js/list.js"></script>
+    <script src="node_modules/fullcalendar/main.min.js"></script>
+    <script src="node_modules/list.js/dist/list.js"></script>
     <script src="js/main.js"></script>
-    <script src="https://apis.google.com/js/api:client.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9KGTZZ9S07"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-9KGTZZ9S07');
-    </script>
+    <script src="https://apis.google.com/js/api:client.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
 </body>
 </html>
