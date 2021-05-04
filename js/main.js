@@ -1,12 +1,17 @@
-import {term, termSubtitle, scheduleJSON} from './constants'
-import {handleClientLoad, handleSignoutClick, isAuthorized} from './googleClient'
-import {exportToGoogle} from './googleCalendar'
+import '../css/normalize.css'
+import '../css/main.css'
+
 import $ from 'jquery'
 import Cookies from 'js-cookie'
 import MicroModal from 'micromodal'
 import List from 'list.js'
 import {Calendar} from '@fullcalendar/core'
 import timeGridPlugin from '@fullcalendar/timegrid'
+
+import {term, termSubtitle, scheduleJSON} from './constants'
+import {handleClientLoad, handleSignoutClick, isAuthorized} from './googleClient'
+import {exportToGoogle} from './googleCalendar'
+
 
 let selectedClasses = []
 let classSchedObj
