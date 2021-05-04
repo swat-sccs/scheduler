@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="toggleCal" onclick="toggleCal()">Toggle Calendar</button>
+                <button id="toggleCal">Toggle Calendar</button>
                 <div class="shadow" id="class_and_clear">
                     <div class="large_inline" id="rightCol_par">
                         <!--Also change in js-->
@@ -84,14 +84,13 @@
                                 </div>
                             </div>
                             <div id="isAuthorized" style="display: none">
-                                <button id="export-button" class="sharp" onclick="getReadyForExport()">Export Events to GCal</button>
-                                <button class="likeLink" id="signout-button" onclick="handleSignoutClick()">Sign Out</button>
+                                <button id="export-button" class="sharp">Export Events to GCal</button>
+                                <button id="signout-button" class="likeLink">Sign Out</button>
                             </div>
                         </div>
                     </div>
                     <br>
                     <hr>
-                    <div id="sayHi"></div>
                 </div>
                 <div id="hacker-list">
                     <div class="middleCol">
@@ -147,13 +146,6 @@
             </div>
         </div>
     </div>
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/js-cookie/src/js.cookie.js"></script>
-    <script src="node_modules/micromodal/dist/micromodal.min.js"></script>
-    <script src="node_modules/moment/min/moment.min.js"></script>
-    <script src="node_modules/fullcalendar/main.min.js"></script>
-    <script src="node_modules/list.js/dist/list.js"></script>
-    <script src="js/main.js"></script>
-    <script src="https://apis.google.com/js/api:client.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+    <script src="dist/main.js"></script>
 </body>
 </html>
