@@ -18,9 +18,6 @@ let classSchedObj
 // Needs to be global so can i.e. search from the window location hash
 let hackerList
 let fullCalendar
-// Needs to be global so hacker list can tell when classes do not fit
-// TODO too long?
-const daysTimesRanges = [[], [], [], [], [], [], [], []]
 const normalEventColor = '#31425F'
 const highlightEventColor = '#6bec69'
 
@@ -117,17 +114,9 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
-      let newEvent = {...thisClass}
-      newEvent.daysOfWeek = thisClass.dow
-      newEvent.startTime = thisClass.start
-      newEvent.endTime = thisClass.end
-      let source = {id: id, events: [newEvent]}
+      let source = {id: id, events: [createEventFromClass(thisClass)]}
       if (thisClass.multiTime != null) {
-        let multiEvent = {...thisClass.multiTime}
-        multiEvent.daysOfWeek = thisClass.multiTime.dow
-        multiEvent.startTime = thisClass.multiTime.start
-        multiEvent.endTime = thisClass.multiTime.end
-        source.events.push(multiEvent)
+        source.events.push(createEventFromClass(thisClass.multiTime))
       }
       fullCalendar.addEventSource(source)
       updateSlotTimes()
@@ -161,7 +150,6 @@ function selectClass(id, bulk) {
     }
   }
   if (!bulk) {
-    // generateDayTimeRanges();
     reloadRightCol()
     updateHashCookie()
   }
@@ -208,7 +196,6 @@ function loadInitURL() {
   }
   reloadRightCol()
   updateHashCookie()
-  // TODO generateDayTimeRanges();
 }
 
 function loadInitCookie() {
@@ -219,10 +206,6 @@ function loadInitCookie() {
     window.location.hash = cookieStr
     loadInitURL()
   }
-}
-
-// TODO
-function urlChangeHandler() {
 }
 
 function setHash(hash) {
@@ -271,24 +254,23 @@ function setGoogleScript() {
   document.body.appendChild(googleAPI)
 }
 
+function createEventFromClass(classObj) {
+    let newEvent = {...classObj}
+    newEvent.daysOfWeek = classObj.dow
+    newEvent.startTime = classObj.start
+    newEvent.endTime = classObj.end
+    return newEvent
+}
+
 function highlightClass(id, bulk) {
   // if bulk, don't change cookie/hash (from beginning)
   let thisClass = classSchedObj[0][id]
   if (thisClass != null) {
     // we'd love to use event.setProp but it doesn't seem to rerender so we remove event and add it back w/ right colors
     fullCalendar.getEventSourceById(id).remove()
-    let source = {id: id, events: []}
-    let newEvent = {...thisClass}
-    newEvent.daysOfWeek = thisClass.dow
-    newEvent.startTime = thisClass.start
-    newEvent.endTime = thisClass.end
-    source.events.push(newEvent)
+    let source = {id: id, events: [createEventFromClass(thisClass)]}
     if (thisClass.multiTime != null) {
-      let multiEvent = {...thisClass.multiTime}
-      multiEvent.daysOfWeek = thisClass.multiTime.dow
-      multiEvent.startTime = thisClass.multiTime.start
-      multiEvent.endTime = thisClass.multiTime.end
-      source.events.push(multiEvent)
+      source.events.push(createEventFromClass(thisClass.multiTime))
     }
     if (!thisClass.highlighted) {
       source.backgroundColor = highlightEventColor
@@ -419,21 +401,6 @@ function clearAll() {
   selectedClasses = []
   reloadRightCol()
   updateHashCookie()
-  // TODO generateDayTimeRanges();
-}
-
-function generateDayTimeRanges() {
-  // aray with 5 buckets (M-F), with range of times CAN NOT do
-  // Want empty start because makes 1 off incides much cleaner
-  for (let j = 0; j < 2; j++) {
-    for (const i in allAddedClassObj[j]) {
-      const dow = JSON.parse(allAddedClassObj[j][i].dow)
-      const startEnd = [parseInt(allAddedClassObj[0][i].start.replace(':', '')), parseInt(allAddedClassObj[0][i].end.replace(':', ''))]
-      for (const d in dow) {
-        daysTimesRanges[dow[d]].push(startEnd)
-      }
-    }
-  }
 }
 
 initCalendar()
