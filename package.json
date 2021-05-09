@@ -7,18 +7,27 @@
   "author": "SCCS Staff <staff@sccs.swarthmore.edu",
   "license": "MIT",
   "dependencies": {
-    "fullcalendar": "^5.6.0",
+    "@fullcalendar/core": "^5.6.0",
+    "@fullcalendar/timegrid": "^5.6.0",
     "jquery": "^3.6.0",
     "js-cookie": "^2.2.1",
     "list.js": "^2.3.1",
     "micromodal": "^0.4.6",
-    "moment": "^2.29.1",
     "patch-package": "^6.4.7"
   },
   "dependencyComments": {
     "list.js": "We want a one line change so the entire list doesn't show when there's nothing in the searchbox. We apply this using patch-package on npm installs. See folder patches/ for details"
   },
   "scripts": {
+    "build": "webpack --mode=production",
     "postinstall": "patch-package"
+  },
+  "devDependencies": {
+    "css-loader": "^5.2.4",
+    "css-minimizer-webpack-plugin": "^2.0.0",
+    "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^1.6.0",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0"
   }
 }

@@ -1,42 +1,23 @@
-// TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
-/* UPDATE NEW SEMESTER section */
-// helps gCal disambiguate each semester's events so can delete only the newest semeter if change schedule
-const term = 'fall21'
-const termSubtitle = 'Fall 2021' // used as text for #semester-subtitle in index.html
+import '../css/normalize.css'
+import '../css/main.css'
 
-// Tricoschedule may not be updated when the schedule first comes out
-// If this is the case, use the xls scraped
-const schedule_json = 'js/trico_scraped.json'
-// const schedule_json = 'js/xls_scraped.json'
+import $ from 'jquery'
+import Cookies from 'js-cookie'
+import MicroModal from 'micromodal'
+import List from 'list.js'
+import {Calendar} from '@fullcalendar/core'
+import timeGridPlugin from '@fullcalendar/timegrid'
 
-// Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
-// month number are 0 indexed! so -1
-// test in javascript console by doing `new Date(... below ...)`
-const startSemesterTime = Date.UTC(2021, 7, 30, 0, 0, 0)
+import {term, termSubtitle, scheduleJSON} from './constants'
+import {handleClientLoad, handleSignoutClick, isAuthorized} from './googleClient'
+import {exportToGoogle} from './googleCalendar'
 
-// Just change the part before "T" as normal, not 0 indexed
-// Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
-// TODO known issue with timezones (Z is UTC) for late running events on the last day
-const endSemesterISO = '20211218T235959Z'
-
-/* end UPDATE NEW SEMESTER section */
 
 let selectedClasses = []
 let classSchedObj
-const CLIENT_ID = '67188111758-2l0sr7lpabrkbpbc7nen9ktnk5u71oc3.apps.googleusercontent.com'
-const API_KEY = '3q3gVoDEjU8KVeTKBAxAGnyF'
-// Can't be readonly scope because needs to be able to create cals and change events
-const SCOPES = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly'
-let authorized = false
 // Needs to be global so can i.e. search from the window location hash
 let hackerList
 let fullCalendar
-// Needs to be global so hacker list can tell when classes do not fit
-// TODO too long?
-const daysTimesRanges = [[], [], [], [], [], [], [], []]
-
-const startSemDate = new Date(startSemesterTime)
-const quotes = ['The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr', 'It always seems impossible until it is done\n - Nelson Mandela', 'Education is what survives when what has been learned has been forgotten.\n - BF Skinner', 'Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein', 'No pressure, no diamonds\n - Thomas Carlyle', "One kind word can change someone's entire day", 'When nothing goes right ...  go left']
 const normalEventColor = '#31425F'
 const highlightEventColor = '#6bec69'
 
@@ -80,9 +61,9 @@ let minimumEndTime = '16:00:00'
 function initCalendar() {
   // page is now ready, initialize the calendar...
   const calendarElement = document.getElementById('calendar')
-
-  fullCalendar = new FullCalendar.Calendar(calendarElement, {
+  fullCalendar = new Calendar(calendarElement, {
     height: 'auto',
+    plugins: [timeGridPlugin],
     slotMinTime: maximumStartTime,
     slotMaxTime: minimumEndTime,
     weekends: false,
@@ -133,17 +114,9 @@ function selectClass(id, bulk) {
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
-      let newEvent = {...thisClass}
-      newEvent.daysOfWeek = thisClass.dow
-      newEvent.startTime = thisClass.start
-      newEvent.endTime = thisClass.end
-      let source = {id: id, events: [newEvent]}
+      let source = {id: id, events: [createEventFromClass(thisClass)]}
       if (thisClass.multiTime != null) {
-        let multiEvent = {...thisClass.multiTime}
-        multiEvent.daysOfWeek = thisClass.multiTime.dow
-        multiEvent.startTime = thisClass.multiTime.start
-        multiEvent.endTime = thisClass.multiTime.end
-        source.events.push(multiEvent)
+        source.events.push(createEventFromClass(thisClass.multiTime))
       }
       fullCalendar.addEventSource(source)
       updateSlotTimes()
@@ -177,7 +150,6 @@ function selectClass(id, bulk) {
     }
   }
   if (!bulk) {
-    // generateDayTimeRanges();
     reloadRightCol()
     updateHashCookie()
   }
@@ -188,16 +160,6 @@ function rowClickHandler(event) {
   event.currentTarget.querySelector('input').checked = true
   event.currentTarget.classList.add('trHigh')
   selectClass(classID, false)
-}
-
-function rowCheckboxHandler(event) {
-  // never called but might be needed for some browsers
-  const classID = parseInt(event.currentTarget.id)
-
-  selectClass(classID, false)
-  // Stop DOM bubbling up to hit rowClickHandler event (will be
-  // caught by its if statement but simplifies logic)
-  event.stopPropagation()
 }
 
 function loadInitURL() {
@@ -234,7 +196,6 @@ function loadInitURL() {
   }
   reloadRightCol()
   updateHashCookie()
-  // TODO generateDayTimeRanges();
 }
 
 function loadInitCookie() {
@@ -245,10 +206,6 @@ function loadInitCookie() {
     window.location.hash = cookieStr
     loadInitURL()
   }
-}
-
-// TODO
-function urlChangeHandler() {
 }
 
 function setHash(hash) {
@@ -282,54 +239,28 @@ function updateHashCookie() {
   Cookies.set('classes', hashStr, { expires: 365 })
 }
 
-initCalendar()
+function setupEventListeners() {
+  document.getElementById('export-button').addEventListener('click', getReadyForExport)
+  document.getElementById('signout-button').addEventListener('click', handleSignoutClick)
+  document.getElementById('toggleCal').addEventListener('click', toggleCal)
+}
 
-MicroModal.init()
+// would like this script to be in the html directly but the onload is tricky
+// due to module, the functions aren't global and can't be called from the html directly
+function setGoogleScript() {
+  const googleAPI = document.createElement('script')
+  googleAPI.setAttribute('src', 'https://apis.google.com/js/api:client.js')
+  googleAPI.onload = handleClientLoad
+  document.body.appendChild(googleAPI)
+}
 
-document.getElementById('semester-subtitle').textContent = termSubtitle
-
-$.getJSON(schedule_json, function (data) {
-  // classSchedObj from included schedule.js file (made with `doAll` in folder)
-  // classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
-  classSchedObj = data
-  const tableArr = []
-
-  // Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
-  for (let i = 0; i <= 1; i++) {
-    for (const z in classSchedObj[i]) {
-      const id = classSchedObj[i][z].id
-      // TODO what should the ADA label be?
-      classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + ' ' + classSchedObj[i][z].subj + classSchedObj[i][z].numSec
-      // In multipleTimes so add below the main item
-
-      classSchedObj[i][z].multipleTimes = null
-      classSchedObj[i][z].highlighted = false
-      classSchedObj[i][z].title = classSchedObj[i][z].subj + ' ' + classSchedObj[i][z].numSec + ': ' + classSchedObj[i][z].c_title
-
-      if (id in classSchedObj[2]) {
-        classSchedObj[i][z].days += '<br>' + classSchedObj[2][id].days
-        classSchedObj[i][z].time += '<br>' + classSchedObj[2][id].time
-
-        classSchedObj[i][z].multiTime = classSchedObj[2][id]
-        // Needed for calendar to know how to delete
-        classSchedObj[i][z].multiTime.id += 'extra'
-        classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
-      }
-      tableArr.push(classSchedObj[i][z])
-    }
-  }
-
-  initList(tableArr)
-  // Prioritize URL over cookie
-  if (window.location.hash !== '') {
-    // Make sure is new style URL and is for this term
-    // TODO be able to look at previous semesters?
-    // If old style or for old term, clear hash
-    loadInitURL()
-  } else {
-    loadInitCookie()
-  }
-})
+function createEventFromClass(classObj) {
+    let newEvent = {...classObj}
+    newEvent.daysOfWeek = classObj.dow
+    newEvent.startTime = classObj.start
+    newEvent.endTime = classObj.end
+    return newEvent
+}
 
 function highlightClass(id, bulk) {
   // if bulk, don't change cookie/hash (from beginning)
@@ -337,18 +268,9 @@ function highlightClass(id, bulk) {
   if (thisClass != null) {
     // we'd love to use event.setProp but it doesn't seem to rerender so we remove event and add it back w/ right colors
     fullCalendar.getEventSourceById(id).remove()
-    let source = {id: id, events: []}
-    let newEvent = {...thisClass}
-    newEvent.daysOfWeek = thisClass.dow
-    newEvent.startTime = thisClass.start
-    newEvent.endTime = thisClass.end
-    source.events.push(newEvent)
+    let source = {id: id, events: [createEventFromClass(thisClass)]}
     if (thisClass.multiTime != null) {
-      let multiEvent = {...thisClass.multiTime}
-      multiEvent.daysOfWeek = thisClass.multiTime.dow
-      multiEvent.startTime = thisClass.multiTime.start
-      multiEvent.endTime = thisClass.multiTime.end
-      source.events.push(multiEvent)
+      source.events.push(createEventFromClass(thisClass.multiTime))
     }
     if (!thisClass.highlighted) {
       source.backgroundColor = highlightEventColor
@@ -439,308 +361,10 @@ function reloadRightCol() {
 
 function getReadyForExport() {
   // Show either log out or authorize
-  if (authorized) {
+  if (isAuthorized) {
     // Already authorized, can go right in
-    exportToGoogle()
+    exportToGoogle(classSchedObj, selectedClasses)
   }
-}
-
-function exportToGoogle() {
-  // Only export all events, not highlighted
-
-  // Keep track of what classes have no time (so not exported) so can show in modal
-  const noTimeClasses = []
-
-  const events = []
-  for (let i = 0; i < selectedClasses.length; i++) {
-    let thisClass = classSchedObj[0][selectedClasses[i]]
-    // This class doesn't have a time
-    if (thisClass == null) {
-      // Try the no_times category and, if find one, add to noTimeClasses
-      thisClass = classSchedObj[1][selectedClasses[i]]
-      if (thisClass != null) {
-        noTimeClasses.push(thisClass.title)
-      }
-      // either way, don't export
-      continue
-    }
-    // need to make a new Obj each time bc will overwrite with set hour
-    const startTime = thisClass.start
-    const endTime = thisClass.end
-    const dow = JSON.parse(thisClass.dow).sort()
-    console.log(dow)
-    let startDate = new Date(startSemesterTime)
-    let endDate = new Date(startSemesterTime)
-    console.log(thisClass.title)
-    console.log(endDate.getUTCDay())
-    console.log(dow[0])
-    let dowWanted = false
-    for (let w = 0; w < dow.length; w++) {
-      if (endDate.getUTCDay() <= dow[w]) {
-        dowWanted = dow[w]
-        break
-      }
-    }
-    if (dowWanted === false) {
-      dowWanted = 7 + dow[0]
-    }
-    startDate = addDay(startDate, -endDate.getUTCDay() + dowWanted)
-    endDate = addDay(endDate, -endDate.getUTCDay() + dowWanted)
-    const startDateISO = totruncateISOString(startDate) + 'T' + startTime + ':00'
-    const endDateISO = totruncateISOString(endDate) + 'T' + endTime + ':00'
-
-    const byDayRepeatArr = []
-    const daysArr = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
-    for (const z in dow) {
-      byDayRepeatArr.push(daysArr[dow[z]])
-    }
-    const ByDayRepeat = byDayRepeatArr.join(',')
-    console.log(ByDayRepeat)
-    let thisComment = thisClass.comment
-    if (thisComment !== '') {
-      thisComment += '\n\n'
-    }
-    thisComment += '----\nAnd remember:\n' + randomQuote() + '\nEnjoy!'
-    events.push({
-      summary: thisClass.title,
-      location: thisClass.rm,
-      description: thisComment,
-      start: {
-        dateTime: startDateISO,
-        timeZone: 'America/New_York'
-      },
-      end: {
-        dateTime: endDateISO,
-        timeZone: 'America/New_York'
-      },
-      extendedProperties: {
-        private: {
-          sccsTerm: term
-        }
-      },
-      recurrence: [
-        'RRULE:FREQ=DAILY;BYDAY=' + ByDayRepeat + ';UNTIL=' + endSemesterISO
-      ]
-    })
-  }
-  console.log(events)
-  getSCCSCal(events, noTimeClasses)
-}
-
-function addDay(date, days) {
-  const dat = new Date(date.getTime())
-  dat.setDate(dat.getDate() + days)
-  return dat
-}
-
-function makeTest(id) {
-  const event = {
-    calendarId: id,
-    resource: {
-      summary: 'Google I/O 2015',
-      location: '800 Howard St., San Francisco, CA 94103',
-      description: 'A chance to hear more about Google\'s developer products.',
-      start: {
-        dateTime: '2017-01-13T21:21:11',
-        timeZone: 'America/New_York'
-      },
-      end: {
-        dateTime: '2017-01-13T21:21:11',
-        timeZone: 'America/New_York'
-      },
-      extendedProperties: {
-        private: {
-          sccsTerm: term
-        }
-      }
-    }
-  }
-  const makeTestReq = gapi.client.calendar.events.insert(event)
-  console.log('make test ')
-  makeTestReq.execute(function (resp) {
-    console.log(resp)
-  })
-}
-
-function twoDigits(value) {
-  return (value < 10 ? '0' : '') + value
-}
-
-function totruncateISOString(date) {
-  return date.getUTCFullYear() + '-' + twoDigits(date.getUTCMonth() + 1) + '-' + twoDigits(date.getUTCDate())
-};
-
-function toDateStr(date) {
-  return date.getUTCFullYear() + twoDigits(date.getUTCMonth() + 1) + twoDigits(date.getUTCDate())
-};
-
-function randomQuote() {
-  return quotes[Math.floor(Math.random() * quotes.length)]
-}
-
-function getSCCSCal(addEvents, noTimeClasses) {
-  const getCalsReq = gapi.client.calendar.calendarList.list()
-  getCalsReq.execute(function (resp) {
-    console.log('Get Cal List')
-    console.log(resp)
-    let needsNewCal = true
-    for (const i in resp.items) {
-      if (resp.items[i].summary === 'SCCS Class Schedule') {
-        needsNewCal = false
-        const sccsSchedCalId = resp.items[i].id
-        addToCal(sccsSchedCalId, addEvents, noTimeClasses)
-      }
-    }
-    if (needsNewCal) {
-      // needs to make new calendar
-      const makeNewCalReq = gapi.client.calendar.calendars.insert({
-        summary: 'SCCS Class Schedule'
-      })
-      makeNewCalReq.execute(function (resp) {
-        console.log('Make New Cal')
-        console.log(resp)
-        const sccsSchedCalId = resp.result.id
-        addToCal(sccsSchedCalId, addEvents, noTimeClasses)
-      })
-    }
-  })
-}
-
-const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
-const months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-function dateToString(d) {
-  return days[d.getUTCDay()] + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCDate() + ' ' + d.getUTCFullYear()
-}
-
-function addToCal(calId, addClass, noTimeClasses) {
-  console.log('calID: ' + calId)
-  const getEventsReq = gapi.client.calendar.events.list({
-    calendarId: calId,
-    maxResults: 2500,
-    privateExtendedProperty: 'sccsTerm=' + term
-  })
-  getEventsReq.execute(function (resp) {
-    const batch = gapi.client.newBatch()
-    const items = resp.items
-    for (const i in items) {
-      batch.add(gapi.client.calendar.events.delete({
-        calendarId: calId,
-        eventId: items[i].id
-      }))
-    }
-    for (const i in addClass) {
-      batch.add(gapi.client.calendar.events.insert({
-        calendarId: calId,
-        resource: addClass[i]
-      }))
-    }
-    console.log('delete batch')
-    batch.execute(function (resp) {
-      console.log('deleted')
-      const email = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-
-      let exportHtml = 'You now have a new calendar called <b>SCCS Class Schedule</b> in your ' + email + ' Google Calendar with events starting at the beginning of the semester (' + dateToString(startSemDate) + ').'
-      if (noTimeClasses.length !== 0) {
-        let classClasses = 'The following classes have no registered time so were not exported'
-        if (noTimeClasses.length === 1) {
-          classClasses = 'The following class has no registered time so was not exported'
-        }
-        exportHtml += '<br><br>' + classClasses + ':<ul>'
-        for (let i = 0; i < noTimeClasses.length; i++) {
-          exportHtml += '<li>' + noTimeClasses + '</li>'
-        }
-        exportHtml += '</ul>'
-      }
-      $('#export_text').html(exportHtml)
-      MicroModal.show('modal-export')
-    })
-  })
-}
-// https://developers.google.com/google-apps/calendar/quickstart/js
-/**
- *  On load, called to load the auth2 library and API client library.
- */
-/**
- *  Initializes the API client library and sets up sign-in state
- *  listeners.
- */
-function initClient () {
-  gapi.auth2.init({
-    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-    clientId: CLIENT_ID,
-    apiKey: API_KEY,
-    scope: SCOPES
-  })
-    .then(function (a) {
-      // Listen for sign-in state changes.
-      // gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-      // Handle the initial sign-in state.
-      if (a && !a.error) {
-        gapi.client.load('calendar', 'v3', () => {
-          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
-        })
-      }
-    }, function (error) {
-      console.error(error)
-    }).catch(function (e) {
-      console.error(e)
-    })
-  console.log('attaching')
-  attachSignin()
-}
-
-function attachSignin () {
-  console.log(gapi.auth2.getAuthInstance().isSignedIn.get())
-  updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
-  const element = document.getElementById('customGoogleBtn')
-  gapi.auth2.getAuthInstance().attachClickHandler(element, {},
-    function (googleUser) {
-      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
-    }, function (error) {
-      console.error(JSON.stringify(error, undefined, 2))
-    })
-}
-
-/**
- *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
- */
-function updateSigninStatus (isSignedIn) {
-  // Go from "loading gapis -> authorize"
-  const notAuthorizedDiv = document.getElementById('notAuthorized')
-  const isAuthorizedDiv = document.getElementById('isAuthorized')
-  if (isSignedIn) {
-    notAuthorizedDiv.style.display = 'none'
-    isAuthorizedDiv.style.display = 'block'
-    // Set global authorized so know (so that user doesn't have to sign in unless exporting)
-    authorized = true
-  } else {
-    /* wait for getReadyForExport so not too many buttons
-           notAuthorizedDiv.style.display = 'block';
-         */
-    notAuthorizedDiv.style.display = 'block'
-    isAuthorizedDiv.style.display = 'none'
-    authorized = false
-  }
-}
-/**
- *  Sign in the user upon button click.
- */
-function handleAuthClick(event) {
-  gapi.auth2.getAuthInstance().signIn()
-}
-/**
- *  Sign out the user upon button click.
- */
-function handleSignoutClick(event) {
-  gapi.auth2.getAuthInstance().signOut()
-}
-// Start from onLoad
-function handleClientLoad () {
-  // https://github.com/google/google-api-javascript-client/issues/265
-  gapi.load('auth2', function () {
-    initClient()
-  })
 }
 
 function toggleCal() {
@@ -749,13 +373,6 @@ function toggleCal() {
       fullCalendar.render()
     }, 200)
   })
-}
-
-function flashWhite() {
-  document.body.classList.add('flashWhite')
-  setTimeout(function () {
-    document.body.classList.remove('flashWhite')
-  }, 700)
 }
 
 function clearAll() {
@@ -784,60 +401,53 @@ function clearAll() {
   selectedClasses = []
   reloadRightCol()
   updateHashCookie()
-  // TODO generateDayTimeRanges();
 }
 
-function debounce(func, wait, immediate) {
-  let timeout
-  return function () {
-    const context = this
-    const args = arguments
-    const later = function () {
-      timeout = null
-      if (!immediate) func.apply(context, args)
-    }
-    const callNow = immediate && !timeout
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-    if (callNow) func.apply(context, args)
-  }
-};
+initCalendar()
+MicroModal.init()
+setGoogleScript()
+setupEventListeners()
+document.getElementById('semester-subtitle').textContent = termSubtitle
 
-function generateDayTimeRanges() {
-  // aray with 5 buckets (M-F), with range of times CAN NOT do
-  // Want empty start because makes 1 off incides much cleaner
-  // daysTimesRanges = [[], [], [], [], [], [], [], []];
-  for (let j = 0; j < 2; j++) {
-    for (const i in allAddedClassObj[j]) {
-      const dow = JSON.parse(allAddedClassObj[j][i].dow)
-      const startEnd = [parseInt(allAddedClassObj[0][i].start.replace(':', '')), parseInt(allAddedClassObj[0][i].end.replace(':', ''))]
-      for (const d in dow) {
-        daysTimesRanges[dow[d]].push(startEnd)
+$.getJSON(scheduleJSON, function(data) {
+  // classSchedObj from included schedule.js file (made with `doAll` in folder)
+  // classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
+  classSchedObj = data
+  const tableArr = []
+
+  // Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
+  for (let i = 0; i <= 1; i++) {
+    for (const z in classSchedObj[i]) {
+      const id = classSchedObj[i][z].id
+      // TODO what should the ADA label be?
+      classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + ' ' + classSchedObj[i][z].subj + classSchedObj[i][z].numSec
+      // In multipleTimes so add below the main item
+
+      classSchedObj[i][z].multipleTimes = null
+      classSchedObj[i][z].highlighted = false
+      classSchedObj[i][z].title = classSchedObj[i][z].subj + ' ' + classSchedObj[i][z].numSec + ': ' + classSchedObj[i][z].c_title
+
+      if (id in classSchedObj[2]) {
+        classSchedObj[i][z].days += '<br>' + classSchedObj[2][id].days
+        classSchedObj[i][z].time += '<br>' + classSchedObj[2][id].time
+
+        classSchedObj[i][z].multiTime = classSchedObj[2][id]
+        // Needed for calendar to know how to delete
+        classSchedObj[i][z].multiTime.id += 'extra'
+        classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
       }
+      tableArr.push(classSchedObj[i][z])
     }
   }
-}
 
-function doesFit(item) {
-  if (item.values().dow == null || item.values().start == null || item.values().end == null) {
-    return false
+  initList(tableArr)
+  // Prioritize URL over cookie
+  if (window.location.hash !== '') {
+    // Make sure is new style URL and is for this term
+    // TODO be able to look at previous semesters?
+    // If old style or for old term, clear hash
+    loadInitURL()
+  } else {
+    loadInitCookie()
   }
-  let dow, start, end
-  try {
-    dow = JSON.parse(item.values().dow)
-    start = parseInt(item.values().start.replace(':', ''))
-    end = parseInt(item.values().end.replace(':', ''))
-  } catch (e) {
-    console.error('ERROR IN DOES FIT: ' + e)
-    return false
-  }
-  for (const dowIndex in dow) {
-    const d = dow[dowIndex]
-    for (const r in daysTimesRanges[d]) {
-      if (start >= daysTimesRanges[d][r][0] && end <= daysTimesRanges[d][r][1]) {
-        return false
-      }
-    }
-  }
-  return true
-}
+})
