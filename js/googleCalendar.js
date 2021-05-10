@@ -1,6 +1,7 @@
 import MicroModal from 'micromodal'
+import $ from 'jquery'
 import {dateToString, addDay, totruncateISOString} from './dateHelpers'
-import {endSemesterISO, startSemesterTime} from './constants'
+import {term, endSemesterISO, startSemesterTime} from './constants'
 
 const quotes = ['The cure for boredom is curiosity. There is no cure for curiosity. \n -Ellen Parr', 'It always seems impossible until it is done\n - Nelson Mandela', 'Education is what survives when what has been learned has been forgotten.\n - BF Skinner', 'Everybody is a genius ... But, if you judge a fish by its ability to climb a tree, it will live its whole life believing it is stupid\n - Albert Einstein', 'No pressure, no diamonds\n - Thomas Carlyle', "One kind word can change someone's entire day", 'When nothing goes right ...  go left']
 

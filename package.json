@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "webpack --mode=production",
+    "devbuild": "webpack --mode=development",
     "postinstall": "patch-package"
   },
   "devDependencies": {

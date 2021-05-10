@@ -343,10 +343,11 @@ function reloadRightCol() {
   }
   if (html === '') {
     $('#clearAll_par').html('')
-    // Also change in HTML so loads immeditatley
+    // Also change in HTML so loads immediately
     $('#rightCol').html('Search for classes below to plan your schedule')
   } else {
-    $('#clearAll_par').html("<div id='clearClasses' onclick='clearAll()'><b>CLEAR<b></div>")
+    $('#clearAll_par').html('<div id="clearClasses"><b>CLEAR<b></div>')
+    $('#clearClasses').on('click', clearAll)
     $('#rightCol').html(html)
   }
 
@@ -355,8 +356,8 @@ function reloadRightCol() {
   } else {
     $('#rightCol').removeClass('multiCol')
   }
-  $('.icon-brush').on("click", highlightCallback)
-  $('.icon-trash-1').on("click", trashCallback)
+  $('.icon-brush').on('click', highlightCallback)
+  $('.icon-trash-1').on('click', trashCallback)
 }
 
 function getReadyForExport() {
