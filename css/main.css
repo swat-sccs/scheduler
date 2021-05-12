@@ -462,7 +462,6 @@ a:hover{
     z-index: 2;
 }
 
-
 .help-tip p{    /* The tooltip */
     display: none;
     text-align: left;
@@ -620,6 +619,15 @@ th{
 
 .list tr{
     cursor: pointer;
+}
+
+#calContainer {
+    transition: height .25s ease;
+    overflow: hidden;
+}
+
+#calContainer:not(.active) {
+    display: none;
 }
 
 #classResultsTable{
