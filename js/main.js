@@ -371,7 +371,8 @@ function getReadyForExport() {
  * on height change for the "toggle" effect. Unfortunately, transitions don't fire if
  * either the from or to height is "auto". If the container height is not auto, when active,
  * we can't expand how much of the calendar the user sees in response to adding say an 8:30pm
- * class. Thus, this workaround of setting height to auto after the transition to active.
+ * class. Thus, this workaround of setting height to auto after the transition to active and 
+ * setting to a specific height before the transition to non-active.
  *
  * It's unclear why we have to use setTimeout to set the container height to what we want.
  * As of 2021-05, it is necessary so that we see transitions (Firefox, Chrome).
