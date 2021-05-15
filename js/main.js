@@ -366,17 +366,28 @@ function getReadyForExport() {
   }
 }
 
+/*
+ * This func is a little odd. We use transitions (see main.css #calContainer)
+ * on height change for the "toggle" effect. Unfortunately, transitions don't fire if
+ * either the from or to height is "auto". If the container height is not auto, when active,
+ * we can't expand how much of the calendar the user sees in response to adding say an 8:30pm
+ * class. Thus, this workaround of setting height to auto after the transition to active.
+ *
+ * It's unclear why we have to use setTimeout to set the container height to what we want.
+ * As of 2021-05, it is necessary so that we see transitions (Firefox, Chrome).
+ */
 function toggleCal() {
   const container = document.getElementById('calContainer')
   if (container.classList.contains('active')) {
-    // would love to do this by a 'transitionend' listener but that doesn't seem to get fired...
-    setTimeout(() => container.classList.remove('active'), 300)
-    container.style.height = '0px'
+    container.style.height = container.clientHeight + 'px'
+    container.addEventListener('transitionend', () => container.classList.remove('active'), {once: true})
+    setTimeout(() => container.style.height = '0px', 0)
   } else {
     container.classList.add('active')
     container.style.height = 'auto'
     let height = container.clientHeight + 'px'
     container.style.height = '0px'
+    container.addEventListener('transitionend', () => container.style.height = 'auto', {once: true})
     setTimeout(() => container.style.height = height, 0)
   }
   fullCalendar.render()

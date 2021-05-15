@@ -622,7 +622,7 @@ th{
 }
 
 #calContainer {
-    transition: height .25s ease;
+    transition: height 250ms ease;
     overflow: hidden;
 }
 
