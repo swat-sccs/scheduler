@@ -1,5 +1,4 @@
 import MicroModal from 'micromodal'
-import $ from 'jquery'
 import {dateToString, addDay, totruncateISOString} from './dateHelpers'
 import {term, endSemesterISO, startSemesterTime} from './constants'
 
@@ -158,7 +157,7 @@ function addToCal(calId, addClass, noTimeClasses) {
         }
         exportHtml += '</ul>'
       }
-      $('#export_text').html(exportHtml)
+      document.getElementById('export_text').innerHTML = exportHtml
       MicroModal.show('modal-export')
     })
   })

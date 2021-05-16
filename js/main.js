@@ -1,7 +1,6 @@
 import '../css/normalize.css'
 import '../css/main.css'
 
-import $ from 'jquery'
 import Cookies from 'js-cookie'
 import MicroModal from 'micromodal'
 import List from 'list.js'
@@ -50,15 +49,14 @@ function initList(tableArr) {
       document.getElementById('search').classList.remove('searchMargin')
     }
   })
-  for (let i = 0; i < hackerList.items.length; i++) {
-    $(hackerList.items[i].elm).on('click', rowClickHandler)
-  }
+  hackerList.items.forEach(item => item.elm.onclick = rowClickHandler)
 }
 
 let maximumStartTime = '09:00:00'
 let minimumEndTime = '16:00:00'
 
 function initCalendar() {
+  document.getElementById('calContainer').classList.add('active')
   // page is now ready, initialize the calendar...
   const calendarElement = document.getElementById('calendar')
   fullCalendar = new Calendar(calendarElement, {
@@ -342,22 +340,22 @@ function reloadRightCol() {
     html += htmlObj[z].val
   }
   if (html === '') {
-    $('#clearAll_par').html('')
+    document.getElementById('clearAll_par').innerHTML = ''
     // Also change in HTML so loads immediately
-    $('#rightCol').html('Search for classes below to plan your schedule')
+    document.getElementById('rightCol').innerHTML = 'Search for classes below to plan your schedule'
   } else {
-    $('#clearAll_par').html('<div id="clearClasses"><b>CLEAR<b></div>')
-    $('#clearClasses').on('click', clearAll)
-    $('#rightCol').html(html)
+    document.getElementById('clearAll_par').innerHTML = '<div id="clearClasses"><b>CLEAR<b></div>'
+    document.getElementById('clearClasses').onclick = clearAll
+    document.getElementById('rightCol').innerHTML = html
   }
 
   if (htmlObj.length !== 0) {
-    $('#rightCol').addClass('multiCol')
+    document.getElementById('rightCol').classList.add('multiCol')
   } else {
-    $('#rightCol').removeClass('multiCol')
+    document.getElementById('rightCol').classList.remove('multiCol')
   }
-  $('.icon-brush').on('click', highlightCallback)
-  $('.icon-trash-1').on('click', trashCallback)
+  document.querySelectorAll('.icon-brush').forEach(el => el.onclick = highlightCallback)
+  document.querySelectorAll('.icon-trash-1').forEach(el => el.onclick = trashCallback)
 }
 
 function getReadyForExport() {
@@ -368,12 +366,32 @@ function getReadyForExport() {
   }
 }
 
+/*
+ * This func is a little odd. We use transitions (see main.css #calContainer)
+ * on height change for the "toggle" effect. Unfortunately, transitions don't fire if
+ * either the from or to height is "auto". If the container height is not auto, when active,
+ * we can't expand how much of the calendar the user sees in response to adding say an 8:30pm
+ * class. Thus, this workaround of setting height to auto after the transition to active and 
+ * setting to a specific height before the transition to non-active.
+ *
+ * It's unclear why we have to use setTimeout to set the container height to what we want.
+ * As of 2021-05, it is necessary so that we see transitions (Firefox, Chrome).
+ */
 function toggleCal() {
-  $('#calContainer').slideToggle('slow', function () {
-    setTimeout(function () {
-      fullCalendar.render()
-    }, 200)
-  })
+  const container = document.getElementById('calContainer')
+  if (container.classList.contains('active')) {
+    container.style.height = container.clientHeight + 'px'
+    container.addEventListener('transitionend', () => container.classList.remove('active'), {once: true})
+    setTimeout(() => container.style.height = '0px', 0)
+  } else {
+    container.classList.add('active')
+    container.style.height = 'auto'
+    let height = container.clientHeight + 'px'
+    container.style.height = '0px'
+    container.addEventListener('transitionend', () => container.style.height = 'auto', {once: true})
+    setTimeout(() => container.style.height = height, 0)
+  }
+  fullCalendar.render()
 }
 
 function clearAll() {
@@ -410,45 +428,51 @@ setGoogleScript()
 setupEventListeners()
 document.getElementById('semester-subtitle').textContent = termSubtitle
 
-$.getJSON(scheduleJSON, function(data) {
-  // classSchedObj from included schedule.js file (made with `doAll` in folder)
-  // classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
-  classSchedObj = data
-  const tableArr = []
+let request = new XMLHttpRequest()
+request.open('GET', scheduleJSON, true)
+request.onload = function() {
+  if (this.status >= 200 && this.status < 400) {
+    // classSchedObj from included schedule.js file (made with `doAll` in folder)
+    // classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
+    classSchedObj = JSON.parse(this.response)
+    const tableArr = []
 
-  // Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
-  for (let i = 0; i <= 1; i++) {
-    for (const z in classSchedObj[i]) {
-      const id = classSchedObj[i][z].id
-      // TODO what should the ADA label be?
-      classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + ' ' + classSchedObj[i][z].subj + classSchedObj[i][z].numSec
-      // In multipleTimes so add below the main item
+    // Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
+    for (let i = 0; i <= 1; i++) {
+      for (const z in classSchedObj[i]) {
+        const id = classSchedObj[i][z].id
+        // TODO what should the ADA label be?
+        classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + ' ' + classSchedObj[i][z].subj + classSchedObj[i][z].numSec
+        // In multipleTimes so add below the main item
 
-      classSchedObj[i][z].multipleTimes = null
-      classSchedObj[i][z].highlighted = false
-      classSchedObj[i][z].title = classSchedObj[i][z].subj + ' ' + classSchedObj[i][z].numSec + ': ' + classSchedObj[i][z].c_title
+        classSchedObj[i][z].multipleTimes = null
+        classSchedObj[i][z].highlighted = false
+        classSchedObj[i][z].title = classSchedObj[i][z].subj + ' ' + classSchedObj[i][z].numSec + ': ' + classSchedObj[i][z].c_title
 
-      if (id in classSchedObj[2]) {
-        classSchedObj[i][z].days += '<br>' + classSchedObj[2][id].days
-        classSchedObj[i][z].time += '<br>' + classSchedObj[2][id].time
+        if (id in classSchedObj[2]) {
+          classSchedObj[i][z].days += '<br>' + classSchedObj[2][id].days
+          classSchedObj[i][z].time += '<br>' + classSchedObj[2][id].time
 
-        classSchedObj[i][z].multiTime = classSchedObj[2][id]
-        // Needed for calendar to know how to delete
-        classSchedObj[i][z].multiTime.id += 'extra'
-        classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
+          classSchedObj[i][z].multiTime = classSchedObj[2][id]
+          // Needed for calendar to know how to delete
+          classSchedObj[i][z].multiTime.id += 'extra'
+          classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
+        }
+        tableArr.push(classSchedObj[i][z])
       }
-      tableArr.push(classSchedObj[i][z])
+    }
+
+    initList(tableArr)
+    // Prioritize URL over cookie
+    if (window.location.hash !== '') {
+        // Make sure is new style URL and is for this term
+        // TODO be able to look at previous semesters?
+        // If old style or for old term, clear hash
+        loadInitURL()
+    } else {
+        loadInitCookie()
     }
   }
+}
 
-  initList(tableArr)
-  // Prioritize URL over cookie
-  if (window.location.hash !== '') {
-    // Make sure is new style URL and is for this term
-    // TODO be able to look at previous semesters?
-    // If old style or for old term, clear hash
-    loadInitURL()
-  } else {
-    loadInitCookie()
-  }
-})
+request.send()
