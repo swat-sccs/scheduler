@@ -16,7 +16,7 @@
     <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="dist/main.css">
+    <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
     <!--Facebook-->
     <meta property="og:image:width" content="279">
@@ -44,8 +44,6 @@
                         <br>- Use the right column to highlight different combinations of the sections
                         <br>- When you find a schedule which works, you can export your classes to your Google Calendar - either all of them or only the highlighted ones
                         <br>P.S. You can share your classes with others simply by giving them the URL
-                        <br>
-                        <br>This service is still in beta, please double check all schedules by hand, just in case (if there are any errors, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>)
                     </p>
                 </div>
             </div>
@@ -60,6 +58,11 @@
                     </div>
                 </div>
                 <button id="toggleCal">Toggle Calendar</button>
+		<p>
+			<br><strong>Note: This is a student-run service courtesy of the Swarthmore College Computer Society.</strong>
+			<br><i>However, the Course Scheduler might not be fully updated. Ensure you are double-checking for correct information. We are not responsible for any inaccuracies.</i>
+			<br><i>If there are any issues, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>.)</i>
+		</p>
                 <div class="shadow" id="class_and_clear">
                     <div class="large_inline" id="rightCol_par">
                         <!--Also change in js-->
@@ -68,28 +71,6 @@
                     <div id="clearAll_par"></div>
                 </div>
                 <br>
-                <br>
-                <div>
-                    <div class="thirds">
-                        <div id="authorizedButtons">
-                            <div id="notAuthorized">
-                                <div id="gSignInWrapper"> <span class="label">Sign in with </span>
-                                    <div id="customGoogleBtn" class="customGPlusSignIn">
-                                        <span class="icon"></span>
-                                        <span class="buttonText">Google</span>
-                                    </div>
-                                    <span class="label">to export to GCal</span>
-                                </div>
-                            </div>
-                            <div id="isAuthorized" style="display: none">
-                                <button id="export-button" class="sharp">Export Events to GCal</button>
-                                <button id="signout-button" class="likeLink">Sign Out</button>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <hr>
-                </div>
                 <div id="hacker-list">
                     <div class="middleCol">
                         <div>
