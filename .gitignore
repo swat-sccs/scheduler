@@ -5,3 +5,4 @@ js/*scraped.json
 package-lock.json
 dist/
 .bashrc
+tricoscraper/
