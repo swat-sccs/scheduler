@@ -10,6 +10,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import {term, termSubtitle, scheduleJSON} from './constants'
 import {handleClientLoad, handleSignoutClick, isAuthorized} from './googleClient'
 import {exportToGoogle} from './googleCalendar'
+import {updateDate, getLastUpdatedDate} from './dateUpdatedHelper'
 
 
 let selectedClasses = []
@@ -19,6 +20,7 @@ let hackerList
 let fullCalendar
 const normalEventColor = '#31425F'
 const highlightEventColor = '#6bec69'
+
 
 function initList(tableArr) {
   // Initialize hacker news
@@ -423,10 +425,13 @@ function clearAll() {
 }
 
 initCalendar()
+updateDate();
 MicroModal.init()
 setGoogleScript()
 setupEventListeners()
 document.getElementById('semester-subtitle').textContent = termSubtitle
+//updateDate();
+//document.getElementById("dateUpdated").innerHTML = 'test';
 
 let request = new XMLHttpRequest()
 request.open('GET', scheduleJSON, true)

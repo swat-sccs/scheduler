@@ -8,7 +8,9 @@ import {dateToString,twoDigits} from './dateHelpers.js'
 //var dateToString = require('./dateHelpers');
 //const months = ['January', 'February','March','April','May','June','July','August','September','October','November','December'];
 
-function getLastUpdatedDate(){
+var lastUpdatedDate = 'UNKNOWN';
+
+function updateDate(){
 	const stats = fs.statSync('tricoscraper/trico_scraped.json');
 	
 	var dateModified = stats.mtime
@@ -35,6 +37,11 @@ function getLastUpdatedDate(){
 	const prettyStr = [dateToString(dateModified), ', ', twoDigits(hour), ':', twoDigits(minute), ':', twoDigits(seconds), ' ',timeLabel, ', ', timeZone].join('');
 	//console.log(`Pretty Date: ${dateToString(dateModified)}, ${twoDigits(hour)}:${twoDigits(minute)}:${twoDigits(seconds)} ${timeLabel}, ${timeZone}`);
 	console.log(prettyStr);
+	lastUpdatedDate = 'Last Updated: ' + prettyStr;
 }
 
-export {getLastUpdatedDate}
+function getLastUpdatedDate(){
+	return lastUpdatedDate;
+}
+
+export {updateDate, getLastUpdatedDate}
