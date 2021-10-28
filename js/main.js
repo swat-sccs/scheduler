@@ -238,6 +238,7 @@ function updateHashCookie() {
 }
 
 function setupEventListeners() {
+    document.getElementById('toggleCal').addEventListener('click', toggleCal)
 }
 
 // would like this script to be in the html directly but the onload is tricky
