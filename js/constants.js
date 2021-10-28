@@ -1,7 +1,7 @@
 // TODO REDO EVERY SEMESTER SO GOOGLE CALENDAR ONLY CLEARS OUT MOST RECENT
 // helps gCal disambiguate each semester's events so can delete only the newest semeter if change schedule
-const term = 'spring21'
-const termSubtitle = 'Spring 2021' // used as text for #semester-subtitle in index.html
+const term = 'spring22'
+const termSubtitle = 'Spring 2022' // used as text for #semester-subtitle in index.html
 
 // Tricoschedule may not be updated when the schedule first comes out
 // If this is the case, use the xls scraped
