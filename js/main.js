@@ -238,19 +238,10 @@ function updateHashCookie() {
 }
 
 function setupEventListeners() {
-  document.getElementById('export-button').addEventListener('click', getReadyForExport)
-  document.getElementById('signout-button').addEventListener('click', handleSignoutClick)
-  document.getElementById('toggleCal').addEventListener('click', toggleCal)
 }
 
 // would like this script to be in the html directly but the onload is tricky
 // due to module, the functions aren't global and can't be called from the html directly
-function setGoogleScript() {
-  const googleAPI = document.createElement('script')
-  googleAPI.setAttribute('src', 'https://apis.google.com/js/api:client.js')
-  googleAPI.onload = handleClientLoad
-  document.body.appendChild(googleAPI)
-}
 
 function createEventFromClass(classObj) {
     let newEvent = {...classObj}
@@ -424,7 +415,6 @@ function clearAll() {
 
 initCalendar()
 MicroModal.init()
-setGoogleScript()
 setupEventListeners()
 document.getElementById('semester-subtitle').textContent = termSubtitle
 
