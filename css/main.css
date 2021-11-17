@@ -264,7 +264,7 @@ html, body{
 
 thead {
     color: #001A23;
-    background-color: #B3EFB2;
+    background-color: #F46523;
 }
 
 
@@ -292,7 +292,7 @@ button {
     border:none;
     display:inline-block;
     color:#001A23;
-    background-color: #B3EFB2;  
+    background-color: #F46523;  
     text-decoration: none;
     height:30px;
     font-family: 'Raleway', sans-serif;
@@ -336,12 +336,11 @@ button:hover{
 }
 
 button.sharp{
-    /*#B3EFB2 is 66%*/
-    background-color: hsla(119, 63%, 75%, 1);
+    /*#F46523 is 90%*/
+    background-color: hsla(19, 90%, 55%, 1);
 }
 button.sharp:hover{
-    /*#A3DAA2 hsl(119, 43%, 75%)*/
-    background-color: hsla(119, 63%, 50%, 1);
+    background-color: hsla(19, 60%, 55%, 1);
 }
 button.likeLink{
     cursor: pointer;
@@ -349,12 +348,12 @@ button.likeLink{
 }
 
 button.dull{
-    /*#B3EFB2 is 66%*/
-    background-color: hsla(119, 56%, 82%, 1);
+    /*#F46523 is 90%*/
+    background-color: hsla(19, 90%, 55%, 1);
 }
 button.dull:hover{
-    /*#B3EFB2 is 66%*/
-    background-color: hsla(119, 33%, 75%, 1);
+    /*#F46523 is 90%*/
+    background-color: hsla(10, 60%, 55%, 1);
 }
 .sort {
     padding:8px 30px;
@@ -410,7 +409,7 @@ thead>tr>td{
 }
 
 a{
-    color: #B3EFB2;
+    color: #F46523;
     text-decoration:none;
 }
 
@@ -427,7 +426,7 @@ a{
 }
 
 a:hover{
-    color: #A3DAA2;
+    color: hsla(19, 60%, 55%, 1);
 }
 
 /* Modified from https://tutorialzine.com/2014/07/css-inline-help-tips */
@@ -613,8 +612,8 @@ th{
     padding: 0px;
 }
 .list tr:hover{
-    /* #B3EFB2 b with 50% opacity */
-    background-color: rgba(121,227,120,0.4)
+    /* #F46523 with 60% saturation */
+    background-color:  hsla(19, 60%, 55%, 1)
 }
 
 .list tr{
