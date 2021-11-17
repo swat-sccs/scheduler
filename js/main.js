@@ -18,7 +18,7 @@ let classSchedObj
 let hackerList
 let fullCalendar
 const normalEventColor = '#31425F'
-const highlightEventColor = '#6bec69'
+const highlightEventColor = '#F46523'
 
 function initList(tableArr) {
   // Initialize hacker news

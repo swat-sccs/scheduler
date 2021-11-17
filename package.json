@@ -12,6 +12,7 @@
     "js-cookie": "^2.2.1",
     "list.js": "^2.3.1",
     "micromodal": "^0.4.6",
+    "node": "^17.1.0",
     "package.json": "^2.0.1",
     "patch-package": "^6.4.7"
   },

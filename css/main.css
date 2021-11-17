@@ -263,7 +263,7 @@ html, body{
 }
 
 thead {
-    color: #001A23;
+    color: #ffffff;
     background-color: #F46523;
 }
 
@@ -291,7 +291,7 @@ button {
     border-radius: 6px;
     border:none;
     display:inline-block;
-    color:#001A23;
+    color:#ffffff;
     background-color: #F46523;  
     text-decoration: none;
     height:30px;
@@ -299,24 +299,25 @@ button {
     margin: 2px;
 }
 button:hover{
-    background-color: #A3DAA2;
+    background-color: hsla(19, 60%, 55%, 1);
 }
 .icon_button{
     padding: 1px;
+    color: #31425F;
     background-color: white;
     margin-left: 0px;
     margin-right: 0px;
 }
 .icon_button.icon-brush:hover{
-    color: hsl(119, 63%, 50%);
+    color: hsla(19, 60%, 55%, 1);
     background-color:white;
 }
 .icon_button.icon-brush.highlight{
-    color: hsl(119, 63%, 50%);
+    color: hsla(19, 60%, 55%, 1);
     background-color: white;
 }
 .icon_button.icon-brush.highlight:hover{
-    color: hsl(119, 63%, 30%);
+    color: hsla(19, 90%, 55%, 1);
     background-color:white;
 }
 
@@ -414,15 +415,15 @@ a{
 }
 
 .fc-col-header-cell-cushion {
-    color: #001A23;
+    color: #ffffff;
 }
 
 .fc-col-header-cell-cushion:hover {
-    color: #001A23;
+    color: #ffffff;
 }
 
 .fc-col-header {
-    background-color: #B3EFB2;
+    background-color: #F46523;
 }
 
 a:hover{
@@ -685,7 +686,7 @@ tr.trClickable{
 		border-bottom: #c7c7c7 solid 1px;
 }
 tr.trClickable.trHigh{
-    background-color: rgba(179, 239, 178, .5);
+    background-color: hsla(19, 60%, 55%, 1);
 }
 
 /* Don't want border on last row*/
@@ -783,7 +784,7 @@ span.buttonText {
   font-weight: 600;
   font-size: 1.25rem;
   line-height: 1.25;
-  color: #00449e;
+  color: #31425F;
   box-sizing: border-box;
 }
 
@@ -836,7 +837,7 @@ span.buttonText {
 }
 
 .modal__btn-primary {
-  background-color: #00449e;
+  background-color: #31425F;
   color: #fff;
 }
 
