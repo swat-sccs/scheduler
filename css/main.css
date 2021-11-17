@@ -149,6 +149,7 @@ html, body{
     vertical-align: top; 
     border: rgb(220, 220, 220) solid 1px;
     margin: 10px;
+    border-radius: 4px;
 }
 #classTd{
     vertical-align: top; 
@@ -277,7 +278,7 @@ th{
 
 input {
     border:solid 1px #ccc;
-    border-radius: 5px;
+    border-radius: 4px;
     padding:7px 14px;
     margin-bottom:10px
 }
@@ -288,7 +289,7 @@ input:focus {
 
 button {
     padding:4px 30px;
-    border-radius: 6px;
+    border-radius: 4px;
     border:none;
     display:inline-block;
     color:#ffffff;
@@ -358,7 +359,7 @@ button.dull:hover{
 }
 .sort {
     padding:8px 30px;
-    border-radius: 6px;
+    border-radius: 4px;
     border:none;
     display:inline-block;
     text-decoration: none;
@@ -469,7 +470,7 @@ a:hover{
     padding: 20px;
     width: 500px;
     position: absolute;
-    border-radius: 3px;
+    border-radius: 4px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     right: -4px;
     color: #FFF;
@@ -584,7 +585,7 @@ th{
     -webkit-box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
     -moz-box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
     box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
-    border-radius: 6px;
+    border-radius: 4px;
     margin: 10px;
 }
 .hideClass{
@@ -637,6 +638,7 @@ th{
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     background-color: #FCFCFC;
+    border-radius: 4px;
 }
 
 .scrolling{
