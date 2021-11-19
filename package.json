@@ -1,6 +1,6 @@
 {
   "name": "schedule",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The front end of SCCS's Swarthmore Course Scheduler",
   "main": "index.html",
   "repository": "https://github.com/swat-sccs/scheduler",
@@ -14,7 +14,8 @@
     "micromodal": "^0.4.6",
     "node": "^17.1.0",
     "package.json": "^2.0.1",
-    "patch-package": "^6.4.7"
+    "patch-package": "^6.4.7",
+    "webpack-dev-middleware": "^5.2.2"
   },
   "dependencyComments": {
     "list.js": "We want a one line change so the entire list doesn't show when there's nothing in the searchbox. We apply this using patch-package on npm installs. See folder patches/ for details"
@@ -22,6 +23,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "devbuild": "webpack --mode=development",
+    "devserve": "npx webpack serve --mode=development",
     "postinstall": "patch-package"
   },
   "devDependencies": {
@@ -29,7 +31,8 @@
     "css-minimizer-webpack-plugin": "^2.0.0",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^1.6.0",
-    "webpack": "^5.37.0",
-    "webpack-cli": "^4.6.0"
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.5.0"
   }
 }

@@ -3,7 +3,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = {
-  entry: './js/main.js',
+  entry: [
+    'webpack-dev-server/client?http://localhost:8080/',
+    './js/main.js'
+  ],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
@@ -42,5 +45,9 @@ module.exports = {
         }
       }),
     ]
+  },
+  devServer: {
+    static: ['./'],
+    hot: true
   }
 }

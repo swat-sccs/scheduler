@@ -8,8 +8,6 @@ import {Calendar} from '@fullcalendar/core'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
 import {term, termSubtitle, scheduleJSON} from './constants'
-import {handleClientLoad, handleSignoutClick, isAuthorized} from './googleClient'
-import {exportToGoogle} from './googleCalendar'
 
 
 let selectedClasses = []
@@ -348,14 +346,6 @@ function reloadRightCol() {
   }
   document.querySelectorAll('.icon-brush').forEach(el => el.onclick = highlightCallback)
   document.querySelectorAll('.icon-trash-1').forEach(el => el.onclick = trashCallback)
-}
-
-function getReadyForExport() {
-  // Show either log out or authorize
-  if (isAuthorized) {
-    // Already authorized, can go right in
-    exportToGoogle(classSchedObj, selectedClasses)
-  }
 }
 
 /*

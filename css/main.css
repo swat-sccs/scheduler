@@ -107,7 +107,7 @@ body {
     font-family: 'Raleway', sans-serif;
     font-size: 1em;
     font-weight: lighter;
-    background-color: #F2F2F2
+    background-color: #F2F2F2;
 }
 html, body{
     margin: 0px;
@@ -146,15 +146,15 @@ html, body{
     padding: 0px;
 }
 #calendarTd{
-    vertical-align: top; 
-    border: rgb(220, 220, 220) solid 1px;
+    vertical-align: top;
+    border: rgb(220, 220, 220) solid 3px;
     margin: 10px;
     border-radius: 4px;
 }
 #classTd{
     vertical-align: top; 
+    border-radius: 4px;
 }
-
 
 .rightCol{
     text-align: left;
@@ -215,7 +215,6 @@ html, body{
      display: inline-block;
      padding: 10px;
      margin: 10px;
-     background-color: white;
 }
 .shadow{
      -webkit-box-shadow: -1px 3px 1px 0px rgba(0,0,0,0.1);
@@ -376,6 +375,7 @@ button.dull:hover{
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid transparent;
+    border-radius: 4px;
     content:"";
     position: relative;
     top:-10px;
@@ -387,6 +387,7 @@ button.dull:hover{
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid #fff;
+    border-radius: 4px;
     content:"";
     position: relative;
     top:4px;
@@ -398,6 +399,7 @@ button.dull:hover{
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid #fff;
+    border-radius: 4px;
     content:"";
     position: relative;
     top:-4px;
@@ -415,12 +417,13 @@ a{
     text-decoration:none;
 }
 
+
 .fc-col-header-cell-cushion {
-    color: #ffffff;
+    color: white;
 }
 
 .fc-col-header-cell-cushion:hover {
-    color: #ffffff;
+    color: white;
 }
 
 .fc-col-header {
@@ -522,16 +525,19 @@ h2{
 }
 
 .fc-body{
-    background-color: #FCFCFC;
+    background-color: rgb(220, 220, 220);
+    border-radius: 4px;
 }
 
 .fc-unthemed td.fc-today {
-    background-color: #FCFCFC;
+    background-color: rgb(220, 220, 220);
+    border-radius: 4px;
 }
 
 .fc-axis.fc-time{
     /*Side bar with time*/
     border-width: 0px;
+    border-radius: 4px;
 }
 
 .fc-day-header.fc-widget-header.fc-mon{
@@ -542,7 +548,7 @@ h2{
     height: 30px!important;
 }
 .fc-widget-header>table>thead>tr>th{
-    padding-top: 4px!important;
+    padding-top: 10px!important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -615,7 +621,8 @@ th{
 }
 .list tr:hover{
     /* #F46523 with 60% saturation */
-    background-color:  hsla(19, 60%, 55%, 1)
+    background-color:  hsla(19, 60%, 55%, 1);
+    border-radius: 4px;
 }
 
 .list tr{
@@ -625,10 +632,12 @@ th{
 #calContainer {
     transition: height 500ms ease;
     overflow: hidden;
+    border-radius: 4px;
 }
 
 #calContainer:not(.active) {
     display: none;
+    border-radius: 4px;
 }
 
 #classResultsTable{
@@ -685,7 +694,8 @@ b{
 }
 
 tr.trClickable{
-		border-bottom: #c7c7c7 solid 1px;
+    border-bottom: #c7c7c7 solid 1px;
+    border-radius: 4px;
 }
 tr.trClickable.trHigh{
     background-color: hsla(19, 60%, 55%, 1);
@@ -778,6 +788,7 @@ span.buttonText {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 4px;
 }
 
 .modal__title {
