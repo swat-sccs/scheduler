@@ -136,14 +136,21 @@ html, body{
     margin: 0px;
 }
 
+.wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pageMain {
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
 #footer{
-    /* Always position at bottom*/
-    position: absolute; 
-    bottom:   0;
     width: 100%;
-    /* TODO: there was a small white bar at bottom, 2px extra evens out */
-    height: 62px; /*See height above for footer */
-    padding: 0px;
+    height: 62px;
+    flex-shrink: 0;
 }
 #calendarTd{
     vertical-align: top;

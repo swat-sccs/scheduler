@@ -23,7 +23,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "devbuild": "webpack --mode=development",
-    "devserve": "npx webpack serve --mode=development",
+    "devserve": "npm run-script devbuild && npx webpack serve --mode=development",
     "postinstall": "patch-package"
   },
   "devDependencies": {
