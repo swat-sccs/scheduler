@@ -332,7 +332,7 @@ function reloadRightCol() {
   if (html === '') {
     document.getElementById('clearAll_par').innerHTML = ''
     // Also change in HTML so loads immediately
-    document.getElementById('rightCol').innerHTML = 'Search for classes below to plan your schedule'
+    document.getElementById('rightCol').innerHTML = 'No courses selected'
   } else {
     document.getElementById('clearAll_par').innerHTML = '<div id="clearClasses"><b>CLEAR<b></div>'
     document.getElementById('clearClasses').onclick = clearAll
@@ -405,7 +405,6 @@ function clearAll() {
 }
 
 initCalendar()
-MicroModal.init()
 setupEventListeners()
 document.getElementById('semester-subtitle').textContent = termSubtitle
 
