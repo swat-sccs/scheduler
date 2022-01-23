@@ -1,6 +1,8 @@
 import '../css/normalize.css'
 import '../css/main.css'
 
+import * as icsUtils from './icsUtils.js'
+
 import Cookies from 'js-cookie'
 import MicroModal from 'micromodal'
 import List from 'list.js'
