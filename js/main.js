@@ -239,6 +239,7 @@ function updateHashCookie() {
 
 function setupEventListeners() {
     document.getElementById('toggleCal').addEventListener('click', toggleCal)
+    document.getElementById('exportBtn').addEventListener('click', exportBtn)
 }
 
 // would like this script to be in the html directly but the onload is tricky
@@ -379,7 +380,39 @@ function toggleCal() {
 }
 
 function exportBtn() {
-  // do something
+  for (let i = 0; i < selectedClasses.length; i++) {
+    console.log("class" + i)
+    let noTime = ''
+    let thisClass = classSchedObj[0][selectedClasses[i]]
+
+    // No time
+    if (thisClass == null) {
+      thisClass = classSchedObj[1][selectedClasses[i]]
+      noTime = ' - <i>No&nbsp;Set&nbsp;Time</i>'
+    }
+    if (thisClass == null) {
+      // Abort! - neither no time or one time
+      continue
+    }
+
+    console.log(thisClass.subj)
+    console.log(thisClass.numSec)
+    console.log(thisClass.id)
+    console.log(thisClass.c_title)
+    console.log(thisClass.days)
+    console.log(thisClass.time)
+    console.log(thisClass.time)
+    console.log(noTime)
+
+    let bigTitle = thisClass.subj + thisClass.numSec + ": " + thisClass.c_title
+    let start = [yyyy, mm, dd, hh, mm];
+    let end = [yyyy, mm, dd, hh, mm];
+    let days = thisClass.days; //get from M,T,W,TH,F to MO,TU,WE,TH,FR
+    let classEnd = x //semester end or half if PHYS
+
+    icsUtils.buildEvent(bigTitle, start, end, days, classEnd)
+  }
+  icsUtils.buildFile()
 }
 
 function clearAll() {
