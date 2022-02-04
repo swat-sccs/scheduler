@@ -9,8 +9,8 @@ import List from 'list.js'
 import {Calendar} from '@fullcalendar/core'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
-import {term, termSubtitle, scheduleJSON} from './constants'
-
+import {term, termSubtitle, scheduleJSON, startSemester, endSemester, 
+        endHalfSemester, endSemesterISO, endHalfSemesterISO} from './constants'
 
 let selectedClasses = []
 let classSchedObj
@@ -404,12 +404,34 @@ function exportBtn() {
     console.log(thisClass.time)
     console.log(noTime)
 
-    let bigTitle = thisClass.subj + thisClass.numSec + ": " + thisClass.c_title
-    let start = [yyyy, mm, dd, hh, mm];
-    let end = [yyyy, mm, dd, hh, mm];
-    let days = thisClass.days; //get from M,T,W,TH,F to MO,TU,WE,TH,FR
-    let classEnd = x //semester end or half if PHYS
+    let startTime = [String(thisClass.time).substring(11,12) === 'am' ? String(thisClass.time).substring(0,1) 
+                                                                     : (parseInt(String(thisClass.time).substring(0,1)) + 12).toString() 
+                     , String(thisClass.time).substring(3,4)]
+    let endTime = [String(thisClass.time).substring(30,31) === 'am' ? String(thisClass.time).substring(19,20) 
+                                                                   : (parseInt(String(thisClass.time).substring(19,20)) + 12).toString() 
+                   , String(thisClass.time).substring(22,23)]
 
+    let bigTitle = thisClass.subj + thisClass.numSec + ": " + thisClass.c_title
+    let start = [startSemester[0], startSemester[1], startSemester[2], startTime[0], startTime[1]];
+    let end = [startSemester[0], startSemester[1], startSemester[2], endTime[0], endTime[1]];
+    let days = thisClass.days.replace('M','MO')
+                             .replace('T,','TU,')
+                             .replace('W','WE')
+                             .replace('F','FR'); //get from M,T,W,TH,F to MO,TU,WE,TH,FR
+    let classEnd = endSemesterISO;
+
+    if (thisClass.subj == 'PHED') {
+      if(String(thisClass.c_title).includes('I'))
+      {
+        end = endHalfSemester
+        classEnd = endHalfSemesterISO
+      }
+      if(String(thisClass.c_title).includes('II'))
+      {
+        start = endHalfSemester
+      }
+    }
+    
     icsUtils.buildEvent(bigTitle, start, end, days, classEnd)
   }
   icsUtils.buildFile()

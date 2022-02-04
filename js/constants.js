@@ -13,9 +13,13 @@ const scheduleJSON = 'js/trico_scraped.json'
 // test in javascript console by doing `new Date(... below ...)`
 const startSemesterTime = Date.UTC(2021, 7, 30, 0, 0, 0)
 
-// Just change the part before "T" as normal, not 0 indexed
-// Inclusive but needs to be at T235959Z so gets whole day when ends (can also be the next day (exclusive)T000000Z but that isn't ideal if have whole-day events)
-// TODO known issue with timezones (Z is UTC) for late running events on the last day
-const endSemesterISO = '20211218T235959Z'
+// Change these lol I don't wanna write a scraper rn
+const startSemester = ['2022', '01', '24', '00', '00'];
+const endSemester = ['2022', '04', '29', '00', '00'];
+const endHalfSemester = ['2022', '03', '04', '00', '00'];
 
-export {term, termSubtitle, scheduleJSON, startSemesterTime, endSemesterISO}
+// RRULE generator says use 50000Z so...I'm not Google go look it up
+const endSemesterISO = endSemester[0] + endSemester[1] + endSemester[2] + (term.includes('fall') ? 'T040000Z' : 'T050000Z')
+const endHalfSemesterISO = endHalfSemester[0] + endHalfSemester[1] + endHalfSemester[2] +  (term.includes('fall') ? 'T050000Z' : 'T040000Z')
+
+export {term, termSubtitle, scheduleJSON, startSemesterTime, startSemester, endSemester, endHalfSemester, endSemesterISO, endHalfSemesterISO}
