@@ -16,6 +16,8 @@
     "node": "^17.1.0",
     "package.json": "^2.0.1",
     "patch-package": "^6.4.7",
+    "pkg.json": "^2.0.8",
+    "process": "^0.11.10",
     "webpack-dev-middleware": "^5.2.2"
   },
   "dependencyComments": {
