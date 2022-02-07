@@ -11,6 +11,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 
 import {term, termSubtitle, scheduleJSON, startSemester, endSemester, 
         endHalfSemester, endSemesterISO, endHalfSemesterISO} from './constants'
+import { off } from 'process'
 
 let selectedClasses = []
 let classSchedObj
@@ -379,61 +380,103 @@ function toggleCal() {
   fullCalendar.render()
 }
 
+// Click handler for ics export button
 function exportBtn() {
   for (let i = 0; i < selectedClasses.length; i++) {
-    console.log("class" + i)
-    let noTime = ''
+    // Grab class
     let thisClass = classSchedObj[0][selectedClasses[i]]
+    console.log("Grabbed class " + thisClass.id)
 
-    // No time
+    // Null class--don't fatal error just skip and log
     if (thisClass == null) {
-      thisClass = classSchedObj[1][selectedClasses[i]]
-      noTime = ' - <i>No&nbsp;Set&nbsp;Time</i>'
-    }
-    if (thisClass == null) {
-      // Abort! - neither no time or one time
+      console.log("Failed to get class info--thisClass is null")
       continue
     }
 
-    console.log(thisClass.subj)
-    console.log(thisClass.numSec)
-    console.log(thisClass.id)
-    console.log(thisClass.c_title)
-    console.log(thisClass.days)
-    console.log(thisClass.time)
-    console.log(thisClass.time)
-    console.log(noTime)
+    // Init string-based time arrays
+    let startTime = ["", ""]
+    let endTime = ["", ""]
 
-    let startTime = [String(thisClass.time).substring(11,12) === 'am' ? String(thisClass.time).substring(0,1) 
-                                                                     : (parseInt(String(thisClass.time).substring(0,1)) + 12).toString() 
-                     , String(thisClass.time).substring(3,4)]
-    let endTime = [String(thisClass.time).substring(30,31) === 'am' ? String(thisClass.time).substring(19,20) 
-                                                                   : (parseInt(String(thisClass.time).substring(19,20)) + 12).toString() 
-                   , String(thisClass.time).substring(22,23)]
+    // Time is really stupid--there's probably a lib to parse this stuff easier but eh
+    // If morning or noon, grab digits as is
+    if(String(thisClass.time).substring(11,13) === 'am'
+      || (String(thisClass.time).substring(11,13) === 'pm'
+      && String(thisClass.time).substring(0,2) === '12')) {
+        startTime[0] = String(thisClass.time).substring(0,2)
+    }
 
+    // If midnight, set to 00 for military time (shouldn't happen but eh)
+    else if(String(thisClass.time).substring(11,13) === 'am'
+            && String(thisClass.time).substring(0,2) === '12') {
+      startTime[0] = '00'
+    }
+
+    // Else, must be afternoon or evening, so add 12 for military time
+    else {
+      startTime[0] = (parseInt(String(thisClass.time).substring(0,2)) + 12).toString()
+    }
+
+    // Set minutes normally
+    startTime[1] = String(thisClass.time).substring(3, 5)
+
+    // Same deal for end time
+    // If morning or noon, grab digits as is
+    if(String(thisClass.time).substring(30,32) === 'am'
+      || (String(thisClass.time).substring(30,32) === 'pm'
+      && String(thisClass.time).substring(19,21) === '12')) {
+        endTime[0] = String(thisClass.time).substring(19,21)
+    }
+
+    // If midnight, set to 00 for military time (shouldn't happen but eh)
+    else if(String(thisClass.time).substring(30,32) === 'am'
+            && String(thisClass.time).substring(19,21) === '12') {
+      endTime[0] = '00'
+    }
+
+    // Else, must be afternoon or evening, so add 12 for military time
+    else {
+      endTime[0] = (parseInt(String(thisClass.time).substring(19,21)) + 12).toString()
+    }
+
+    // Set minutes normally
+    endTime[1] = String(thisClass.time).substring(22,24)
+
+    // ics builder params
     let bigTitle = thisClass.subj + thisClass.numSec + ": " + thisClass.c_title
     let start = [startSemester[0], startSemester[1], startSemester[2], startTime[0], startTime[1]];
-    let end = [startSemester[0], startSemester[1], startSemester[2], endTime[0], endTime[1]];
+    let end = [startSemester[0], startSemester[1], startSemester[2], endTime[0], endTime[1]]
+
+    // RRule day format, see icsUtils for info--get from M,T,W,TH,F to MO,TU,WE,TH,FR
     let days = thisClass.days.replace('M','MO')
                              .replace('T,','TU,')
                              .replace('W','WE')
-                             .replace('F','FR'); //get from M,T,W,TH,F to MO,TU,WE,TH,FR
+                             .replace('F','FR');
+    
+    // Default class end
     let classEnd = endSemesterISO;
 
+    // PhysEd half semester class handler
+    // TODO: implement for other half sem classes
     if (thisClass.subj == 'PHED') {
-      if(String(thisClass.c_title).includes('I'))
-      {
-        end = endHalfSemester
-        classEnd = endHalfSemesterISO
-      }
+      // Change start to half for II classes
       if(String(thisClass.c_title).includes('II'))
       {
-        start = endHalfSemester
+        start = [endHalfSemester[0], endHalfSemester[1], endHalfSemester[2], startTime[0], startTime[1]]
       }
-    }
+      // Change end to half for I classes
+      else if(String(thisClass.c_title).includes('I'))
+      {
+        end = [endHalfSemester[0], endHalfSemester[1], endHalfSemester[2], endTime[0], endTime[1]]
+        classEnd = endHalfSemesterISO
+      }
+    }  
     
+    console.log("Calling icsUtils.buildEvent(%s, %s, %s, %s, %s)", bigTitle, start.toString(), end.toString(), days, classEnd.toString())
     icsUtils.buildEvent(bigTitle, start, end, days, classEnd)
+
+    console.log("\n")
   }
+  console.log("Building ics file...")
   icsUtils.buildFile()
 }
 
