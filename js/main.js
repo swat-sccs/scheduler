@@ -378,6 +378,10 @@ function toggleCal() {
   fullCalendar.render()
 }
 
+function exportBtn() {
+  // do something
+}
+
 function clearAll() {
   console.log('Clearing all')
   // Check all the boxes for these items w/in the hacker list (and, while
