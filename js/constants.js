@@ -14,12 +14,12 @@ const scheduleJSON = 'js/trico_scraped.json'
 const startSemesterTime = Date.UTC(2021, 7, 30, 0, 0, 0)
 
 // Change these lol I don't wanna write a scraper rn
-const startSemester = ['2022', '01', '24', '00', '00'];
-const endSemester = ['2022', '04', '29', '00', '00'];
-const endHalfSemester = ['2022', '03', '04', '00', '00'];
+const startSemester = ['2022', '01', '24'];
+const endSemester = ['2022', '04', '29'];
+const endHalfSemester = ['2022', '03', '04'];
 
 // RRULE generator says use 50000Z so...I'm not Google go look it up
-const endSemesterISO = endSemester[0] + endSemester[1] + endSemester[2] + (term.includes('fall') ? 'T040000Z' : 'T050000Z')
-const endHalfSemesterISO = endHalfSemester[0] + endHalfSemester[1] + endHalfSemester[2] +  (term.includes('fall') ? 'T050000Z' : 'T040000Z')
+const endSemesterISO = endSemester[0] + endSemester[1] + endSemester[2]// + (term.includes('fall') ? 'T050000Z' : 'T040000Z')
+const endHalfSemesterISO = endHalfSemester[0] + endHalfSemester[1] + endHalfSemester[2]// +  (term.includes('fall') ? 'T040000Z' : 'T050000Z')
 
 export {term, termSubtitle, scheduleJSON, startSemesterTime, startSemester, endSemester, endHalfSemester, endSemesterISO, endHalfSemesterISO}

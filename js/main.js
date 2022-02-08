@@ -462,11 +462,11 @@ function exportBtn() {
       if(String(thisClass.c_title).includes('II'))
       {
         start = [endHalfSemester[0], endHalfSemester[1], endHalfSemester[2], startTime[0], startTime[1]]
+        end = [endHalfSemester[0], endHalfSemester[1], endHalfSemester[2], endTime[0], endTime[1]]
       }
       // Change end to half for I classes
       else if(String(thisClass.c_title).includes('I'))
       {
-        end = [endHalfSemester[0], endHalfSemester[1], endHalfSemester[2], endTime[0], endTime[1]]
         classEnd = endHalfSemesterISO
       }
     }  
