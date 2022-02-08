@@ -16,5 +16,12 @@ export function buildEvent(name, room, start, duration, days, classEnd) {
   return event;
 }
 
-function buildFile(events) {
+export function buildFile() {
+  ics.createEvents(events, (error, value) => {
+    if (error) {
+      console.log(error)
+    }
+
+    fileDownload(value, `event.ics`);
+  })
 }
