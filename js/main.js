@@ -11,7 +11,6 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 
 import {term, termSubtitle, scheduleJSON, startSemester, endSemester, 
         endHalfSemester, endSemesterISO, endHalfSemesterISO} from './constants'
-import { off } from 'process'
 
 let selectedClasses = []
 let classSchedObj
@@ -447,10 +446,13 @@ function exportBtn() {
     let end = [startSemester[0], startSemester[1], startSemester[2], endTime[0], endTime[1]]
 
     // RRule day format, see icsUtils for info--get from M,T,W,TH,F to MO,TU,WE,TH,FR
-    let days = thisClass.days.replace('M','MO')
-                             .replace('T,','TU,')
-                             .replace('W','WE')
-                             .replace('F','FR');
+    let days = String(thisClass.days.replace('M','MO')
+                                    .replace('T,','TU,')
+                                    .replace('W','WE')
+                                    .replace('F','FR'));
+
+    // Fix start for various days of the week
+    icsUtils.fixDates(days, start, end, startSemester)
     
     // Default class end
     let classEnd = endSemesterISO;
@@ -463,6 +465,9 @@ function exportBtn() {
       {
         start = [endHalfSemester[0], endHalfSemester[1], endHalfSemester[2], startTime[0], startTime[1]]
         end = [endHalfSemester[0], endHalfSemester[1], endHalfSemester[2], endTime[0], endTime[1]]
+
+        // Fix start for various days of the week
+        icsUtils.fixDates(days, start, end, endHalfSemester)
       }
       // Change end to half for I classes
       else if(String(thisClass.c_title).includes('I'))
