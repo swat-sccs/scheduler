@@ -20,7 +20,7 @@ let fullCalendar
 const normalEventColor = '#31425F'
 const highlightEventColor = '#F46523'
 
-function initList(tableArr) {
+async function initList(tableArr) {
   // Initialize hacker news
   const hackerListOptions = {
     valueNames: ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'instruct', 'days', 'time', 'rm', {
@@ -50,6 +50,9 @@ function initList(tableArr) {
     }
   })
   hackerList.items.forEach(item => item.elm.onclick = rowClickHandler)
+
+  // dont make a girl a promise if you know you cant keep it
+  return "done"
 }
 
 let maximumStartTime = '09:00:00'
@@ -148,8 +151,9 @@ function selectClass(id, bulk) {
     }
   }
   if (!bulk) {
-    reloadRightCol()
-    updateHashCookie()
+    reloadRightCol().then(
+      function(value) {updateHashCookie();}
+    );
   }
 }
 
@@ -192,8 +196,9 @@ function loadInitURL() {
   for (let i = 0; i < highlighedClasses.length; i++) {
     highlightClass(highlighedClasses[i], true)
   }
-  reloadRightCol()
-  updateHashCookie()
+  reloadRightCol().then(
+    function(value) {updateHashCookie();}
+  );
 }
 
 function loadInitCookie() {
@@ -281,8 +286,9 @@ function highlightClass(id, bulk) {
   }
   
   if (!bulk) {
-    updateHashCookie()
-    reloadRightCol()
+    reloadRightCol().then(
+      function(value) {updateHashCookie();}
+    );
   }
 }
 
@@ -296,7 +302,7 @@ function trashCallback(event) {
   selectClass(clickedElemVal, false)
 }
 
-function reloadRightCol() {
+async function reloadRightCol() {
   let htmlObj = []
   let html = ''
   for (let i = 0; i < selectedClasses.length; i++) {
@@ -349,6 +355,8 @@ function reloadRightCol() {
   }
   document.querySelectorAll('.icon-brush').forEach(el => el.onclick = highlightCallback)
   document.querySelectorAll('.icon-trash-1').forEach(el => el.onclick = trashCallback)
+
+  return "done"
 }
 
 /*
@@ -509,8 +517,9 @@ function clearAll() {
     }
   }
   selectedClasses = []
-  reloadRightCol()
-  updateHashCookie()
+  reloadRightCol().then(
+    function(value) {updateHashCookie();}
+  );
 }
 
 initCalendar()
