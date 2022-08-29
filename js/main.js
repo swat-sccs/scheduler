@@ -392,7 +392,14 @@ function exportBtn() {
   for (let i = 0; i < selectedClasses.length; i++) {
     // Grab class
     let thisClass = classSchedObj[0][selectedClasses[i]]
-    console.log("Grabbed class " + thisClass.id)
+
+    // Defined check for id and time
+    try {
+      console.log("Grabbed class " + thisClass.id + " at time " + thisClass.time)
+    } catch {
+      console.log("Why would you ever put a class on scheduler that doesn't have a time :(")
+      continue
+    }
 
     // Null class--don't fatal error just skip and log
     if (thisClass == null) {
