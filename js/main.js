@@ -462,9 +462,9 @@ function exportBtn() {
 
     // RRule day format, see icsUtils for info--get from M,T,W,TH,F to MO,TU,WE,TH,FR
     let days = String(thisClass.days.replace('M','MO')
-                                    .replace('T,','TU,')
+                                    .replace('T','TU')
                                     .replace('W','WE')
-                                    .replace('F','FR'));
+                                    .replace('F','FR'))
 
     // Fix start for various days of the week
     icsUtils.fixDates(days, start, end, startSemester)
