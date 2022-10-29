@@ -13,6 +13,7 @@ import {term, termSubtitle, scheduleJSON, startSemester, endSemester,
 
 let selectedClasses = []
 let classSchedObj
+let scheduleCount = 4
 // Needs to be global so can i.e. search from the window location hash
 let hackerList
 let fullCalendar
@@ -203,6 +204,31 @@ function loadInitURL() {
   updateHashCookie()
 }
 
+function removeSchedule() {
+  scheduleCount--
+  refreshScheduleOptions()
+}
+
+function addSchedule() {
+  scheduleCount++
+  refreshScheduleOptions()
+}
+
+function refreshScheduleOptions() {
+  var schedList = document.getElementById("scheduleList");
+  var i, L = schedList.options.length - 1;
+  for(i = L; i >= 0; i--) {
+    schedList.remove(i);
+  }
+
+  for (i = 1; i < scheduleCount+1; i++) {
+    var option = document.createElement("option");
+    option.text = i;
+    option.value = i
+    schedList.add(option);
+  }
+}
+
 function loadInitCookie() {
   // TODO
   const cookieStr = Cookies.get('classes')
@@ -259,8 +285,10 @@ function registerSW() {
 function setupEventListeners() {
     document.getElementById('toggleCal').addEventListener('click', toggleCal)
     document.getElementById('exportBtn').addEventListener('click', exportBtn)
-}
-
+    document.getElementById('removeSchedule').addEventListener('click', removeSchedule)
+    document.getElementById('addSchedule').addEventListener('click', addSchedule)
+  }
+  
 // would like this script to be in the html directly but the onload is tricky
 // due to module, the functions aren't global and can't be called from the html directly
 
