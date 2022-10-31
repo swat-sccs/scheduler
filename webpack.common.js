@@ -1,10 +1,10 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080/',
     './js/main.js'
   ],
   output: {
@@ -12,8 +12,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
     hashFunction: "xxhash64"
-  }, 
+  },
   plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Production',
+    }),
     new MiniCssExtractPlugin(),
   ],
   module: {
@@ -47,8 +50,4 @@ module.exports = {
       }),
     ]
   },
-  devServer: {
-    static: ['./'],
-    hot: true
-  }
 }
