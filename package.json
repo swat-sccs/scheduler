@@ -18,7 +18,9 @@
     "package.json": "^2.0.1",
     "patch-package": "^6.4.7",
     "pkg.json": "^2.0.8",
+    "postcss-loader": "^7.0.2",
     "process": "^0.11.10",
+    "style-loader": "^3.3.1",
     "webpack-dev-middleware": "^5.2.2",
     "webpack-merge": "^5.8.0"
   },
@@ -26,7 +28,7 @@
     "list.js": "We want a one line change so the entire list doesn't show when there's nothing in the searchbox. We apply this using patch-package on npm installs. See folder patches/ for details"
   },
   "scripts": {
-    "start": "webpack serve --open --config webpack.dev.js",
+    "start": "webpack --config webpack.dev.js && webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "postinstall": "patch-package"
   },
@@ -34,6 +36,7 @@
     "css-loader": "^5.2.4",
     "css-minimizer-webpack-plugin": "^2.0.0",
     "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^1.6.0",
     "webpack": "^5.64.1",
     "webpack-cli": "^4.9.2",

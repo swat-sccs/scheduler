@@ -1,3 +1,6 @@
+// Use file loader to copy index.html to dist/
+require('file-loader?name=[name].[ext]!../index.html');
+
 import '../css/normalize.css'
 import '../css/main.css'
 

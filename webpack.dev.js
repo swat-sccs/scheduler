@@ -3,11 +3,11 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   devServer: {
-    static: ['./'],
+    static: ['./dist/'],
     hot: true,
-    watchFiles: ['js/*/js', 'css/*.css', '*.html'],
+    watchFiles: ['js/*.js', 'css/*.css', '*.html'],
     liveReload: true,
     client: {
         progress: true,

@@ -4,11 +4,11 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = {
   entry: [
-    './js/main.js'
+    './js/main.js',
   ],
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, './dist'),
     clean: true,
     hashFunction: "xxhash64"
   },

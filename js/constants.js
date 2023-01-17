@@ -5,7 +5,7 @@ const termSubtitle = 'Spring 2023' // used as text for #semester-subtitle in ind
 
 // Tricoschedule may not be updated when the schedule first comes out
 // If this is the case, use the xls scraped
-const scheduleJSON = 'js/trico_scraped.json'
+const scheduleJSON = 'trico_scraped.json'
 // const scheduleJSON = 'js/xls_scraped.json'
 
 // Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
