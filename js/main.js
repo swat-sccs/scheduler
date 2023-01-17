@@ -78,7 +78,8 @@ function initCalendar() {
       const props = arg.event.extendedProps
       // need the split since multitime objects have both times in props.time, making everything ugly
       const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
-      return {html: '<div class="fc-event-main-frame"><div class="fc-event-time">' + time +
+      const room = props.rm.replaceAll('Science Center', 'Sci').replaceAll(' Hall', '');
+      return {html: '<div class="fc-event-main-frame"><div class="fc-event-time">' + time + '| ' + room +
         '</div><div class="fc-event-title-container"><div class="fc-event-title fc-sticky"><b>' + props.subj +
         ' ' + props.numSec + '</b>: ' + props.c_title + "</div></div></div>"}
     }
