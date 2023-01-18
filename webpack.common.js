@@ -1,6 +1,9 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: [
@@ -9,10 +12,28 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, './dist'),
-    clean: true,
+    publicPath: 'auto',
+    clean: false, // trico_scraped.json
     hashFunction: "xxhash64"
   },
   plugins: [
+    new FaviconsWebpackPlugin({
+        logo: './img/og-image.jpg',
+        logoMaskable: './img/safari-pinned-tab.svg',
+        mode: 'webapp',
+        devMode: 'webapp',
+        favicons: {
+          appName: 'SCCS Course Planner',
+          appDescription: 'My Swarthmore course schedule, proudly (or, at least, dutifully) planned with the SCCS Course Planner',
+          developerName: 'SCCS',
+          developerURL: 'https://www.sccs.swarthmore.edu/',
+          background: '#da532c',
+          theme_color: '#fff',
+        }
+      }),
+    new HtmlWebpackPlugin({
+        template: './index.html'
+      }),
     new MiniCssExtractPlugin(),
   ],
   module: {
@@ -22,13 +43,21 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader,'css-loader'],
       },
       {
-        test: /\.(ttf|eot|svg|png|jpg|gif|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: ['file-loader']
+        test: /\.(eot|svg|png|jpg|gif|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        type: 'asset/resource',
+        generator: {
+            filename: '[name][ext]'
+        },
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: ['file-loader']
-      }
+        type: 'asset/resource',
+      },
+      {
+        test: /\.webmanifest$/i,
+        use: 'webpack-webmanifest-loader',
+        type: 'asset/resource',
+      },
     ]
   },
   optimization: {

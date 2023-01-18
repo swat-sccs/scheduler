@@ -9,6 +9,7 @@
   "dependencies": {
     "@fullcalendar/core": "^5.6.0",
     "@fullcalendar/timegrid": "^5.6.0",
+    "favicons-webpack-plugin": "^6.0.0",
     "ics": "^2.35.0",
     "js-cookie": "^2.2.1",
     "js-file-download": "^0.4.12",
@@ -33,13 +34,16 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^5.2.4",
     "css-minimizer-webpack-plugin": "^2.0.0",
+    "favicons": "^7.0.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^1.6.0",
-    "webpack": "^5.64.1",
+    "webpack": "^5.75.0",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.5.0"
+    "webpack-dev-server": "^4.5.0",
+    "webpack-webmanifest-loader": "^2.0.2"
   }
 }

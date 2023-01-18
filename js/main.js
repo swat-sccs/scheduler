@@ -1,5 +1,6 @@
-// Use file loader to copy index.html to dist/
-require('file-loader?name=[name].[ext]!../index.html');
+// Require some images for webmanifest
+require('../img/android-chrome-192x192.png')
+require('../img/android-chrome-256x256.png')
 
 import '../css/normalize.css'
 import '../css/main.css'
@@ -78,7 +79,10 @@ function initCalendar() {
       const props = arg.event.extendedProps
       // need the split since multitime objects have both times in props.time, making everything ugly
       const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
-      const room = props.rm.replaceAll('Science Center', 'Sci').replaceAll(' Hall', '');
+      const room = props.rm.replaceAll('Science Center', 'Sci')
+                           .replaceAll(' Hall', '')
+                           .replaceAll('CUNNIFF', '199')
+                           .replaceAll('CHANGHOU', '101');
       return {html: '<div class="fc-event-main-frame"><div class="fc-event-time">' + time + '| ' + room +
         '</div><div class="fc-event-title-container"><div class="fc-event-title fc-sticky"><b>' + props.subj +
         ' ' + props.numSec + '</b>: ' + props.c_title + "</div></div></div>"}
