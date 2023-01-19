@@ -13,11 +13,13 @@ let events = []
  * @param end End date array
  * @param days Days of week string
  * @param classEnd ISO-formatted end date string
+ * @param location Location string
 */
-export function buildEvent(name, start, end, days, classEnd) {
+export function buildEvent(name, start, end, days, classEnd, location='') {
   // Create event for referenced class
   const event = {
     title: name,
+    location: location,
     busyStatus: 'BUSY',
     start: start.map(numStr => parseInt(numStr)), // Format: [yyyy, mm, dd, hh, mm]
     end: end.map(numStr => parseInt(numStr)),

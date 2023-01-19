@@ -59,6 +59,13 @@ function initList(tableArr) {
 let maximumStartTime = '09:00:00'
 let minimumEndTime = '16:00:00'
 
+function shortenRoom(room) {
+  return room.replaceAll('Science Center', 'Sci')
+             .replaceAll(' Hall', '')
+             .replaceAll('CUNNIFF', '199')
+             .replaceAll('CHANGHOU', '101');
+}
+
 function initCalendar() {
   document.getElementById('calContainer').classList.add('active')
   // page is now ready, initialize the calendar...
@@ -79,10 +86,7 @@ function initCalendar() {
       const props = arg.event.extendedProps
       // need the split since multitime objects have both times in props.time, making everything ugly
       const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
-      const room = props.rm.replaceAll('Science Center', 'Sci')
-                           .replaceAll(' Hall', '')
-                           .replaceAll('CUNNIFF', '199')
-                           .replaceAll('CHANGHOU', '101');
+      const room = shortenRoom(props.rm)
       return {html: '<div class="fc-event-main-frame"><div class="fc-event-time">' + time + '| ' + room +
         '</div><div class="fc-event-title-container"><div class="fc-event-title fc-sticky"><b>' + props.subj +
         ' ' + props.numSec + '</b>: ' + props.c_title + "</div></div></div>"}
@@ -498,8 +502,10 @@ function exportBtn() {
       }
     }  
     
-    console.log("Calling icsUtils.buildEvent(%s, %s, %s, %s, %s)", bigTitle, start.toString(), end.toString(), days, classEnd.toString())
-    icsUtils.buildEvent(bigTitle, start, end, days, classEnd)
+    let room = shortenRoom(thisClass.rm)
+
+    console.log("Calling icsUtils.buildEvent(%s, %s, %s, %s, %s, %s)", bigTitle, start.toString(), end.toString(), days, classEnd.toString(), room)
+    icsUtils.buildEvent(bigTitle, start, end, days, classEnd, room)
 
     console.log("\n")
   }
