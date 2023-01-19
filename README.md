@@ -55,9 +55,7 @@ Several `npm` scripts are included for your convenience:
 
 ```bash
 npm run build           # Builds for production
-npm run devbuild        # Builds for development
-npm run devserve        # Builds for development and activates dev server on http://localhost:8080
-npm run postintall      # Runs patch-package--see https://www.npmjs.com/package/patch-package
+npm start               # Run development instance
 ```
 
 If you get an error running one of these scripts, it's probably due to a missing or broken dependency. As per standard with `npm`-based projects, fix this with one of the following:
