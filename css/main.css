@@ -543,6 +543,10 @@ h2{
     font-size: 1.1em;
 }
 
+.footFont{
+    font-size: small;
+}
+
 /* CSS animation */
 
 @-webkit-keyframes fadeIn {
