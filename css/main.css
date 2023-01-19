@@ -226,7 +226,7 @@ html, body{
      margin: 10px;
 }
 .shadow{
-     box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
+    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
      border-radius: 6px;
 }
 
@@ -512,7 +512,7 @@ a:hover{
     width: 500px;
     position: absolute;
     border-radius: 4px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
     right: -4px;
     color: #FFF;
     font-size: 16px;
@@ -626,7 +626,7 @@ th{
 #classTable {
     /* display: none;*/
     margin-bottom: 30px;
-    box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
+    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     margin: 10px;
 }
@@ -725,14 +725,14 @@ th{
     display: inline-block;
     width: calc(50% - 10px);
     margin: 0 auto;
-    box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
+    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
 }
 
 #exportBtn{
     display: inline-block;
     width: calc(50% - 10px);
     margin: 0 auto;
-    box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
+    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
 }
 
 .bold{
