@@ -226,9 +226,7 @@ html, body{
      margin: 10px;
 }
 .shadow{
-     -webkit-box-shadow: -1px 3px 1px 0px rgba(0,0,0,0.1);
-     -moz-box-shadow: -1px 3px 1px 0px rgba(0,0,0,0.1);
-     box-shadow: -1px 3px 1px 0px rgba(0,0,0,0.1);
+     box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
      border-radius: 6px;
 }
 
@@ -605,9 +603,7 @@ th{
 #classTable {
     /* display: none;*/
     margin-bottom: 30px;
-    -webkit-box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
-    -moz-box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
-    box-shadow: -3px 3px 1px 0px rgba(0,0,0,0.1);
+    box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
     border-radius: 4px;
     margin: 10px;
 }
@@ -706,12 +702,14 @@ th{
     display: inline-block;
     width: calc(50% - 10px);
     margin: 0 auto;
+    box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
 }
 
 #exportBtn{
     display: inline-block;
     width: calc(50% - 10px);
     margin: 0 auto;
+    box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.1);
 }
 
 .bold{
