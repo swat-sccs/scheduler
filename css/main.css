@@ -424,6 +424,29 @@ a{
     text-decoration:none;
 }
 
+.fc-timegrid-slots, .fc-col-header{
+    border-radius: 2px;
+}
+.fc-scrollgrid-section-header .fc-scroller-harness{
+    background-color: rgb(220, 220, 220);
+}
+
+.fc .fc-scrollgrid, .fc .fc-scrollgrid-section > td{
+    border: none !important;
+}
+
+.fc-day-fri{
+    border-radius: 0px 2px 0px 0px;
+}
+
+.fc-timegrid-axis{
+    border-radius: 2px 0px 0px 0px;
+}
+
+/* override fullcalendar weird white shadow */
+.fc-timegrid-event-harness-inset .fc-timegrid-event{
+    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2) !important;
+}
 
 .fc-col-header-cell-cushion {
     color: white;
