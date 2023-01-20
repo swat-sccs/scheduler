@@ -725,18 +725,15 @@ th{
     margin-right: 5px;
 }
 
-#toggleCal{
-    display: inline-block;
+.calBtn{
     width: calc(50% - 10px);
-    margin: 0 auto;
+    height: 80%;
+    padding: 10px; /* Some padding */
     box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
-}
-
-#exportBtn{
-    display: inline-block;
-    width: calc(50% - 10px);
-    margin: 0 auto;
-    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer; /* Pointer/hand icon */
+    float: center; /* Float the buttons side by side */
 }
 
 .bold{
