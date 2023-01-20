@@ -26,8 +26,8 @@ module.exports = {
           appDescription: 'My Swarthmore course schedule, proudly (or, at least, dutifully) planned with the SCCS Course Planner',
           developerName: 'SCCS',
           developerURL: 'https://www.sccs.swarthmore.edu/',
-          background: '#ffffff',
-          theme_color: '#f46523',
+          background: '#f2f2f2',
+          theme_color: '#31425f',
         }
       }),
     new HtmlWebpackPlugin({
