@@ -17,17 +17,17 @@ module.exports = {
   },
   plugins: [
     new FaviconsWebpackPlugin({
-        logo: './img/og-image.jpg',
-        logoMaskable: './img/safari-pinned-tab.svg',
-        mode: 'webapp',
+        logo: './img/logo.jpg',
+        logoMaskable: './img/maskable.svg',
+        mode: 'standalone',
         devMode: 'webapp',
         favicons: {
           appName: 'SCCS Course Planner',
           appDescription: 'My Swarthmore course schedule, proudly (or, at least, dutifully) planned with the SCCS Course Planner',
           developerName: 'SCCS',
           developerURL: 'https://www.sccs.swarthmore.edu/',
-          background: '#da532c',
-          theme_color: '#fff',
+          background: '#ffffff',
+          theme_color: '#f46523',
         }
       }),
     new HtmlWebpackPlugin({

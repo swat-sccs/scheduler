@@ -1,7 +1,3 @@
-// Require some images for webmanifest
-require('../img/android-chrome-192x192.png')
-require('../img/android-chrome-256x256.png')
-
 import '../css/normalize.css'
 import '../css/main.css'
 
