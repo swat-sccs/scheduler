@@ -719,6 +719,15 @@ th{
     display: inline-block;
 }
 
+.fc-scrollgrid-sync-inner{
+    overflow: hidden;
+}
+
+.fc-col-header-cell-cushion{
+    overflow: hidden;
+    text-overflow: clip;
+}
+
 #btns{
     padding-top: 10px;
     margin-left: 5px;
