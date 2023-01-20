@@ -726,6 +726,7 @@ th{
 .fc-col-header-cell-cushion{
     overflow: hidden;
     text-overflow: clip;
+    vertical-align: middle;
 }
 
 #btns{
