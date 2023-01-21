@@ -15,6 +15,7 @@ html {
     font-size: 1em;
     line-height: 1.4;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 /*
@@ -148,7 +149,7 @@ html, body{
     justify-content: space-between;
 }
 
-#footer{
+#footer span{
     width: 100%;
     height: auto;
     flex-shrink: 0;
@@ -219,15 +220,17 @@ html, body{
      overflow-x: hidden;
      height: 200px;
 }
+
 #class_and_clear{
-     display: inline-block;
+     display: block;
      background-color: white;
      padding: 10px;
-     margin: 10px;
+     margin: 10px 4rem 20px 4rem;
+     width: calc(100% - 8rem - 20px);
 }
 .shadow{
     box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
-     border-radius: 6px;
+    border-radius: 4px;
 }
 
 /* Medium devices (tablets, 768px and up)*/
@@ -618,12 +621,14 @@ th{
 }
 
 #search{
-    width: 60%;
-    margin-bottom: 5px;
+    display: block;
+    padding: 10px;
+    margin: 10px 4rem 20px 4rem;
+    width: calc(100% - 8rem - 20px);
+    font-family: 'Raleway', sans-serif; /* override input using arial or whatever */
+    text-overflow: ellipsis;
 }
-#search.searchMargin{
-   margin-bottom: 5%;
-}
+
 #onlyFit_Cont{
     display: inline-block;
 }
