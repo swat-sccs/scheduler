@@ -35,7 +35,8 @@ function initList(tableArr) {
     'comment', 'labelSummary'],
     // W/o labels on all, just on rref number
     item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></div></label></td> <td> <div class="ref"> </div><a target="_blank" class="URL icon-link"></a> </td> <td> <div class="subj"> </div> </td> <td> <div class="numSec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
-    indexAsync: true
+    indexAsync: true,
+    searchDelay: 500
     // Can't do pagination because doesn't allow to modify the elements (check the checkbox)
   }
   hackerList = new List('hacker-list', hackerListOptions, tableArr)
