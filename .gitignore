@@ -5,3 +5,5 @@ js/*scraped.json
 package-lock.json
 dist/
 .bashrc
+.vs/
+.vscode/
