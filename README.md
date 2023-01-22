@@ -71,5 +71,5 @@ npm audit fix --force                   # Actually fixes broken packages but oft
 
 ## License
 (c) 2016-2023 Swarthmore College Computer Society
-Licensed under the GNU GPLv2 license, as indicated in [the LICENSE file](LICENSE.md)
+Licensed under the MIT license, as indicated in [the LICENSE file](LICENSE.md)
 3rd-party content licenses can be found in [the third-party LICENSE file](LICENSE-3RDPARTY.md)
