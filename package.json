@@ -25,13 +25,9 @@
     "webpack-dev-middleware": "^6.0.1",
     "webpack-merge": "^5.8.0"
   },
-  "dependencyComments": {
-    "list.js": "We want a one line change so the entire list doesn't show when there's nothing in the searchbox. We apply this using patch-package on npm installs. See folder patches/ for details"
-  },
   "scripts": {
     "start": "webpack --config webpack.dev.js && webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "postinstall": "patch-package"
+    "build": "webpack --config webpack.prod.js"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
