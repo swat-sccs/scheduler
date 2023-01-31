@@ -749,6 +749,7 @@ th{
     text-overflow: ellipsis;
     cursor: pointer; /* Pointer/hand icon */
     float: center; /* Float the buttons side by side */
+    transition: 300ms;
 }
 
 .bold{
@@ -1056,4 +1057,41 @@ tr.trClickable:last-child{
     h3 {
         page-break-after: avoid;
     }
+}
+
+.tab {
+    overflow: hidden;
+    background-color: #31425f;
+    width: auto;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: max-content;
+    transition: 300ms;
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2); 
+    /* unsure abt this bit */
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: hsla(10, 60%, 55%, 1);
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: hsla(19, 90%, 55%, 1);
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
 }

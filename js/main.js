@@ -204,31 +204,6 @@ function loadInitURL() {
   updateHashCookie()
 }
 
-function removeSchedule() {
-  scheduleCount--
-  refreshScheduleOptions()
-}
-
-function addSchedule() {
-  scheduleCount++
-  refreshScheduleOptions()
-}
-
-function refreshScheduleOptions() {
-  var schedList = document.getElementById("scheduleList");
-  var i, L = schedList.options.length - 1;
-  for(i = L; i >= 0; i--) {
-    schedList.remove(i);
-  }
-
-  for (i = 1; i < scheduleCount+1; i++) {
-    var option = document.createElement("option");
-    option.text = i;
-    option.value = i
-    schedList.add(option);
-  }
-}
-
 function loadInitCookie() {
   // TODO
   const cookieStr = Cookies.get('classes')
@@ -271,24 +246,22 @@ function updateHashCookie() {
 }
 
 function registerSW() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js').then(registration => {
-            console.log('SW registered: ', registration);
-          }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-          });
-        });
-      }
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').then(registration => {
+        console.log('SW registered: ', registration);
+      }).catch(registrationError => {
+        console.log('SW registration failed: ', registrationError);
+      });
+    });
+  }
 }
 
 function setupEventListeners() {
-    document.getElementById('toggleCal').addEventListener('click', toggleCal)
-    document.getElementById('exportBtn').addEventListener('click', exportBtn)
-    document.getElementById('removeSchedule').addEventListener('click', removeSchedule)
-    document.getElementById('addSchedule').addEventListener('click', addSchedule)
-  }
-  
+  document.getElementById('toggleCal').addEventListener('click', toggleCal)
+  document.getElementById('exportBtn').addEventListener('click', exportBtn)
+}
+
 // would like this script to be in the html directly but the onload is tricky
 // due to module, the functions aren't global and can't be called from the html directly
 

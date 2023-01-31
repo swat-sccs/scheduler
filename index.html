@@ -36,14 +36,28 @@
         <main class="pageMain">
             <div id="body">
                 <div id="scheduleSelect">
-                    <button class="schedBtn" id="removeSchedule">-</button>
-                    <select id="scheduleList">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                    <button class="schedBtn" id="addSchedule">+</button>
+                    <div class="tab">
+                        <button class="tablinks" onclick="loadTab(event, 'Sched0')" id="defaultOpen">1</button>
+                        <button class="tablinks" onclick="loadTab(event, 'Sched1')">2</button>
+                        <button class="tablinks" onclick="loadTab(event, 'Sched2')">3</button>
+                        <button class="tablinks" onclick="loadTab(event, 'Sched3')">4</button>
+                    </div>
+                    <div id="Sched0" class="tabcontent">
+                        <h3>Lorem</h3>
+                        <p>Schedule 1 at index 0</p>
+                    </div>
+                    <div id="Sched1" class="tabcontent">
+                        <h3>Ipsum</h3>
+                        <p>Schedule 2 at index 1</p>
+                    </div>
+                    <div id="Sched2" class="tabcontent">
+                        <h3>Dolor</h3>
+                        <p>Schedule 3 at index 2</p>
+                    </div>
+                    <div id="Sched3" class="tabcontent">
+                        <h3>Sit</h3>
+                        <p>Schedule 4 at index 3</p>
+                    </div>
                 </div>
                 <div id="calContainer">
                     <div id="calendarTd">
@@ -104,5 +118,30 @@
                 | Problems with this website? Email&nbsp;<a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a>.</p></span>
         </footer>
     </div>
+<script>
+
+function loadTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+document.getElementById("defaultOpen").click();
+</script>
 </body>
 </html>
