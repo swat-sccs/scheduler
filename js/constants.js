@@ -10,8 +10,8 @@ const scheduleJSON = 'trico_scraped.json'
 
 // Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
 const startSemester = ['2023', '09', '05'];
-const endSemester = ['2023', '10', '23'];
-const endHalfSemester = ['2022', '03', '03'];
+const endSemester = ['2023', '12', '13'];
+const endHalfSemester = ['2023', '10', '13'];
 
 // RRULE generator says use 50000Z so...I'm not Google go look it up
 const endSemesterISO = endSemester[0] + endSemester[1] + endSemester[2]// + (term.includes('fall') ? 'T050000Z' : 'T040000Z')
