@@ -23,7 +23,7 @@
 	],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install && git config --global --add safe.directory /workspaces/scheduler && git submodule update --init tricoscraper && mkdir dist && wget -P dist/ https://schedule.sccs.swarthmore.edu/trico_scraped.json",
+	"postCreateCommand": "npm install && git config --global --add safe.directory /workspaces/scheduler && git submodule update --init tricoscraper && mkdir -p dist && wget -P dist/ https://schedule.sccs.swarthmore.edu/trico_scraped.json",
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "node",
