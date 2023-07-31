@@ -256,8 +256,71 @@ body {
     border-radius: 4px;
 }
 
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 200;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Black w/ opacity */
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2px 16px;
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #31425f;
+    color: white;
+    border-radius: 4px;
+    top: 50px;
+    margin: auto;
+    padding: 15px;
+    width: 80%;
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+.modal-title {
+    font-size: large;
+}
+
+/* Add Animation */
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 50px;
+        opacity: 1
+    }
+}
+
 /* Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
+    .modal-content {
+        width: 60%;
+    }
+
     #class_and_clear {
         margin: 10px 6rem 20px 6rem;
         width: calc(100% - 12rem);
@@ -519,6 +582,10 @@ a {
 
 .fc-col-header {
     background-color: #F46523;
+}
+
+.fc-event-main-frame {
+    cursor: pointer;
 }
 
 .fc-event-title {

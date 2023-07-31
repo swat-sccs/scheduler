@@ -77,6 +77,18 @@ function initCalendar() {
     dayHeaderFormat: {weekday: 'long'},
     initialView: 'timeGridWeek',
     editable: false,
+    eventClick: function(arg) {
+        console.log("hello")
+        const props = arg.event.extendedProps
+        const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
+        const room = shortenRoom(props.rm)
+        var modal = document.getElementById("eventModal");
+        var modalText = document.getElementById("modal-text");
+        modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + props.c_title + '<br>' + time + '| ' +
+            room + '<br></p><p class="smallFont">Days: ' + props.days + '<br>Instructor: ' + props.instruct + '<br>Credits: ' + props.cred +
+            '<br>Distribution: ' + props.dist + '</p>';
+        modal.style.display = "block";
+    },
     eventColor: normalEventColor,
     eventContent: function(arg) {
       const props = arg.event.extendedProps
@@ -260,6 +272,20 @@ function registerSW() {
 function setupEventListeners() {
     document.getElementById('toggleCal').addEventListener('click', toggleCal)
     document.getElementById('exportBtn').addEventListener('click', exportBtn)
+
+    // yea this isn't exactly proper for this func but whatever
+    // this hook is nice and it serves its purpose well
+    var modal = document.getElementById("modalContent");
+    var modalRoot = document.getElementById("eventModal");
+    modalRoot.onclick = function() {
+        modalRoot.style.display = "none";
+    }
+    modal.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+    }
 }
 
 // would like this script to be in the html directly but the onload is tricky
