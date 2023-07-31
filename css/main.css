@@ -251,6 +251,16 @@ body {
     width: calc(100% - 20px);
 }
 
+#search {
+    display: block;
+    padding: 10px;
+    margin: 0px 10px 20px 10px;
+    width: calc(100% - 40px);
+    font-family: 'Raleway', sans-serif;
+    /* override input using arial or whatever */
+    text-overflow: ellipsis;
+}
+
 .shadow {
     box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
@@ -324,6 +334,12 @@ body {
     #class_and_clear {
         margin: 10px 6rem 20px 6rem;
         width: calc(100% - 12rem);
+    }
+
+    #search {
+        margin: 10px 6rem 20px 6rem;
+        width: calc(100% - 12rem - 20px);
+        text-overflow: ellipsis;
     }
 
     .multiCol {
@@ -755,16 +771,6 @@ th {
 
 #showCal {
     width: 99%;
-}
-
-#search {
-    display: block;
-    padding: 10px;
-    margin: 10px 6rem 20px 6rem;
-    width: calc(100% - 12rem - 20px);
-    font-family: 'Raleway', sans-serif;
-    /* override input using arial or whatever */
-    text-overflow: ellipsis;
 }
 
 #onlyFit_Cont {
