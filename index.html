@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -8,10 +9,12 @@
     <!-- TODO: check https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="expires" content="0">
-    <script async defer data-domain="schedule.sccs.swarthmore.edu" src="https://plausible.sccs.swarthmore.edu/js/pls.js"></script>
+    <script async defer data-domain="schedule.sccs.swarthmore.edu"
+        src="https://plausible.sccs.swarthmore.edu/js/pls.js"></script>
     <link rel="stylesheet" href="main.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
 </head>
+
 <body>
     <!--[if lte IE 9]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
@@ -20,13 +23,14 @@
         <header>
             <div class="headFoot" id="header">
                 <h1>
-                    <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Planner 
+                    <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Planner
                 </h1>
                 <i id="semester-subtitle"></i>
                 <div class="help-tip">
                     <p>
                         <b><u>How to use:</u></b>
-                        <br>- Use the search bar at the bottom to find your classes. Add every section with the left checkbox
+                        <br>- Use the search bar at the bottom to find your classes. Add every section with the left
+                        checkbox
                         <br>- Use the right column to highlight different combinations of the sections
                         <br>P.S. You can share your classes with others simply by giving them the URL
                     </p>
@@ -46,22 +50,26 @@
                     <button class="calBtn" id="toggleCal">Toggle Calendar</button>
                     <button class="calBtn" id="exportBtn">Export iCal File</button>
                 </div>
-		<p class="smallFont" style="padding: 1rem 0rem 1rem 0rem; margin-left: 2rem; margin-right: 2rem;">
-			<i>The Class Planner is a <strong>student-run</strong> service, and displays classes from the Tri-College course database.</i>
-            <br><i>We recommend confirming your schedule with the official course listings just in case.</i>
-			<br><i>If there are any issues, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>.</i>
-        </p>
+                <p class="smallFont" style="padding: 1rem 0rem 1rem 0rem; margin-left: 2rem; margin-right: 2rem;">
+                    <i>The Class Planner is a <strong>student-run</strong> service, and displays classes from the
+                        Tri-College course database.</i>
+                    <br><i>We recommend confirming your schedule with the official course listings just in case.</i>
+                    <br><i>If there are any issues, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>.</i>
+                </p>
                 <div class="shadow" id="class_and_clear">
-                    <div class="large_inline" id="rightCol_par">
+                    <div id="inside_container">
+                        <div class="large_inline" id="rightCol_par">
                         <!--Also change in js-->
                         <div id="rightCol">No courses selected</div>
                     </div>
                     <div id="clearAll_par"></div>
+                    </div>
                 </div>
                 <div id="hacker-list">
                     <div class="middleCol">
                         <div>
-                            <input name="search" class="search" id="search" placeholder="Search for classes to plan your schedule!" />
+                            <input name="search" class="search" id="search"
+                                placeholder="Search for classes to plan your schedule!" />
                             <label class="visuallyhidden" for="search">Search for Classes</label>
                         </div>
                         <div class="shadow hideClass" id="classTable">
@@ -90,34 +98,39 @@
             </div>
         </main>
         <footer class="headFoot" id="footer">
-            <span><p class="smallFont">© 2023 Swarthmore College Computer Society | <a href="https://www.sccs.swarthmore.edu/docs/policy">Usage &amp; Data Policy</a>
-                | Problems with this website? Email&nbsp;<a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a>.</p></span>
+            <span>
+                <p class="smallFont">© 2023 Swarthmore College Computer Society | <a
+                        href="https://www.sccs.swarthmore.edu/docs/policy">Usage &amp; Data Policy</a>
+                    | Problems with this website? Email&nbsp;<a
+                        href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a>.</p>
+            </span>
         </footer>
     </div>
-<script>
+    <script>
 
-function loadTab(evt, tabName) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
+        function loadTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
 
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
 
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
 
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.className += " active";
-}
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
 
-document.getElementById("defaultOpen").click();
-</script>
+        document.getElementById("defaultOpen").click();
+    </script>
 </body>
+
 </html>

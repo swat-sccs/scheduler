@@ -4,6 +4,9 @@
  * What follows is the result of much research on cross-browser styling.
  * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
  * Kroc Camen, and the H5BP dev community and team.
+ *
+ * THIS STYLESHEET HAS BEEN MODIFIED BY THE MEMBERS OF THE SWARTHMORE COLLEGE
+ * COMPUTER SOCIETY AND NO LONGER REPRESENTS OPTIMIZED BOILERPLATE DEFAULTS
  */
 
 /* ==========================================================================
@@ -111,20 +114,25 @@ body {
     font-weight: lighter;
     background-color: #31425f;
 }
-html, body{
+
+html,
+body {
     margin: 0px;
     height: 100%;
 }
+
 /* From http://matthewjamestaylor.com/blog/keeping-footers-at-the-bottom-of-the-page for footer */
-#container{
-    min-height:100%;
-    position:relative;
-}
-#body{
-    padding-bottom: 60px; /*Height of footer */
+#container {
+    min-height: 100%;
+    position: relative;
 }
 
-.headFoot{
+#body {
+    padding-bottom: 60px;
+    /*Height of footer */
+}
+
+.headFoot {
     background-color: #31425F;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -134,7 +142,7 @@ html, body{
     margin: 0px;
 }
 
-#header>h1{
+#header>h1 {
     margin: 0px;
 }
 
@@ -150,54 +158,63 @@ html, body{
     justify-content: space-between;
 }
 
-#footer span{
+#footer span {
     width: 100%;
     height: auto;
     flex-shrink: 0;
 }
-#calendarTd{
+
+#calendarTd {
     vertical-align: top;
     border: rgb(220, 220, 220) solid 3px;
     margin: 10px 10px 0px 10px;
     border-radius: 4px;
 }
-#classTd{
-    vertical-align: top; 
+
+#classTd {
+    vertical-align: top;
     border-radius: 4px;
 }
 
-.rightCol{
+.rightCol {
     text-align: left;
 }
-.chosenClass{
+
+.chosenClass {
     margin-left: 10px;
     text-align: left;
 }
-.chosenClass>span{
+
+.chosenClass>span {
     display: inline-grid;
 }
-.chosenClassRight{
+
+.chosenClassRight {
     font-size: 13px;
 }
 
-.thirds{
+.thirds {
     /* On mobile, show 100% width*/
     width: 100%;
     display: inline-block;
 }
-.thirds>button{
+
+.thirds>button {
     margin: 10px;
     margin-left: 30px;
 }
-.leftAlign{
+
+.leftAlign {
     display: block;
 }
-#clearClasses{
+
+#clearClasses {
     text-align: left;
     /* Just a little smaller than the 16px body size*/
     font-size: 14px;
     cursor: pointer;
 }
+
 /* Added dynamically by reloadRightCol so if no classes, doesn't look weird*/
 /* Very cool, pretty good browser-support*/
 /* TODO polyfill? */
@@ -207,69 +224,86 @@ html, body{
 
 }
 */
-#middle-row{
+
+#middle-row {
     text-align: unset;
 }
-.large_inline{
+
+.large_inline {
     display: block;
-    vertical-align: top;
 }
 
-#rightCol_par{
-     max-height: 200px;
-     overflow-y: auto;
-     overflow-x: hidden;
-     height: 200px;
+#rightCol_par {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 200px;
 }
 
-#class_and_clear{
-     display: block;
-     background-color: white;
-     padding: 10px;
-     margin: 10px 4rem 20px 4rem;
-     width: calc(100% - 8rem - 20px);
+#inside_container {
+    padding: 10px;
 }
-.shadow{
-    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
+
+#class_and_clear {
+    /*display: block;*/
+    background-color: white;
+    margin: 0px 10px 20px 10px;
+    width: calc(100% - 20px);
+}
+
+.shadow {
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
 
 /* Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
-    .multiCol{
-        -moz-column-count:    2;
+    #class_and_clear {
+        margin: 10px 6rem 20px 6rem;
+        width: calc(100% - 12rem);
+    }
+
+    .multiCol {
+        -moz-column-count: 2;
         -webkit-column-count: 2;
-        column-count:         2;
+        column-count: 2;
     }
-    #rightCol_par{
-	height: auto;
+
+    #rightCol_par {
+        height: auto;
     }
-    .thirds{
+
+    .thirds {
         width: 33%;
     }
-    .thirds.left{
+
+    .thirds.left {
         text-align: left;
     }
-    #clearClasses{
-	text-align: right;
+
+    #clearClasses {
+        text-align: right;
     }
-    #middle-row{
-         text-align: left;
+
+    #middle-row {
+        text-align: left;
     }
 }
 
-/* Large devices (desktops, 992px and up)*/
+/* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-    .multiCol{
-        -moz-column-count:    3;
+    .multiCol {
+        -moz-column-count: 3;
         -webkit-column-count: 3;
-        column-count:         3;
+        column-count: 3;
     }
 }
-.rightCol > label>b{
+
+.rightCol>label>b {
     font-weight: 700;
 }
-#sayHi b{
+
+#sayHi b {
     font-weight: 700;
 }
 
@@ -279,119 +313,136 @@ thead {
 }
 
 
-td{
+td {
     padding: 0px;
 }
-th{
-    padding:10px 1px 10px 1px;
+
+th {
+    padding: 10px 1px 10px 1px;
 }
 
 input {
-    border:solid 1px #ccc;
+    border: solid 1px #ccc;
     border-radius: 4px;
-    padding:7px 14px;
-    margin-bottom:10px
+    padding: 7px 14px;
+    margin-bottom: 10px
 }
+
 input:focus {
-    outline:none;
-    border-color:#aaa;
+    outline: none;
+    border-color: #aaa;
 }
 
 button {
-    padding:4px 30px;
+    padding: 4px 30px;
     border-radius: 4px;
-    border:none;
-    display:inline-block;
-    color:#ffffff;
-    background-color: #F46523;  
+    border: none;
+    display: inline-block;
+    color: #ffffff;
+    background-color: #F46523;
     text-decoration: none;
-    height:30px;
+    height: 30px;
     font-family: 'Raleway', sans-serif;
     margin: 2px;
 }
-button:hover{
+
+button:hover {
     background-color: hsla(19, 60%, 55%, 1);
 }
-.icon_button{
+
+.icon_button {
     padding: 1px;
     color: #31425F;
     background-color: white;
     margin-left: 0px;
     margin-right: 0px;
 }
-.icon_button.icon-brush:hover{
-    color: hsla(19, 60%, 55%, 1);
-    background-color:white;
-}
-.icon_button.icon-brush.highlight{
+
+.icon_button.icon-brush:hover {
     color: hsla(19, 60%, 55%, 1);
     background-color: white;
 }
-.icon_button.icon-brush.highlight:hover{
+
+.icon_button.icon-brush.highlight {
+    color: hsla(19, 60%, 55%, 1);
+    background-color: white;
+}
+
+.icon_button.icon-brush.highlight:hover {
     color: hsla(19, 90%, 55%, 1);
-    background-color:white;
+    background-color: white;
 }
 
-.icon_button.icon-trash-1:hover{
+.icon_button.icon-trash-1:hover {
     color: red;
-    background-color:white;
+    background-color: white;
 }
 
-.icon-link{
+.icon-link {
     color: black;
 }
-.icon-link:hover{
+
+.icon-link:hover {
     color: black;
 }
-.icon-link, .ref{
+
+.icon-link,
+.ref {
     display: inline;
 }
 
-button.sharp{
+button.sharp {
     /*#F46523 is 90%*/
     background-color: hsla(19, 90%, 55%, 1);
 }
-button.sharp:hover{
+
+button.sharp:hover {
     background-color: hsla(19, 60%, 55%, 1);
 }
-button.likeLink{
+
+button.likeLink {
     cursor: pointer;
     background-color: #f2f2f2;
 }
 
-button.dull{
+button.dull {
     /*#F46523 is 90%*/
     background-color: hsla(19, 90%, 55%, 1);
 }
-button.dull:hover{
+
+button.dull:hover {
     /*#F46523 is 90%*/
     background-color: hsla(10, 60%, 55%, 1);
 }
+
 .sort {
-    padding:8px 30px;
+    padding: 8px 30px;
     border-radius: 4px;
-    border:none;
-    display:inline-block;
+    border: none;
+    display: inline-block;
     text-decoration: none;
-    height:30px;
+    height: 30px;
     text-decoration: none;
 }
+
 .sort:focus {
-    outline:none;
+    outline: none;
 }
+
 .sort:after {
-    display:inline-block;
+    display: inline-block;
     width: 0;
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid transparent;
     border-radius: 4px;
-    content:"";
+    content: "";
     position: relative;
-    top:-10px;
-    right:-5px;
+    top: -10px;
+    right: -5px;
 }
+
 .sort.asc:after {
     width: 0;
     height: 0;
@@ -399,11 +450,12 @@ button.dull:hover{
     border-right: 5px solid transparent;
     border-top: 5px solid #fff;
     border-radius: 4px;
-    content:"";
+    content: "";
     position: relative;
-    top:4px;
-    right:-5px;
+    top: 4px;
+    right: -5px;
 }
+
 .sort.desc:after {
     width: 0;
     height: 0;
@@ -411,45 +463,50 @@ button.dull:hover{
     border-right: 5px solid transparent;
     border-bottom: 5px solid #fff;
     border-radius: 4px;
-    content:"";
+    content: "";
     position: relative;
-    top:-4px;
-    right:-5px;
+    top: -4px;
+    right: -5px;
 }
-table{
+
+table {
     border-collapse: collapse;
 }
-thead>tr>td{
-    border:solid 0px;
+
+thead>tr>td {
+    border: solid 0px;
 }
 
-a{
+a {
     color: #F46523;
-    text-decoration:none;
+    text-decoration: none;
 }
 
-.fc-timegrid-slots, .fc-col-header{
+.fc-timegrid-slots,
+.fc-col-header {
     border-radius: 2px;
 }
-.fc-scrollgrid-section-header .fc-scroller-harness{
+
+.fc-scrollgrid-section-header .fc-scroller-harness {
     background-color: rgb(220, 220, 220);
 }
 
-.fc .fc-scrollgrid, .fc .fc-scrollgrid-section > td{
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section>td {
     border: none !important;
 }
 
-.fc-day-fri{
+.fc-day-fri {
     border-radius: 0px 2px 0px 0px;
 }
 
-.fc-timegrid-axis{
+.fc-timegrid-axis {
     border-radius: 2px 0px 0px 0px;
 }
 
 /* override fullcalendar weird white shadow */
-.fc-timegrid-event-harness-inset .fc-timegrid-event{
-    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2) !important;
+.fc-timegrid-event-harness-inset .fc-timegrid-event {
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2) !important;
 }
 
 .fc-col-header-cell-cushion {
@@ -472,12 +529,12 @@ a{
     text-overflow: ellipsis;
 }
 
-a:hover{
+a:hover {
     color: hsla(19, 60%, 55%, 1);
 }
 
 /* Modified from https://tutorialzine.com/2014/07/css-inline-help-tips */
-.help-tip{
+.help-tip {
     position: absolute;
     top: 10px;
     right: 18px;
@@ -492,14 +549,14 @@ a:hover{
     z-index: 100;
 }
 
-.help-tip:before{
-    content:'?';
+.help-tip:before {
+    content: '?';
     font-weight: bold;
     color: #E8F1F2;
 }
 
-.help-tip:hover p{
-    display:block;
+.help-tip:hover p {
+    display: block;
     transform-origin: 100% 0%;
 
     -webkit-animation: fadeIn 0.3s ease-in-out;
@@ -508,7 +565,8 @@ a:hover{
     z-index: 2;
 }
 
-.help-tip p{    /* The tooltip */
+.help-tip p {
+    /* The tooltip */
     display: none;
     text-align: left;
     background-color: #1E2021;
@@ -516,61 +574,68 @@ a:hover{
     width: 500px;
     position: absolute;
     border-radius: 4px;
-    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
     right: -4px;
     color: #FFF;
     font-size: 16px;
     line-height: 1.4;
 }
 
-.help-tip p:before{ /* The pointer of the tooltip */
+.help-tip p:before {
+    /* The pointer of the tooltip */
     position: absolute;
     content: '';
-    width:0;
+    width: 0;
     height: 0;
-    border:6px solid transparent;
-    border-bottom-color:#1E2021;
-    right:10px;
-    top:-12px;
+    border: 6px solid transparent;
+    border-bottom-color: #1E2021;
+    right: 20px;
+    top: -12px;
 }
 
-.help-tip p:after{ /* Prevents the tooltip from being hidden */
-    width:100%;
-    height:40px;
-    content:'';
+.help-tip p:after {
+    /* Prevents the tooltip from being hidden */
+    width: 100%;
+    height: 40px;
+    content: '';
     position: absolute;
-    top:-40px;
-    left:0;
+    top: -40px;
+    left: 0;
 }
 
-h2{
+h2 {
     font-size: 1.1em;
 }
 
-.smallFont{
+.smallFont {
     font-size: small;
 }
 
 /* CSS animation */
 
 @-webkit-keyframes fadeIn {
-    0% { 
-        opacity:0; 
+    0% {
+        opacity: 0;
         transform: scale(0.6);
     }
 
     100% {
-        opacity:100%;
+        opacity: 100%;
         transform: scale(1);
     }
 }
 
 @keyframes fadeIn {
-    0% { opacity:0; }
-    100% { opacity:100%; }
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100%;
+    }
 }
 
-.fc-body{
+.fc-body {
     background-color: rgb(220, 220, 220);
     border-radius: 4px;
 }
@@ -580,98 +645,111 @@ h2{
     border-radius: 4px;
 }
 
-.fc-axis.fc-time{
+.fc-axis.fc-time {
     /*Side bar with time*/
     border-width: 0px;
     border-radius: 4px;
 }
 
-.fc-day-header.fc-widget-header.fc-mon{
-    border-left: none!important;
+.fc-day-header.fc-widget-header.fc-mon {
+    border-left: none !important;
 }
 
-.fc-widget-header>table>thead>tr{
-    height: 30px!important;
+.fc-widget-header>table>thead>tr {
+    height: 30px !important;
 }
-.fc-widget-header>table>thead>tr>th{
-    padding-top: 10px!important;
+
+.fc-widget-header>table>thead>tr>th {
+    padding-top: 10px !important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.fc-axis.fc-widget-header, .fc-head-container.fc-widget-header, .fc-body>tr>.fc-widget-content {
+
+.fc-axis.fc-widget-header,
+.fc-head-container.fc-widget-header,
+.fc-body>tr>.fc-widget-content {
     /* Removes border from header */
-    border: none!important;
+    border: none !important;
 }
 
-.fc-toolbar.fc-header-toolbar{
-    margin-bottom:0px;
+.fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0px;
 }
 
-th{
+th {
     font-weight: normal;
 }
 
 /* Initial hide of (not|is)Authorized*/
-#authorizedButtons{
+#authorizedButtons {
     display: none;
 }
 
-#showCal{
+#showCal {
     width: 99%;
 }
 
-#search{
+#search {
     display: block;
     padding: 10px;
-    margin: 10px 4rem 20px 4rem;
-    width: calc(100% - 8rem - 20px);
-    font-family: 'Raleway', sans-serif; /* override input using arial or whatever */
+    margin: 10px 6rem 20px 6rem;
+    width: calc(100% - 12rem - 20px);
+    font-family: 'Raleway', sans-serif;
+    /* override input using arial or whatever */
     text-overflow: ellipsis;
 }
 
-#onlyFit_Cont{
+#onlyFit_Cont {
     display: inline-block;
 }
+
 #classTable {
     /* display: none;*/
     margin-bottom: 30px;
-    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     margin: 10px;
 }
-.hideClass{
+
+.hideClass {
     display: none;
 }
 
-.fullWidth{
+.fullWidth {
     width: 100%;
 }
-.centering{
+
+.centering {
     margin: 0 auto;
 }
+
 /* Make side by side buttons */
-#exportButtons, #authorizedButtons{
+#exportButtons,
+#authorizedButtons {
     display: inline;
 }
-#exportButtons>button, #authorizedButtons button{
+
+#exportButtons>button,
+#authorizedButtons button {
     /*Remove margin from top of top button so aligns better with header*/
     margin-top: 0px;
     /*min-width: 35%;*/
 }
 
-#signout-button{
+#signout-button {
     /* Needs to be important to override the above min-width*/
     min-width: auto;
     padding: 0px;
 }
-.list tr:hover{
+
+.list tr:hover {
     /* #F46523 with 60% saturation */
-    background-color:  hsla(19, 60%, 55%, 1);
+    background-color: hsla(19, 60%, 55%, 1);
     border-radius: 4px;
 }
 
-.list tr{
+.list tr {
     cursor: pointer;
 }
 
@@ -686,7 +764,7 @@ th{
     border-radius: 4px;
 }
 
-#classResultsTable{
+#classResultsTable {
     display: block;
     width: 100%;
     overflow-x: auto;
@@ -696,92 +774,99 @@ th{
     border-radius: 4px;
 }
 
-.scrolling{
+.scrolling {
     overflow-y: auto;
     height: 500px;
 }
 
-#classResultsTable>thead>tr>th{
+#classResultsTable>thead>tr>th {
     /* 100%/11 columns */
     /* width: 8.33%; */
     /* Default Small cols, will make fit if 1 work (most are)*/
     /* width: 1.5%;*/
-	/*width: auto;*/
-	padding: 5px;
+    /*width: auto;*/
+    padding: 5px;
 }
 
 /* So checkbox not right against margin*/
-#classResultsTable > thead > tr > th:nth-child(1){
-	padding-left: 3%;
+#classResultsTable>thead>tr>th:nth-child(1) {
+    padding-left: 3%;
 }
 
-.flashWhite{
+.flashWhite {
     opacity: 0;
-    transition:all .7s;
+    transition: all .7s;
 }
 
-.threeCol>label{
+.threeCol>label {
     /* Make not break in column*/
     display: inline-block;
 }
 
-.fc-scrollgrid-sync-inner{
+.fc-scrollgrid-sync-inner {
     overflow: hidden;
 }
 
-.fc-col-header-cell-cushion{
+.fc-col-header-cell-cushion {
     overflow: hidden;
     text-overflow: clip;
     vertical-align: middle;
 }
 
-#btns{
+#btns {
     padding-top: 10px;
     margin-left: 5px;
     margin-right: 5px;
 }
 
-.calBtn{
+.calBtn {
     width: calc(50% - 10px);
     height: 80%;
-    padding: 10px; /* Some padding */
-    box-shadow: -1px 3px 4px 0px rgba(0,0,0,0.2);
+    padding: 10px;
+    /* Some padding */
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     text-overflow: ellipsis;
-    cursor: pointer; /* Pointer/hand icon */
-    float: center; /* Float the buttons side by side */
+    cursor: pointer;
+    /* Pointer/hand icon */
+    float: center;
+    /* Float the buttons side by side */
     transition: 300ms;
 }
 
-.bold{
+.bold {
     font-weight: bold;
 }
-b{
+
+b {
     /* normalize css makes it bolder which doesn't work for raleway */
     font-weight: bold;
 }
 
-tr.trClickable{
+tr.trClickable {
     border-bottom: #c7c7c7 solid 1px;
     border-radius: 4px;
 }
-tr.trClickable.trHigh{
+
+tr.trClickable.trHigh {
     background-color: hsla(19, 60%, 55%, 1);
 }
 
 /* Don't want border on last row*/
-tr.trClickable:last-child{
-		border-bottom-width: 0px;
+tr.trClickable:last-child {
+    border-bottom-width: 0px;
 }
 
 
-.wide{
+.wide {
     width: auto;
 }
-.narrowest{
+
+.narrowest {
     width: 3%;
 }
-.narrow{
+
+.narrow {
     width: 9%;
 }
 
@@ -789,52 +874,72 @@ tr.trClickable:last-child{
   Demo Animation Style
 \**************************/
 @keyframes mmfadeIn {
-    from { opacity: 0; }
-      to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes mmfadeOut {
-    from { opacity: 1; }
-      to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }
 
 @keyframes mmslideIn {
-  from { transform: translateY(15%); }
-    to { transform: translateY(0); }
+    from {
+        transform: translateY(15%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
 }
 
 @keyframes mmslideOut {
-    from { transform: translateY(0); }
-    to { transform: translateY(-10%); }
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-10%);
+    }
 }
 
 .micromodal-slide {
-  display: none;
+    display: none;
 }
 
 .micromodal-slide.is-open {
-  display: block;
+    display: block;
 }
 
 .micromodal-slide[aria-hidden="false"] .modal__overlay {
-  animation: mmfadeIn .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+    animation: mmfadeIn .3s cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
 .micromodal-slide[aria-hidden="false"] .modal__container {
-  animation: mmslideIn .3s cubic-bezier(0, 0, .2, 1);
+    animation: mmslideIn .3s cubic-bezier(0, 0, .2, 1);
 }
 
 .micromodal-slide[aria-hidden="true"] .modal__overlay {
-  animation: mmfadeOut .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+    animation: mmfadeOut .3s cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
 .micromodal-slide[aria-hidden="true"] .modal__container {
-  animation: mmslideOut .3s cubic-bezier(0, 0, .2, 1);
+    animation: mmslideOut .3s cubic-bezier(0, 0, .2, 1);
 }
 
 .micromodal-slide .modal__container,
 .micromodal-slide .modal__overlay {
-  will-change: transform;
+    will-change: transform;
 }
 
 /* ===== Add custom fontell icon font (css/font for README)*/
@@ -842,45 +947,58 @@ tr.trClickable:last-child{
 /* Take from fontello fontello.css */
 
 @font-face {
-  font-family: 'fontello';
-  src: url('font/fontello.eot?64048694');
-  src: url('font/fontello.eot?64048694#iefix') format('embedded-opentype'),
-       url('font/fontello.woff2?64048694') format('woff2'),
-       url('font/fontello.woff?64048694') format('woff'),
-       url('font/fontello.ttf?64048694') format('truetype'),
-       url('font/fontello.svg?64048694#fontello') format('svg');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'fontello';
+    src: url('font/fontello.eot?64048694');
+    src: url('font/fontello.eot?64048694#iefix') format('embedded-opentype'),
+        url('font/fontello.woff2?64048694') format('woff2'),
+        url('font/fontello.woff?64048694') format('woff'),
+        url('font/fontello.ttf?64048694') format('truetype'),
+        url('font/fontello.svg?64048694#fontello') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
- 
- [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "fontello";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
- 
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  opacity: .8;
- 
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
- 
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
- 
-  /* Font smoothing. That was taken from TWBS */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-family: "fontello";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    opacity: .8;
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
- 
-.icon-brush:before { content: '\e800'; } /* 'a' */
-.icon-trash-1:before { content: '\e801'; } /* 'b' */
-.icon-link:before { content: '\e802'; } /* 'b' */
+
+.icon-brush:before {
+    content: '\e800';
+}
+
+/* 'a' */
+.icon-trash-1:before {
+    content: '\e801';
+}
+
+/* 'b' */
+.icon-link:before {
+    content: '\e802';
+}
+
+/* 'b' */
 
 
 /* ==========================================================================
@@ -915,7 +1033,8 @@ tr.trClickable:last-child{
     padding: 0;
     position: absolute;
     width: 1px;
-    white-space: nowrap; /* 1 */
+    white-space: nowrap;
+    /* 1 */
 }
 
 /*
@@ -959,8 +1078,10 @@ tr.trClickable:last-child{
 
 .clearfix:before,
 .clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
+    content: " ";
+    /* 1 */
+    display: table;
+    /* 2 */
 }
 
 .clearfix:after {
@@ -978,9 +1099,9 @@ tr.trClickable:last-child{
 }
 
 @media print,
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 1.25dppx),
-       (min-resolution: 120dpi) {
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 1.25dppx),
+(min-resolution: 120dpi) {
     /* Style adjustments for high resolution devices */
 }
 
@@ -991,11 +1112,13 @@ tr.trClickable:last-child{
    ========================================================================== */
 
 @media print {
+
     *,
     *:before,
     *:after {
         background: transparent !important;
-        color: #000 !important; /* Black prints faster:
+        color: #000 !important;
+        /* Black prints faster:
                                    http://www.sanbeiji.com/archives/953 */
         box-shadow: none !important;
         text-shadow: none !important;
@@ -1027,6 +1150,7 @@ tr.trClickable:last-child{
     pre {
         white-space: pre-wrap !important;
     }
+
     pre,
     blockquote {
         border: 1px solid #999;
@@ -1075,7 +1199,7 @@ tr.trClickable:last-child{
     cursor: pointer;
     width: max-content;
     transition: 300ms;
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
     /* unsure abt this bit */
 }
 
