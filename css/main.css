@@ -325,8 +325,17 @@ body {
     }
 }
 
+.fc-event-time {
+    display: none;
+    text-overflow: ellipsis;
+}
+
 /* Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
+    .fc-event-time {
+        display: inline-block;
+    }
+
     .modal-content {
         width: 60%;
     }
@@ -605,10 +614,6 @@ a {
 }
 
 .fc-event-title {
-    text-overflow: ellipsis;
-}
-
-.fc-event-time {
     text-overflow: ellipsis;
 }
 
