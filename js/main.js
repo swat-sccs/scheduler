@@ -81,12 +81,13 @@ function initCalendar() {
         console.log("hello")
         const props = arg.event.extendedProps
         const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
-        const room = shortenRoom(props.rm)
         var modal = document.getElementById("eventModal");
         var modalText = document.getElementById("modal-text");
-        modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + props.c_title + '<br>' + time + '| ' +
-            room + '<br></p><p class="smallFont">Days: ' + props.days + '<br>Instructor: ' + props.instruct + '<br>Credits: ' + props.cred +
-            '<br>Distribution: ' + props.dist + '</p>';
+        modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + 
+            props.c_title + '<br>' + time + '| ' + props.rm + '<br></p><hr style="width:25%;margin:auto"><p class="smallFont">' + 
+            props.days.replace('M',' Monday').replace('T,',' Tuesday,').replace('W',' Wednesday')
+            .replace('TH',' Thursday').replace('F',' Friday') + '<br>Instructor: ' + props.instruct +
+            '<br>Distribution: ' + props.dist + '<br>Credits: ' + props.cred + '</p>';
         modal.style.display = "block";
     },
     eventColor: normalEventColor,
