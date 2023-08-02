@@ -23,6 +23,7 @@ module.exports = {
         devMode: 'webapp',
         favicons: {
           appName: 'SCCS Course Planner',
+          appShortName: "Scheduler",
           appDescription: 'My Swarthmore course schedule, proudly (or, at least, dutifully) planned with the SCCS Course Planner',
           developerName: 'SCCS',
           developerURL: 'https://www.sccs.swarthmore.edu/',
