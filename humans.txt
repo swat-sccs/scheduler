@@ -8,6 +8,7 @@
 # THANKS
 
     Jonah Langlieb - SCCS Staff Member
+    Thomas Makin --- SCCS Staff Member
 
 # TECHNOLOGY COLOPHON
 
