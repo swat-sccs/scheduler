@@ -208,6 +208,11 @@ body {
     display: block;
 }
 
+#clearAll_par {
+    padding-top: 10px;
+    background-color: transparent;
+}
+
 #clearClasses {
     text-align: left;
     /* Just a little smaller than the 16px body size*/
@@ -367,6 +372,10 @@ body {
 
     .thirds.left {
         text-align: left;
+    }
+
+    #clearAll_par {
+        padding-top: 0px;
     }
 
     #clearClasses {
