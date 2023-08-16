@@ -622,6 +622,19 @@ a {
     cursor: pointer;
 }
 
+.fc-event {
+    -webkit-filter: brightness(100%);
+}
+
+.fc-event:hover {
+    -webkit-filter: brightness(80%);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
 .fc-event-title {
     text-overflow: ellipsis;
 }
