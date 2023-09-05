@@ -335,6 +335,83 @@ body {
     text-overflow: ellipsis;
 }
 
+/* Modified from https://tutorialzine.com/2014/07/css-inline-help-tips */
+.help-tip {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    text-align: center;
+    background-color: #001A23;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.help-tip:before {
+    content: '?';
+    font-weight: bold;
+    color: #E8F1F2;
+}
+
+.help-tip:hover p {
+    display: block;
+    transform-origin: 100% 0%;
+
+    -webkit-animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
+
+    z-index: 2;
+}
+
+.help-tip p {
+    /* The tooltip */
+    display: none;
+    text-align: left;
+    background-color: #1E2021;
+    padding: 20px;
+    width: 500px;
+    position: absolute;
+    border-radius: 4px;
+    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    right: -4px;
+    color: #FFF;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.help-tip p:before {
+    /* The pointer of the tooltip */
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom-color: #1E2021;
+    right: 20px;
+    top: -12px;
+}
+
+.help-tip p:after {
+    /* Prevents the tooltip from being hidden */
+    width: 100%;
+    height: 40px;
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 0;
+}
+
+@media (min-width: 576px) {
+    .help-tip {
+        display: block;
+    }
+}
+
 /* Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
     .fc-event-time {
@@ -645,76 +722,6 @@ a {
 
 a:hover {
     color: hsla(19, 60%, 55%, 1);
-}
-
-/* Modified from https://tutorialzine.com/2014/07/css-inline-help-tips */
-.help-tip {
-    position: absolute;
-    top: 10px;
-    right: 18px;
-    text-align: center;
-    background-color: #001A23;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 14px;
-    line-height: 40px;
-    cursor: pointer;
-    z-index: 100;
-}
-
-.help-tip:before {
-    content: '?';
-    font-weight: bold;
-    color: #E8F1F2;
-}
-
-.help-tip:hover p {
-    display: block;
-    transform-origin: 100% 0%;
-
-    -webkit-animation: fadeIn 0.3s ease-in-out;
-    animation: fadeIn 0.3s ease-in-out;
-
-    z-index: 2;
-}
-
-.help-tip p {
-    /* The tooltip */
-    display: none;
-    text-align: left;
-    background-color: #1E2021;
-    padding: 20px;
-    width: 500px;
-    position: absolute;
-    border-radius: 4px;
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
-    right: -4px;
-    color: #FFF;
-    font-size: 16px;
-    line-height: 1.4;
-}
-
-.help-tip p:before {
-    /* The pointer of the tooltip */
-    position: absolute;
-    content: '';
-    width: 0;
-    height: 0;
-    border: 6px solid transparent;
-    border-bottom-color: #1E2021;
-    right: 20px;
-    top: -12px;
-}
-
-.help-tip p:after {
-    /* Prevents the tooltip from being hidden */
-    width: 100%;
-    height: 40px;
-    content: '';
-    position: absolute;
-    top: -40px;
-    left: 0;
 }
 
 h2 {
