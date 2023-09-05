@@ -601,6 +601,10 @@ a {
     border-radius: 2px 0px 0px 0px;
 }
 
+.fc-timegrid-event-harness {
+    margin-left: 2%;
+}
+
 /* override fullcalendar weird white shadow */
 .fc-timegrid-event-harness-inset .fc-timegrid-event {
     box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2) !important;
