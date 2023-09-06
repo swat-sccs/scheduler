@@ -704,6 +704,7 @@ a {
 }
 
 .fc-event {
+    border: none !important;
     -webkit-filter: brightness(100%);
 }
 
