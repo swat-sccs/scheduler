@@ -144,6 +144,9 @@ body {
     text-align: center;
     color: #ffffff;
     margin: 0px;
+}
+
+#header {
     height: var(--header-height);
 }
 
@@ -168,6 +171,8 @@ body {
     height: auto;
     flex-shrink: 0;
 }
+
+#footer p { display: inline-block }
 
 #calendarTd {
     vertical-align: top;

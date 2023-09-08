@@ -11,6 +11,8 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import {term, termSubtitle, scheduleJSON, startSemester, endSemester, 
         endHalfSemester, endSemesterISO, endHalfSemesterISO} from './constants'
 
+import packageInfo from '../package.json';
+
 let selectedClasses = []
 let classSchedObj
 // Needs to be global so can i.e. search from the window location hash
@@ -580,6 +582,7 @@ registerSW()
 initCalendar()
 setupEventListeners()
 document.getElementById('semester-subtitle').textContent = termSubtitle
+document.getElementById('version').textContent = 'v' + packageInfo.version
 
 let request = new XMLHttpRequest()
 request.open('GET', scheduleJSON, true)
