@@ -80,7 +80,6 @@ function initCalendar() {
     initialView: 'timeGridWeek',
     editable: false,
     eventClick: function(arg) {
-        console.log("hello")
         const props = arg.event.extendedProps
         const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
         var modal = document.getElementById("eventModal");
