@@ -1,6 +1,6 @@
 {
   "name": "scheduler",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "The frontend of SCCS's Swarthmore Course Scheduler",
   "main": "index.html",
   "repository": "https://github.com/swat-sccs/scheduler",
