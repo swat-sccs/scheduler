@@ -296,6 +296,7 @@ body {
     /* Fallback color */
     background-color: rgba(0, 0, 0, 0.6);
     /* Black w/ opacity */
+    /*backdrop-filter: blur(10px);*/
 }
 
 /* Modal Body */
@@ -306,14 +307,16 @@ body {
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: #31425f;
+    /*background-color: #31425f;*/
+    background-color: rgba(49, 66, 95, 0.6);
+    backdrop-filter: blur(10px);
     color: white;
     border-radius: 4px;
     top: 50px;
     margin: auto;
     padding: 15px;
     width: 80%;
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: -4px 6px 12px 0px rgba(0, 0, 0, 0.2);
     animation-name: animatetop;
     animation-duration: 0.4s
 }
@@ -344,10 +347,10 @@ body {
 .help-tip {
     display: none;
     position: absolute;
-    top: 25px;
+    top: 25px; /* TODO: calc-ize this with --header-height */
     right: 25px;
     text-align: center;
-    background-color: #001A23;
+    background-color: rgba(22, 30, 44, 0.8);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -377,7 +380,8 @@ body {
     /* The tooltip */
     display: none;
     text-align: left;
-    background-color: #1E2021;
+    background-color: rgba(22, 30, 44, 0.8);
+    backdrop-filter: blur(10px);
     padding: 20px;
     width: 500px;
     position: absolute;
@@ -396,7 +400,8 @@ body {
     width: 0;
     height: 0;
     border: 6px solid transparent;
-    border-bottom-color: #1E2021;
+    border-bottom-color: rgba(22, 30, 44, 0.8);
+    backdrop-filter: blur(10px);
     right: 20px;
     top: -12px;
 }
