@@ -277,7 +277,7 @@ body {
 }
 
 .shadow {
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(-2px 4px 6px #00000044);
     border-radius: 4px;
 }
 
@@ -322,7 +322,7 @@ body {
     margin: auto;
     padding: 15px;
     width: 80%;
-    box-shadow: -4px 6px 12px 0px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(4px 6px 10px #00000044);
     animation-name: animatetop;
     animation-duration: 0.4s
 }
@@ -393,7 +393,7 @@ body {
     width: 500px;
     position: absolute;
     border-radius: 4px;
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(4px 6px 10px #00000044);
     right: -4px;
     color: #FFF;
     font-size: 16px;
@@ -702,7 +702,8 @@ a {
 
 /* override fullcalendar weird white shadow */
 .fc-timegrid-event-harness-inset .fc-timegrid-event {
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: none !important;
+    filter: drop-shadow(4px 6px 10px #00000044) !important;
 }
 
 .fc-col-header-cell-cushion {
@@ -837,7 +838,7 @@ th {
 #classTable {
     /* display: none;*/
     margin-bottom: 30px;
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(4px 6px 10px #00000044);
     border-radius: 4px;
     margin: 10px;
 }
@@ -954,7 +955,7 @@ th {
     height: 80%;
     padding: 10px;
     /* Some padding */
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(4px 6px 10px #00000044);
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
@@ -1329,7 +1330,7 @@ tr.trClickable:last-child {
     cursor: pointer;
     width: max-content;
     transition: 300ms;
-    box-shadow: -1px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(4px 6px 10px #00000044);
     /* unsure abt this bit */
 }
 
