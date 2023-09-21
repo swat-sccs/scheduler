@@ -2,7 +2,6 @@
 *.swp
 node_modules
 js/*scraped.json
-package-lock.json
 dist/
 .bashrc
 .vs/
