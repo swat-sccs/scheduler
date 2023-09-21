@@ -725,9 +725,11 @@ a {
 .fc-event {
     border: none !important;
     -webkit-filter: brightness(100%);
+    filter: brightness(100%);
 }
 
 .fc-event:hover {
+    filter: brightness(80%);
     -webkit-filter: brightness(80%);
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -1096,7 +1098,6 @@ tr.trClickable:last-child {
     font-family: "fontello";
     font-style: normal;
     font-weight: normal;
-    speak: none;
 
     display: inline-block;
     text-decoration: inherit;
