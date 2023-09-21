@@ -1,10 +1,10 @@
 {
   "name": "scheduler",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "The frontend of SCCS's Swarthmore Course Scheduler",
   "main": "index.html",
   "repository": "https://github.com/swat-sccs/scheduler",
-  "author": "SCCS Staff <staff@sccs.swarthmore.edu",
+  "author": "SCCS Staff <staff@sccs.swarthmore.edu>",
   "license": "MIT",
   "dependencies": {
     "@fullcalendar/core": "^6.1.8",
