@@ -956,6 +956,8 @@ th {
     padding: 10px;
     /* Some padding */
     filter: drop-shadow(4px 6px 10px #00000044);
+    /* WAR: safari is gross, this forces gpu render */
+    backdrop-filter: blur(0);
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
