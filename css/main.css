@@ -277,7 +277,7 @@ body {
 }
 
 .shadow {
-    filter: drop-shadow(-2px 4px 6px #00000044);
+    filter: drop-shadow(4px 6px 10px #00000044);
     border-radius: 4px;
 }
 
@@ -393,7 +393,7 @@ body {
     width: 500px;
     position: absolute;
     border-radius: 4px;
-    filter: drop-shadow(-2px 6px 8px #00000066);
+    filter: drop-shadow(6px 8px 10px #00000066);
     z-index: 10;
     right: -4px;
     color: #FFF;
