@@ -701,10 +701,23 @@ a {
     margin-left: 2%;
 }
 
-/* override fullcalendar weird white shadow */
+/* override fullcalendar white shadow and border; add filters */
 .fc-timegrid-event-harness-inset .fc-timegrid-event {
+    border: none !important;
     box-shadow: none !important;
-    filter: drop-shadow(4px 6px 10px #00000044) !important;
+    filter: drop-shadow(4px 6px 10px #00000044) brightness(100%) !important;
+    -webkit-filter: drop-shadow(4px 6px 10px #00000044) brightness(100%);
+}
+
+.fc-timegrid-event-harness-inset .fc-timegrid-event:hover {
+    box-shadow: none !important;
+    filter: drop-shadow(4px 6px 10px #00000044) brightness(80%) !important;
+    -webkit-filter: drop-shadow(4px 6px 10px #00000044) brightness(80%);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 .fc-col-header-cell-cushion {
@@ -721,22 +734,6 @@ a {
 
 .fc-event-main-frame {
     cursor: pointer;
-}
-
-.fc-event {
-    border: none !important;
-    -webkit-filter: brightness(100%);
-    filter: brightness(100%);
-}
-
-.fc-event:hover {
-    filter: brightness(80%);
-    -webkit-filter: brightness(80%);
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    -ms-transition: all 0.5s ease;
-    transition: all 0.5s ease;
 }
 
 .fc-event-title {
