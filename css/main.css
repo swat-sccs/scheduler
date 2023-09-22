@@ -138,12 +138,18 @@ body {
 
 .headFoot {
     background-color: #31425F;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     font-size: 1em;
     text-align: center;
     color: #ffffff;
     margin: 0px;
+}
+
+@media (max-width: 853px) {
+    #bar {
+        visibility: hidden
+    }
 }
 
 #header {
@@ -750,6 +756,7 @@ h2 {
 
 .smallFont {
     font-size: small;
+    margin: 0;
 }
 
 /* CSS animation */
