@@ -85,10 +85,10 @@ function initCalendar() {
         var modal = document.getElementById("eventModal");
         var modalText = document.getElementById("modal-text");
         modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + props.c_title +
-            '<br>' + time + '| ' + props.rm + '<br></p><hr style="width:25%;margin:auto"><p class="smallFont">' +
+            '<br>' + time + '| ' + props.rm + '<br></p><hr style="width:25%;margin:auto"><br><p class="smallFont">' +
             props.days.replace('M',' Monday').replace('T',' Tuesday').replace('W',' Wednesday').replace('TuesdayH',' Thursday')
             .replace('TH',' Thursday').replace('F',' Friday') + '<br>Instructor: ' + props.instruct + '<br>Distribution: ' +
-            props.dist + '<br>Credits: ' + props.cred + '</p>';
+            props.dist + '<br>Credits: ' + props.cred + '</p><br>';
         modal.style.display = "block";
     },
     eventColor: normalEventColor,
