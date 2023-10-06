@@ -376,7 +376,7 @@ body {
 
 .help-tip:before {
     content: '?';
-    font-weight: bold;
+    font-weight: 600;
     color: #E8F1F2;
 }
 
@@ -433,10 +433,253 @@ body {
     left: 0;
 }
 
-@media (min-width: 576px) {
+#exportBtn {
+    display: none;
+    width: calc(12% - 10px);;
+    min-width: 100px;
+    font-size: 14px;
+    font-weight: 520;
+    height: 39px;
+    background-color: rgba(22, 30, 44, 0.8);
+    border: none;
+    border-radius: 4px; 
+    position: absolute;
+    top: 25px; 
+    right: 75px; 
+    cursor: pointer;
+    outline: none; /* Removes the default button focus outline */
+    transition: 300ms;
+    padding: 10px;
+    text-overflow: ellipsis;
+}
+
+#exportBtn:hover {
+    background-color: rgba(16, 22, 31, 0.8);
+    transition: background-color .19s;
+}
+
+.toggle-features {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Save text input */
+.save-plan {
+    border-radius: 4px;
+    border-width: 1.5px;
+    width: 15%;
+    height: 24px;
+    margin-top: 13px;
+    margin-right: 30px;
+    background-color: #ffffff;
+    min-width: 60px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+.save-plan:hover {
+    border-color: #000;
+}
+
+/* Save button */
+#save-button {
+    order: -1;
+    width: 50px;
+    min-width: 43px;
+    height: 43px;
+    min-height: 40px;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: #0A8F16;
+    background-image: url(/workspaces/scheduler/img/icon-add-30.png);
+    background-repeat: no-repeat;
+    background-size: 22px;
+    background-position: center;
+    padding: 2px;
+    transition: 300ms;
+    filter: drop-shadow(4px 6px 10px #00000044);
+    padding-top: 12px;
+    margin-top: 14px;
+    margin-left: 20px;
+}
+
+#save-button:hover {
+    background-color: rgb(1, 112, 1);
+}
+
+/* Dropdown Selector */
+li a {
+    text-decoration: none;
+    color: #2d2f31;
+    text-overflow:clip;
+}
+
+.change-height {
+    width: 270px;
+    height: 100%;
+    background: #d9d9d9;
+    margin-top: 14px; 
+    margin-left: 5px;
+    border-radius: 4px;
+    margin-bottom: 0px;
+}
+
+#ss-span {
+    padding : 11px;
+    border-radius: 4px;
+    background : #F46523; 
+    color : white;
+    font-size : 100%;
+    cursor : pointer;
+    display: block;
+    filter: drop-shadow(4px 6px 10px #00000044);
+}
+
+#ss-span.drop-up::after {
+    float: right;
+    right: 10%;
+    content: "+";
+}
+
+#ss-span.drop-down::after {
+    float: right;
+    right: 10%;
+    content: "-";
+}
+
+.slide {
+    clear: both;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    text-align: center;
+    transition: height .4s ease;
+    padding: 0;
+    margin: 0;
+}
+
+.slide li {
+    list-style-type: none;
+    padding : 14px;
+    cursor: pointer;
+    color: #2d2f31;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.slide li:hover {
+    background-color: #aaaaaa36;
+    border-radius: 4px;
+}
+
+.slide a {
+    color: #2d2f31;
+}
+
+#touch {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 100%;
+}    
+
+#touch:checked + .slide {
+    height: 0;
+    width: 100%;
+    max-height: 0;
+    overflow-y: scroll;
+    overflow-x: none;
+    transition: max-height .4s, height .4s ease, display .4s ease-out;
+} 
+
+#touch:not(:checked) + .slide {
+    display: none;
+    transition: max-height .4s, height .4s ease, display .4s ease-out;
+} 
+
+.delete-plan {
+    margin-left: 10px;
+    padding-top: 12px;
+}
+
+#cc-button {
+    width: 50px;
+    min-width: 43px;
+    height: 43px;
+    min-height: 40px;
+    cursor: pointer;
+    padding: 2px;
+    transition: 300ms;
+    margin-top: 14px;
+    margin-right: 20px;
+    margin-left: 10px;
+    padding-top: 12px;
+    background-image: url('/workspaces/scheduler/img/icon-trash-26.png');
+    background-size: 22px;
+    background-repeat: no-repeat;
+    background-color: red;
+    background-position: center;
+    filter: drop-shadow(4px 6px 10px #00000044);
+}
+
+#cc-button:hover {
+    background-color: rgb(212, 2, 2);
+}
+
+@media (max-width: 912px) {  
+    .save-plan {
+        margin-right: 5px;
+    }
+}
+
+@media (max-width: 360px) {  
+    #ss-span {
+        min-width: 100px;
+        max-width: 150px;
+    }
+    .change-height {
+        max-width: 150px;
+    }
+    .save-plan {
+        margin-right: 0px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        font-size: 15px;
+    }
+
+    #save-button {
+        margin-left: 6px;
+        margin-right: 3px;
+        width: 35px;
+        height: 35px;
+    }
+
+    #cc-button {
+        margin-right: 6px;
+        margin-left: 3px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .toggle-features {
+        padding-left: 0px;
+        padding-right: 0px;
+        width: 100%;
+    }
+}
+
+@media (min-width: 676px) {
     .help-tip {
         display: block;
     }
+
+    #exportBtn {
+        display: block;
+    }
+
 }
 
 /* Medium devices (tablets, 768px and up)*/
@@ -964,7 +1207,6 @@ th {
     height: 80%;
     padding: 10px;
     /* Some padding */
-    filter: drop-shadow(4px 6px 10px #00000044);
     /* WAR: safari is gross, this forces gpu render */
     backdrop-filter: blur(0);
     overflow: hidden;

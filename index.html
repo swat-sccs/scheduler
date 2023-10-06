@@ -26,7 +26,7 @@
                     <a href="https://www.sccs.swarthmore.edu/">SCCS</a> Class Planner
                 </h1>
                 <i id="semester-subtitle"></i>
-                <div class="help-tip">
+                <div class="help-tip" id="sticky-btn">
                     <p>
                         <b><u>How to use:</u></b>
                         <br>- Use the search bar at the bottom to find your classes, and select them
@@ -37,6 +37,10 @@
                         <br>- Share your classes with others simply by giving them the URL
                     </p>
                 </div>
+
+                <button class="export-btn" id="exportBtn">
+                    Export iCal
+                </button>
             </div>
         </header>
         <main class="pageMain">
@@ -50,7 +54,16 @@
                 </div>
                 <div id="btns">
                     <button class="calBtn" id="toggleCal">Toggle Calendar</button>
-                    <button class="calBtn" id="exportBtn">Export iCal File</button>
+                </div>
+                <div class="toggle-features">
+                        <input class="save-plan" id="plan-name" type="text" value = "" placeholder="Plan Name"> 
+                        <button id="save-button"></button>
+                        <nav class="change-height">
+                            <label for="touch"><span id="ss-span">Saved Plans</span></label>
+                            <input type="checkbox" id="touch">
+                            <ul class="slide"></ul>
+                        </nav>
+                    <button id="cc-button"></button>
                 </div>
                 <p class="smallFont" style="padding: 1rem 0rem 1rem 0rem; margin-left: 2rem; margin-right: 2rem;">
                     <i>The Class Planner is a <strong>student-run</strong> service, and displays classes from the

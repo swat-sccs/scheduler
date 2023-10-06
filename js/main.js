@@ -14,10 +14,18 @@ import {term, termSubtitle, scheduleJSON, startSemester, endSemester,
 import packageInfo from '../package.json';
 
 let selectedClasses = []
+
+let plan
+
 let classSchedObj
+
 // Needs to be global so can i.e. search from the window location hash
 let hackerList
 let fullCalendar
+
+let clickCount = 0
+let plansCount = 0
+
 const normalEventColor = '#31425F'
 const highlightEventColor = '#F46523'
 
@@ -127,11 +135,13 @@ function updateSlotTimes() {
 }
 
 function selectClass(id, bulk) {
+
   // If bulk, don't save to cookie/hash so don't hammer in initial load
   // this will contain a reference to the checkbox
 
   // Selected a new class
   if (selectedClasses.indexOf(id) === -1) {
+
     const thisClass = classSchedObj[0][id]
     // in classSchedObj[0] so not in classSchedObj[1] so has a time
     if (thisClass != null) {
@@ -142,8 +152,9 @@ function selectClass(id, bulk) {
       fullCalendar.addEventSource(source)
       updateSlotTimes()
     }
-
+  
     selectedClasses.push(id)
+    
   } else {
     // selected an old class (if multitime, will delete both TODO)
     const thisClass = classSchedObj[0][id]
@@ -161,6 +172,7 @@ function selectClass(id, bulk) {
     // invovles *both* addition and removal of classes but, we only use bulk
     // when initally adding all classes (all adds) or removing all classes
     // (all removes) so should be safe
+
     if (!bulk) {
       for (const item in hackerList.items) {
         if (parseInt(hackerList.items[item].values().id) === id) {
@@ -170,16 +182,19 @@ function selectClass(id, bulk) {
       }
     }
   }
+
   if (!bulk) {
     reloadRightCol()
     updateHashCookie()
   }
 }
 
+
 function rowClickHandler(event) {
   const classID = parseInt(event.currentTarget.getElementsByClassName('id')[0].id)
   event.currentTarget.querySelector('input').checked = true
   event.currentTarget.classList.add('trHigh')
+
   selectClass(classID, false)
 }
 
@@ -219,16 +234,6 @@ function loadInitURL() {
   updateHashCookie()
 }
 
-function loadInitCookie() {
-  // TODO
-  const cookieStr = Cookies.get('classes')
-  if (cookieStr != null) {
-    console.log('Taking from cookie')
-    window.location.hash = cookieStr
-    loadInitURL()
-  }
-}
-
 function setHash(hash) {
   if ('replaceState' in history) {
     history.replaceState('', '', hash)
@@ -253,11 +258,11 @@ function updateHashCookie() {
   const hashStr = term + '__' + hashStrArr.join(',')
   if (hashStrArr.length > 0) {
     setHash('#' + hashStr)
+    Cookies.set(plan, hashStr, { expires: 365 })
   } else {
     // . clears
     setHash('#')
   }
-  Cookies.set('classes', hashStr, { expires: 365 })
 }
 
 function registerSW() {
@@ -272,10 +277,209 @@ function registerSW() {
   }
 }
 
+function loadPlanFromCookies() {
+
+  for (let cookieName in Cookies.get()) {
+    if (cookieName != "undefined" && cookieName != "parent-option-2"){
+
+      // Creates and styles the dropdown menu
+      let parent = document.querySelector('.slide')
+
+      let child = document.createElement('li')
+      let grandchild = document.createElement('a')
+      let text = document.createTextNode(cookieName)
+
+      grandchild.setAttribute('href', '#')
+      grandchild.setAttribute('id', cookieName)
+      grandchild.appendChild(text)
+
+      child.setAttribute('id', cookieName)
+      child.appendChild(grandchild)
+      parent.appendChild(child)
+
+      plansCount = plansCount + 1
+    } 
+  }
+
+  resizeDropdown()
+}
+
+function resizeDropdown() {
+  let parent = document.querySelector('.slide')
+
+  if (plansCount == 1) {
+    parent.style.height = '51px'
+    parent.style.maxHeight = '51px'
+  } else if (plansCount == 2) {
+    parent.style.height = '101px'
+    parent.style.maxHeight = '101px'
+  } else if (plansCount >= 3){
+    parent.style.height = '151px'
+    parent.style.maxHeight = '151px'
+  } else {
+    parent.style.height = '0px'
+    parent.style.maxHeight = '0px'
+  }
+}
+
+function createPlan(plan) {
+  // Sets cookie for new plan with plan name as key, list of classIDs => '' as values
+  if (plan != 'parent-option-2' && plan){
+    Cookies.set(plan, term + '__', { expires: 365 })
+  }
+}
+
+function changePlan(plan) {
+  document.getElementById('plan-name').value = plan
+  document.getElementById('ss-span').textContent = plan
+
+  // New Plan:
+  // Pull classes from formatted cookies if they exist, else make new arr to store them
+  let arrScFromCookies = []
+  let planCookies = Cookies.get(plan)
+
+  if (planCookies && planCookies !== term + "__") {
+    arrScFromCookies = Cookies.get(plan).replace(term + "__", "").split(",")   
+  } else {
+    arrScFromCookies = [] 
+  }
+
+  clearAll()
+
+  selectedClasses = arrScFromCookies
+
+  console.log("Loading cookies from picked plan: " + plan)
+  console.log(selectedClasses.length + " class IDs were found.")
+
+  // Converts class ID arr to str to pass in setHash(hash)
+  if (selectedClasses.length > 0) {
+    let strCookiesForCurrentPlan = selectedClasses.join(',')
+    let valCookiesForCurrentPlan = term + "__" + strCookiesForCurrentPlan
+    let hashClasses = []
+
+    for (let i = 0; i < selectedClasses.length; i++) {
+      hashClasses.push(selectedClasses[i])
+    }
+
+    for (const item in hackerList.items) {
+      if (hashClasses.indexOf(hackerList.items[item].values().id) !== -1) {
+        // Check the checkbox for this list item, doesn't call the callback
+        // because, for now, nothing is shown (just startup)
+        hackerList.items[item].elm.children[0].children[0].children[0].checked = true
+        hackerList.items[item].elm.classList.add('trHigh')
+        hackerList.items[item].elm.children[0].children[0].children[0].checked = true
+        selectClass(parseInt(hackerList.items[item].values().id), true)
+      }
+    }
+    setHash('#' + valCookiesForCurrentPlan)
+    Cookies.set(plan, valCookiesForCurrentPlan, { expires: 365 })
+  }
+  reloadRightCol()
+}
+
+function removeCookie(cookieName) {
+  if (Cookies.get(cookieName)) {
+    cookieName = cookieName.replaceAll(' ', '%20')
+    document.cookie = cookieName +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    console.log(`Cookie "${cookieName}" removed successfully`)
+  } else {
+    console.log(`Cookie "${cookieName}" not found`)
+  }
+}
+
+function deletePlan() {
+  let cookie = Cookies.get(plan)
+
+  // Must go first or cookie will be reassigned
+  if (cookie) {
+    if (cookie.split(',') > 0){
+      window.alert('in if')
+      clearAll()
+    }
+    removeCookie(plan)
+
+    let child = document.getElementById(plan)
+    child.remove()
+    plansCount--
+
+    document.getElementById('plan-name').value = ""
+    resizeDropdown()
+  }
+
+  if (plansCount == 0) {
+    let dropdownContent = document.getElementById('ss-span')
+    dropdownContent.textContent = "Saved Plans"
+    dropdownContent.classList.remove("drop-down")
+    dropdownContent.classList.add("drop-up")
+  }
+
+}
+
+function savePlan() {
+  // Get user input plan name
+  plan = document.getElementById('plan-name').value
+  let parent = document.querySelector('.slide')
+  clearAll()
+
+  // Avoids duplicate plans with same name
+  if (Cookies.get(plan)) {
+    console.log(plan + " already exists. Loading plan.")
+    changePlan(plan)
+
+  } else if (plan != ""){
+    console.log(plan + " doesn't exist. Creating plan.")
+    createPlan(plan)
+
+    // Creates and styles the dropdown menu
+    let child = document.createElement('li')
+    let grandchild = document.createElement('a')
+    let text = document.createTextNode(plan)
+
+    grandchild.setAttribute('href', '#')
+    grandchild.setAttribute('id', plan)
+    grandchild.appendChild(text)
+
+    child.setAttribute('id', plan)
+    child.appendChild(grandchild)
+    parent.appendChild(child)
+  } 
+
+  plansCount = plansCount + 1
+
+  resizeDropdown()
+}
+
 function setupEventListeners() {
     document.getElementById('toggleCal').addEventListener('click', toggleCal)
     document.getElementById('exportBtn').addEventListener('click', exportBtn)
+    document.getElementById('save-button').addEventListener('click', savePlan)
+    document.getElementById('cc-button').addEventListener('click', deletePlan)
+    
+    // Listens to plan dropdown changes and changes plans accordingly
+    let parentId = document.querySelector('.slide')
+    parentId.addEventListener('click', function(event){
+      if (event) {
+        event.preventDefault()
+        plan = event.target.getAttribute('id')
+        changePlan(plan)
+      }
+    });
 
+    let dropdownContent = document.getElementById('ss-span')
+    dropdownContent.classList.add("drop-up")
+    dropdownContent.addEventListener('click', function(){
+      if (plansCount){
+        if (clickCount % 2 || clickCount == 1) {
+          dropdownContent.classList.add("drop-up")
+          dropdownContent.classList.remove("drop-down")
+        } else {
+          dropdownContent.classList.remove("drop-up")
+          dropdownContent.classList.add("drop-down")
+        }
+      }
+      clickCount++
+    })
+  
     // yea this isn't exactly proper for this func but whatever
     // this hook is nice and it serves its purpose well
     var modal = document.getElementById("modalContent");
@@ -348,6 +552,7 @@ function trashCallback(event) {
 function reloadRightCol() {
   let htmlObj = []
   let html = ''
+  selectedClasses = [...new Set(selectedClasses.map(item => parseInt(item)))];
   for (let i = 0; i < selectedClasses.length; i++) {
     let noTime = ''
     let boldClass = ''
@@ -368,10 +573,12 @@ function reloadRightCol() {
       boldClass = 'bold'
       highlightClass = 'highlight'
     }
+
     htmlObj.push({
       key: thisClass.subj + thisClass.numSec,
       val: "<div class='chosenClass'><button class='icon_button icon-trash-1' aria-label='remove class' value='" + thisClass.id + "'></button><button aria-label='highlight class' class='icon_button icon-brush " + highlightClass + "' value='" + thisClass.id + "'></button><span><span class='" + boldClass + " chosenClassLeft'>" + thisClass.subj + ' ' + thisClass.numSec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + '&nbsp;(' + thisClass.id + ')</span></span></div>'
     })
+    
   }
   htmlObj = htmlObj.sort(function (a, b) {
     return a.key.localeCompare(b.key)
@@ -576,11 +783,13 @@ function clearAll() {
   selectedClasses = []
   reloadRightCol()
   updateHashCookie()
+  
 }
 
 registerSW()
 initCalendar()
 setupEventListeners()
+
 document.getElementById('semester-subtitle').textContent = termSubtitle
 document.getElementById('version').textContent = 'v' + packageInfo.version
 
@@ -619,14 +828,44 @@ request.onload = function() {
     }
 
     initList(tableArr)
+
+    var scheduleLink = window.location.hash
+
+    console.log(scheduleLink)
+
+    // Handles cookie "undefined"
+    clearAll()
+    removeCookie("undefined")
+    setHash(scheduleLink)
+
+    // Does cookie exist?
+    let exists = false
+    let cookiesObj = Cookies.get()
+    for (var i = 0; i < Object.keys(cookiesObj).length; i++){
+        console.log(Object.values(cookiesObj)[i])
+        // look for the entry with a matching `code` value
+        if (Object.values(cookiesObj)[i] == scheduleLink.replace("#","")){
+            exists = true
+            console.log("exists")
+            plan = Object.keys(cookiesObj)[i]
+            console.log(plan)
+        }
+    }
+
     // Prioritize URL over cookie
-    if (window.location.hash !== '') {
+    if (scheduleLink !== '') {
         // Make sure is new style URL and is for this term
         // TODO be able to look at previous semesters?
         // If old style or for old term, clear hash
-        loadInitURL()
+
+        if(!exists) {
+            plan = "Imported from URL"
+            loadInitURL()
+        }
+        loadPlanFromCookies()
+        changePlan(plan)
     } else {
-        loadInitCookie()
+        loadPlanFromCookies()
     }
   }
 }
