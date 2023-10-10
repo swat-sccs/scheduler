@@ -24,7 +24,7 @@ const highlightEventColor = '#F46523'
 function initList(tableArr) {
   // Initialize hacker news
   const hackerListOptions = {
-    valueNames: ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'instruct', 'days', 'time', 'rm', {
+    valueNames: ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'enrld', 'instruct', 'days', 'time', 'rm', {
       name: 'idCopy',
       attr: 'for'
     }, {
@@ -36,7 +36,7 @@ function initList(tableArr) {
     },
     'comment', 'labelSummary'],
     // W/o labels on all, just on rref number
-    item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></div></label></td> <td> <div class="ref"> </div><a target="_blank" class="URL icon-link"></a> </td> <td> <div class="subj"> </div> </td> <td> <div class="numSec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
+    item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></div></label></td> <td> <div class="ref"> </div><a target="_blank" class="URL icon-link"></a> </td> <td> <div class="subj"> </div> </td> <td> <div class="numSec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="enrld"></div>/<div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
     indexAsync: true,
     searchDelay: 500
     // Can't do pagination because doesn't allow to modify the elements (check the checkbox)
@@ -84,11 +84,12 @@ function initCalendar() {
         const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
         var modal = document.getElementById("eventModal");
         var modalText = document.getElementById("modal-text");
-        modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + props.c_title +
+        modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + props.c_title + '</b>: ' + props.enrld +
             '<br>' + time + '| ' + props.rm + '<br></p><hr style="width:25%;margin:auto"><br><p class="smallFont">' +
             props.days.replace('M',' Monday').replace('T',' Tuesday').replace('W',' Wednesday').replace('TuesdayH',' Thursday')
             .replace('TH',' Thursday').replace('F',' Friday') + '<br>Instructor: ' + props.instruct + '<br>Distribution: ' +
-            props.dist + '<br>Credits: ' + props.cred + '</p><br>';
+            props.dist + '<br>Enrollment: ' + props.enrld + '/' + props.lim + '<br>Credits: ' + props.cred  
+            '</p></br>';
         modal.style.display = "block";
     },
     eventColor: normalEventColor,
