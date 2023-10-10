@@ -13,7 +13,7 @@
     // Add the IDs of extensions you want installed when the container is created.
     "customizations": {
         "vscode": {
-          "extensions": ["dbaeumer.vscode-eslint"]
+			"extensions": ["dbaeumer.vscode-eslint"]
         }
       },
 

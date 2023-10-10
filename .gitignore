@@ -6,3 +6,4 @@ dist/
 .bashrc
 .vs/
 .vscode/
+.DS_Store

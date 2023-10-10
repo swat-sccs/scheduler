@@ -180,6 +180,8 @@ body {
 
 #footer p { display: inline-block }
 
+.lim,.enrld {display: inline-block}
+
 #calendarTd {
     vertical-align: top;
     border: rgb(220, 220, 220) solid 3px;
