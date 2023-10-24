@@ -493,7 +493,7 @@ body {
     cursor: pointer;
     margin-right: 10px;
     background-color: #0A8F16;
-    background-image: url(/workspaces/scheduler/img/icon-add-30.png);
+    background-image: url('../img/icon-add-30.png');
     background-repeat: no-repeat;
     background-size: 22px;
     background-position: center;
@@ -617,7 +617,7 @@ li a {
     margin-right: 20px;
     margin-left: 10px;
     padding-top: 12px;
-    background-image: url('/workspaces/scheduler/img/icon-trash-26.png');
+    background-image: url('../img/icon-trash-26.png');
     background-size: 22px;
     background-repeat: no-repeat;
     background-color: red;
