@@ -451,7 +451,7 @@ function savePlan() {
 
 function setupEventListeners() {
     document.getElementById('toggleCal').addEventListener('click', toggleCal)
-    document.getElementById('exportBtn').addEventListener('click', exportBtn)
+    document.getElementById('export-btn').addEventListener('click', exportBtn)
     document.getElementById('save-button').addEventListener('click', savePlan)
     document.getElementById('cc-button').addEventListener('click', deletePlan)
     
