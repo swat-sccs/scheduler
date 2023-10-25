@@ -6,6 +6,7 @@ module.exports = merge(common, {
   devtool: 'source-map',
   devServer: {
     static: ['./dist/'],
+    port: 9000,
     hot: true,
     watchFiles: ['js/*.js', 'css/*.css', '*.html'],
     liveReload: true,
