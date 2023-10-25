@@ -96,8 +96,7 @@ function initCalendar() {
             '<br>' + time + '| ' + props.rm + '<br></p><hr style="width:25%;margin:auto"><br><p class="smallFont">' +
             props.days.replace('M',' Monday').replace('T',' Tuesday').replace('W',' Wednesday').replace('TuesdayH',' Thursday')
             .replace('TH',' Thursday').replace('F',' Friday') + '<br>Instructor: ' + props.instruct + '<br>Distribution: ' +
-            props.dist + '<br>Enrollment: ' + props.enrld + '/' + props.lim + '<br>Credits: ' + props.cred  
-            '</p></br>';
+            props.dist + '<br>Enrollment: ' + props.enrld + '/' + props.lim + '<br>Credits: ' + props.cred + '<br><br></p>';
         modal.style.display = "block";
     },
     eventColor: normalEventColor,
