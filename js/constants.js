@@ -9,9 +9,9 @@ const scheduleJSON = 'trico_scraped.json'
 // const scheduleJSON = 'js/xls_scraped.json'
 
 // Go to https://www.swarthmore.edu/registrar/five-year-calendar and fill in
-const startSemester = ['2024', '01', '21'];
-const endSemester = ['2024', '12', '13'];
-const endHalfSemester = ['2024', '05', '05'];
+const startSemester = ['2024', '01', '22'];
+const endHalfSemester = ['2024', '03', '18'];
+const endSemester = ['2024', '05', '06'];
 
 // RRULE generator says use 50000Z so...I'm not Google go look it up
 const endSemesterISO = 'TZID=America/New_York:' + endSemester[0] + endSemester[1] + endSemester[2]
