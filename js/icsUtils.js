@@ -21,7 +21,8 @@ export function buildEvent(name, start, end, days, classEnd, location='') {
     title: name,
     location: location,
     busyStatus: 'BUSY',
-    start: start.map(numStr => parseInt(numStr)), // Format: [yyyy, mm, dd, hh, mm]
+    start: start.map(numStr => parseInt(numStr)), // Format: [yyyy, mm, dd, hh, mm],
+    startOutputType: 'local',
     end: end.map(numStr => parseInt(numStr)),
     recurrenceRule: 'FREQ=WEEKLY;BYDAY=' + String(days) // Format: SU,MO,TU,WE,TH,FR,SA
                     + ';INTERVAL=1;UNTIL=' + String(classEnd) // Format: yyyymmddT$timeutc
