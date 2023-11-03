@@ -278,7 +278,7 @@ function registerSW() {
 
 function loadPlanFromCookies() {
 
-  for (let cookieName in Cookies.get({domain: 'schedule.sccs.swarthmore.edu'})) {
+  for (let cookieName in Cookies.get()) {
     if (cookieName != "undefined" && cookieName != "parent-option-2"){
 
       // Creates and styles the dropdown menu
@@ -335,10 +335,10 @@ function changePlan(plan) {
   // New Plan:
   // Pull classes from formatted cookies if they exist, else make new arr to store them
   let arrScFromCookies = []
-  let planCookies = Cookies.get(plan, {domain: 'schedule.sccs.swarthmore.edu'})
+  let planCookies = Cookies.get(plan)
 
   if (planCookies && planCookies !== term + "__") {
-    arrScFromCookies = Cookies.get(plan, {domain: 'schedule.sccs.swarthmore.edu'}).replace(term + "__", "").split(",")   
+    arrScFromCookies = Cookies.get(plan).replace(term + "__", "").split(",")   
   } else {
     arrScFromCookies = [] 
   }
@@ -377,7 +377,7 @@ function changePlan(plan) {
 }
 
 function removeCookie(cookieName) {
-  if (Cookies.get(cookieName, {domain: 'schedule.sccs.swarthmore.edu'})) {
+  if (Cookies.get(cookieName)) {
     cookieName = cookieName.replaceAll(' ', '%20')
     document.cookie = cookieName +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
     console.log(`Cookie "${cookieName}" removed successfully`)
@@ -387,7 +387,7 @@ function removeCookie(cookieName) {
 }
 
 function deletePlan() {
-  let cookie = Cookies.get(plan, {domain: 'schedule.sccs.swarthmore.edu'})
+  let cookie = Cookies.get(plan)
 
   // Must go first or cookie will be reassigned
   if (cookie) {
@@ -421,7 +421,7 @@ function savePlan() {
   clearAll()
 
   // Avoids duplicate plans with same name
-  if (Cookies.get(plan, {domain: 'schedule.sccs.swarthmore.edu'})) {
+  if (Cookies.get(plan)) {
     console.log(plan + " already exists. Loading plan.")
     changePlan(plan)
 
