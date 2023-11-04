@@ -279,7 +279,8 @@ function registerSW() {
 function loadPlanFromCookies() {
 
   for (let cookieName in Cookies.get()) {
-    if (cookieName != "undefined" && cookieName != "parent-option-2"){
+    if (cookieName != "undefined" && cookieName != "parent-option-2"
+                                        && Cookies.get(cookieName).includes(term)){
 
       // Creates and styles the dropdown menu
       let parent = document.querySelector('.slide')
@@ -841,9 +842,13 @@ request.onload = function() {
     let exists = false
     let cookiesObj = Cookies.get()
     for (var i = 0; i < Object.keys(cookiesObj).length; i++){
-        console.log(Object.values(cookiesObj)[i])
+        let cur = Object.values(cookiesObj)[i]
+        if (!cur.includes(term))
+            continue
+
+        console.log(cur)
         // look for the entry with a matching `code` value
-        if (Object.values(cookiesObj)[i] == scheduleLink.replace("#","")){
+        if (cur == scheduleLink.replace("#","")){
             exists = true
             console.log("exists")
             plan = Object.keys(cookiesObj)[i]
