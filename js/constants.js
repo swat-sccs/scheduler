@@ -14,7 +14,7 @@ const endHalfSemester = ['2024', '03', '18'];
 const endSemester = ['2024', '05', '06'];
 
 // RRULE generator says use 50000Z so...I'm not Google go look it up
-const endSemesterISO = 'TZID=America/New_York:' + endSemester[0] + endSemester[1] + endSemester[2]
-const endHalfSemesterISO = 'TZID=America/New_York:' + endHalfSemester[0] + endHalfSemester[1] + endHalfSemester[2]
+const endSemesterISO = endSemester[0] + endSemester[1] + endSemester[2]
+const endHalfSemesterISO = endHalfSemester[0] + endHalfSemester[1] + endHalfSemester[2]
 
 export {term, termSubtitle, scheduleJSON, startSemester, endSemester, endHalfSemester, endSemesterISO, endHalfSemesterISO}
