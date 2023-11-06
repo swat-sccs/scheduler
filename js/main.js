@@ -26,6 +26,8 @@ let fullCalendar
 let clickCount = 0
 let plansCount = 0
 
+let curCookies = []
+
 const normalEventColor = '#31425F'
 const highlightEventColor = '#F46523'
 
@@ -297,6 +299,8 @@ function loadPlanFromCookies() {
       child.appendChild(grandchild)
       parent.appendChild(child)
 
+      curCookies.push(cookieName)
+
       plansCount = plansCount + 1
     } 
   }
@@ -400,6 +404,7 @@ function deletePlan() {
 
     let child = document.getElementById(plan)
     child.remove()
+    curCookies.splice(curCookies.indexOf(plan), 1)
     plansCount--
 
     document.getElementById('plan-name').value = ""
@@ -870,6 +875,8 @@ request.onload = function() {
         changePlan(plan)
     } else {
         loadPlanFromCookies()
+        if(plansCount > 0)
+            changePlan(curCookies[0])
     }
   }
 }
