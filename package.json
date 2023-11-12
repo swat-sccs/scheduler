@@ -9,9 +9,10 @@
   "dependencies": {
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/timegrid": "^6.1.9",
-    "css-minimizer-webpack-plugin": "^5.0.1",
+    "@prisma/client": "^5.5.2",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
     "favicons-webpack-plugin": "^6.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
@@ -35,6 +36,7 @@
     "build": "webpack --config webpack.prod.js"
   },
   "devDependencies": {
+    "prisma": "^5.5.2",
     "webpack-dev-server": "^4.15.1"
   }
 }
