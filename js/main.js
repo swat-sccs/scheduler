@@ -48,10 +48,11 @@ function initList(tableArr) {
     // W/o labels on all, just on rref number
     item: '<tr class="trClickable"> <td><label><input class="id" type="checkbox"><div class="visuallyhidden labelSummary"></div></div></label></td> <td> <div class="ref"> </div><a target="_blank" class="URL icon-link"></a> </td> <td> <div class="subj"> </div> </td> <td> <div class="numSec"> </div> </td> <td> <p class="c_title"></p> <div class="comment"></div> </td> <td> <div class="cred"> </div> </td> <td> <div class="dist"> </div> </td> <td> <div class="enrld"></div>/<div class="lim"> </div> </td> <td> <div class="instruct"> </div> </td> <td> <div class="days"> </div> </td> <td> <div class="time"> </div> </td> <td> <div class="rm"> </div> </td> </tr>',
     indexAsync: true,
-    searchDelay: 500
+    searchDelay: 500,
+    searchColumns: ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'enrld', 'instruct', 'days', 'time', 'rm']
     // Can't do pagination because doesn't allow to modify the elements (check the checkbox)
   }
-  hackerList = new List('hacker-list', hackerListOptions, tableArr)
+  hackerList = new List('hacker-list', hackerListOptions, tableArr)  
   hackerList.on('searchComplete', function () {
     if (hackerList.visibleItems.length === 0) {
       document.getElementById('classTable').classList.add('hideClass')
@@ -459,7 +460,7 @@ function setupEventListeners() {
     document.getElementById('export-btn').addEventListener('click', exportBtn)
     document.getElementById('save-button').addEventListener('click', savePlan)
     document.getElementById('cc-button').addEventListener('click', deletePlan)
-    
+
     // Listens to plan dropdown changes and changes plans accordingly
     let parentId = document.querySelector('.slide')
     parentId.addEventListener('click', function(event){
@@ -498,6 +499,23 @@ function setupEventListeners() {
         e.stopImmediatePropagation();
         return false;
     }
+
+  // Add an event listener for search by field
+  const selectElement = document.querySelector(".search-by-field");
+  selectElement.addEventListener("change", (event) => {
+    var selectedElement = event.target.value
+    var searchfield = []
+    if (selectedElement === 'sbf'){
+      searchfield = ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'enrld', 'instruct', 'days', 'time', 'rm']
+    }
+    else if (selectedElement === 'day-time'){
+      searchfield = ['days', 'time']
+    }
+    else{
+      searchfield = [event.target.value]
+    }
+    hackerList.search(document.getElementById('search').value, searchfield)
+  });
 }
 
 // would like this script to be in the html directly but the onload is tricky
@@ -773,16 +791,18 @@ function clearAll() {
   for (const i in selectedClasses) {
     strSelectedClasses.push(selectedClasses[i].toString())
   }
-  for (const item in hackerList.items) {
-    if (strSelectedClasses.indexOf(hackerList.items[item].values().id) !== -1) {
-      // Check the checkbox for this list item, doesn't call the callback
-      // because, for now, nothing is shown (just startup)
-      console.log('Clearing an elem')
-      hackerList.items[item].elm.children[0].children[0].children[0].checked = false
-      hackerList.items[item].elm.classList.remove('trHigh')
-      // TODO don't update hash values for these bc wasteful
-      // TODO don't update rightcol, do it afterward
-      selectClass(parseInt(hackerList.items[item].values().id), true)
+  if (hackerList) {
+    for (const item in hackerList.items) {
+      if (strSelectedClasses.indexOf(hackerList.items[item].values().id) !== -1) {
+        // Check the checkbox for this list item, doesn't call the callback
+        // because, for now, nothing is shown (just startup)
+        console.log('Clearing an elem')
+        hackerList.items[item].elm.children[0].children[0].children[0].checked = false
+        hackerList.items[item].elm.classList.remove('trHigh')
+        // TODO don't update hash values for these bc wasteful
+        // TODO don't update rightcol, do it afterward
+        selectClass(parseInt(hackerList.items[item].values().id), true)
+      }
     }
   }
   selectedClasses = []

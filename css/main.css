@@ -508,12 +508,39 @@ body {
     left: 0;
 }
 
+.flex-container {
+    display: flex;
+    align-items: center; /* Adjusts the alignment of items on the cross axis */
+    justify-content: space-between;
+}
+
+.dropdown-container {
+    width: 240px;
+    margin-left: 96px;
+    margin-right: 96px;
+}
+
+.search-by-field { /* selection of whether to search by filter*/
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #0A8F16;
+    color: white;
+    cursor: pointer;
+}
+
+.search-by-field:hover {
+    background-color: rgb(1, 112, 1);
+}
+
 .toggle-features {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
     width: 100%;
-}
+} 
 
 /* Save text input */
 .save-plan {

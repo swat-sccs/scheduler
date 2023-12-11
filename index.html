@@ -61,21 +61,35 @@
                     <button class="calBtn" id="toggleCal">Toggle Calendar</button>
                 </div>
                 <div class="toggle-features">
-                        <input class="save-plan" id="plan-name" type="text" value = "" placeholder="Plan Name"> 
-                        <button id="save-button"></button>
-                        <nav class="change-height">
-                            <label for="touch"><span id="ss-span">Saved Plans</span></label>
-                            <input type="checkbox" id="touch">
-                            <ul class="slide"></ul>
-                        </nav>
-                    <button id="cc-button"></button>
+                    <input class="save-plan" id="plan-name" type="text" value = "" placeholder="Plan Name"> 
+                    <button id="save-button"></button>
+                    <nav class="change-height">
+                        <label for="touch"><span id="ss-span">Saved Plans</span></label>
+                        <input type="checkbox" id="touch">
+                        <ul class="slide"></ul>
+                    </nav>
+                <button id="cc-button"></button>
                 </div>
-                <p class="smallFont" style="padding: 1rem 0rem 1rem 0rem; margin-left: 2rem; margin-right: 2rem;">
+                <div class="flex-container">
+                    <div class="dropdown-container">
+                        <select class="search-by-field">
+                            <option value="sbf">Search by Field</option>
+                            <option value="dist">Distribution</option>
+                            <option value="day-time">Days/Times</option>
+                            <option value="subj">Subject</option>
+                            <option value="c_title">Course Title</option>
+                            <option value="instruct">Instructor</option>
+                        </select>
+                    </div>            
+                <p class="smallFont" style="padding: 1rem 0rem 1rem 0rem; margin-left: 2rem; margin-right: 2rem; align: center;">
                     <i>The Class Planner is a <strong>student-run</strong> service, and displays classes from the
                         Tri-College course database.</i>
                     <br><i>We recommend confirming your schedule with the official course listings just in case.</i>
                     <br><i>If there are any issues, <a href="mailto:staff@sccs.swarthmore.edu">email us</a>.</i>
                 </p>
+                <div class="dropdown-container">
+                </div>
+                </div>
                 <div class="shadow" id="class_and_clear">
                     <div id="inside_container">
                         <div class="large_inline" id="rightCol_par">
@@ -88,7 +102,7 @@
                 <div id="hacker-list">
                     <div class="middleCol">
                         <div>
-                            <input name="search" class="search" id="search"
+                            <input name="search" class="search" data-sort="c_title" id="search"
                                 placeholder="Search for classes to plan your schedule!" />
                             <label class="visuallyhidden" for="search">Search for Classes</label>
                         </div>
