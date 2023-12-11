@@ -52,7 +52,7 @@ function initList(tableArr) {
     searchColumns: ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'enrld', 'instruct', 'days', 'time', 'rm']
     // Can't do pagination because doesn't allow to modify the elements (check the checkbox)
   }
-  hackerList = new List('hacker-list', hackerListOptions, tableArr)  
+  hackerList = new List('hacker-list', hackerListOptions, tableArr)
   hackerList.on('searchComplete', function () {
     if (hackerList.visibleItems.length === 0) {
       document.getElementById('classTable').classList.add('hideClass')
@@ -460,7 +460,7 @@ function setupEventListeners() {
     document.getElementById('export-btn').addEventListener('click', exportBtn)
     document.getElementById('save-button').addEventListener('click', savePlan)
     document.getElementById('cc-button').addEventListener('click', deletePlan)
-
+  
     // Listens to plan dropdown changes and changes plans accordingly
     let parentId = document.querySelector('.slide')
     parentId.addEventListener('click', function(event){
