@@ -1,7 +1,6 @@
-[submodule "xlsxscraper"]
-	path = xlsxscraper
-	url = https://github.com/swat-sccs/xlsxscraper
-	
 [submodule "tricoscraper"]
 	path = tricoscraper
 	url = https://github.com/swat-sccs/tricoscraper.git
+[submodule "xlsxscraper"]
+	path = xlsxscraper
+	url = https://github.com/swat-sccs/xlsxscraper
