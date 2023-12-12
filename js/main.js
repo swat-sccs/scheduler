@@ -63,6 +63,23 @@ function initList(tableArr) {
     }
   })
   hackerList.items.forEach(item => item.elm.onclick = rowClickHandler)
+
+  // Add an event listener for search by field
+  const selectElement = document.querySelector(".search-by-field");
+  selectElement.addEventListener("change", (event) => {
+    var selectedElement = event.target.value
+    if (selectedElement === 'sbf'){
+      hackerListOptions.searchColumns = ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'enrld', 'instruct', 'days', 'time', 'rm']
+    }
+    else if (selectedElement === 'day-time'){
+      hackerListOptions.searchColumns = ['days', 'time']
+    }
+    else{
+      hackerListOptions.searchColumns = [event.target.value]
+    }
+    hackerList = new List('hacker-list', hackerListOptions, tableArr)
+    hackerList.search(document.getElementById('search').value, hackerListOptions.searchColumns)
+  });
 }
 
 let maximumStartTime = '09:00:00'
@@ -499,23 +516,6 @@ function setupEventListeners() {
         e.stopImmediatePropagation();
         return false;
     }
-
-  // Add an event listener for search by field
-  const selectElement = document.querySelector(".search-by-field");
-  selectElement.addEventListener("change", (event) => {
-    var selectedElement = event.target.value
-    var searchfield = []
-    if (selectedElement === 'sbf'){
-      searchfield = ['ref', 'subj', 'numSec', 'c_title', 'cred', 'dist', 'lim', 'enrld', 'instruct', 'days', 'time', 'rm']
-    }
-    else if (selectedElement === 'day-time'){
-      searchfield = ['days', 'time']
-    }
-    else{
-      searchfield = [event.target.value]
-    }
-    hackerList.search(document.getElementById('search').value, searchfield)
-  });
 }
 
 // would like this script to be in the html directly but the onload is tricky
