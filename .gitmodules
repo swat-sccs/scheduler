@@ -1,6 +1,6 @@
 [submodule "tricoscraper"]
 	path = tricoscraper
-	url = https://github.com/swat-sccs/tricoscraper.git
+	url = https://github.com/swat-sccs/tricoscraper
 [submodule "xlsxscraper"]
 	path = xlsxscraper
 	url = https://github.com/swat-sccs/xlsxscraper
