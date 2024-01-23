@@ -94,7 +94,7 @@ function initCalendar() {
         const time = props.time.split('<br>')[0].replaceAll('am', '').replaceAll('pm', '').replace('-', '- ')
         var modal = document.getElementById("eventModal");
         var modalText = document.getElementById("modal-text");
-        modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + props.c_title + '</b>: ' + props.enrld +
+        modalText.innerHTML = '<p class="modal-title"><b>' + props.subj + ' ' + props.numSec + '</b>: ' + props.c_title + '</b>' +
             '<br>' + time + '| ' + props.rm + '<br></p><hr style="width:25%;margin:auto"><br><p class="smallFont">' +
             props.days.replace('M',' Monday').replace('T',' Tuesday').replace('W',' Wednesday').replace('TuesdayH',' Thursday')
             .replace('TH',' Thursday').replace('F',' Friday') + '<br>Instructor: ' + props.instruct + '<br>Distribution: ' +
