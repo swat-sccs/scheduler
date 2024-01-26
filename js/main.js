@@ -463,6 +463,7 @@ function setupEventListeners() {
     // Listens to plan dropdown changes and changes plans accordingly
     let parentId = document.querySelector('.slide')
     parentId.addEventListener('click', function(event){
+        console.log("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
       if (event) {
         event.preventDefault()
         plan = event.target.getAttribute('id')
@@ -875,8 +876,10 @@ request.onload = function() {
         changePlan(plan)
     } else {
         loadPlanFromCookies()
-        if(plansCount > 0)
-            changePlan(curCookies[0])
+        if(plansCount > 0) {
+            plan = curCookies[0]
+            changePlan(plan)
+        }
     }
   }
 }
