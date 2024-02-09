@@ -17,9 +17,9 @@ module.exports = {
     hashFunction: "xxhash64"
   },
   plugins: [
+    // Ironically for everything but favicons
     new FaviconsWebpackPlugin({
-        logo: './img/logo.jpg',
-        logoMaskable: './img/maskable.svg',
+        logo: './img/logo-vec.svg',
         mode: 'standalone',
         devMode: 'webapp',
         favicons: {
@@ -30,6 +30,9 @@ module.exports = {
           developerURL: 'https://www.sccs.swarthmore.edu/',
           background: '#f2f2f2',
           theme_color: '#31425f',
+          icons: {
+            favicons: false // Don't gen favicons in favor of SCCS logo due to desktop appearance
+          },
         }
       }),
     new HtmlWebpackPlugin({
