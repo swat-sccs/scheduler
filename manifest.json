@@ -1,0 +1,59 @@
+{
+    "name": "SCCS Course Planner",
+    "short_name": "Scheduler",
+    "description": "Plan your Swarthmore College course schedule with powerful search features and a touch-friendly interface.",
+    "dir": "auto",
+    "lang": "en-US",
+    "display_override": ["fullscreen", "minimal-ui"],
+    "display": "standalone",
+    "orientation": "any",
+    "start_url": "/",
+    "background_color": "#f2f2f2",
+    "theme_color": "#31425f",
+    "icons": [
+        {
+            "src": "favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "android-chrome-36x36.png",
+            "sizes": "36x36",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "favicon-48x48.png",
+            "sizes": "48x48",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "screenshots/screenshot-wide.png",
+            "sizes": "2560x1440",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "screenshots/screenshot-phone.png",
+            "sizes": "1170x2532",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
+    "id": "sccs_scheduler",
+    "categories": [
+        "education",
+        "productivity",
+        "utilities"
+    ]
+}

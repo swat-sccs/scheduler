@@ -22,16 +22,19 @@ module.exports = {
         logo: './img/logo-vec.svg',
         mode: 'standalone',
         devMode: 'webapp',
+        manifest: './manifest.json',
         favicons: {
-          appName: 'SCCS Course Planner',
-          appShortName: "Scheduler",
-          appDescription: 'My Swarthmore course schedule, proudly (or, at least, dutifully) planned with the SCCS Course Planner',
-          developerName: 'SCCS',
-          developerURL: 'https://www.sccs.swarthmore.edu/',
-          background: '#f2f2f2',
-          theme_color: '#31425f',
           icons: {
-            favicons: false // Don't gen favicons in favor of SCCS logo due to desktop appearance
+            favicons: false, // Don't gen favicons in favor of SCCS logo due to desktop appearance
+            android: [ // Don't gen 36x36 or 48x48 for same reason, statically define in manifest
+                "android-chrome-144x144.png",
+                "android-chrome-192x192.png",
+                "android-chrome-256x256.png",
+                "android-chrome-384x384.png",
+                "android-chrome-512x512.png",
+                "android-chrome-72x72.png",
+                "android-chrome-96x96.png"
+              ],
           },
         }
       }),
@@ -41,7 +44,8 @@ module.exports = {
     new MiniCssExtractPlugin(),
     new CopyPlugin({
       patterns: [
-        "./*.txt",
+        { from: "*.txt", to: "" },
+        { from: "screenshots/*", to: "assets/" },
       ],
     }),
   ],
