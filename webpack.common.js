@@ -6,11 +6,12 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: [
-    './js/main.js',
-  ],
+  entry: {
+    'app': './js/main.js',
+    'service-worker': "./js/service-worker.js",
+  },
   output: {
-    filename: 'main.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, './dist'),
     publicPath: 'auto',
     clean: false, // trico_scraped.json

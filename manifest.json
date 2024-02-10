@@ -50,6 +50,24 @@
             "form_factor": "narrow"
         }
     ],
+    "widgets": [
+        {
+            "name": "SCCS Mini-Planner",
+            "description": "Widget-ized course planner",
+            "tag": "planwidget",
+            "ms_ac_template": "widgets/mini-planner-template.json",
+            "data": "dist/trico_scraped.json.json",
+            "type": "application/json",
+            "icons": [
+              {
+                "src": "favicon-16x16.png",
+                "sizes": "16x16"
+              }
+            ],
+            "auth": false,
+            "update": 86400
+          }
+    ],
     "id": "sccs_scheduler",
     "categories": [
         "education",
