@@ -2,6 +2,7 @@ import '../css/normalize.css'
 import '../css/main.css'
 
 import * as icsUtils from './icsUtils.js'
+import * as helpers from './helpers.js'
 
 import Cookies from 'js-cookie'
 import List from 'list.js'
@@ -62,6 +63,41 @@ function initList(tableArr) {
     }
   })
   hackerList.items.forEach(item => item.elm.onclick = rowClickHandler)
+
+  let searchLock = false
+  hackerList.on('searchComplete', (filterDist) => {
+  {
+    if (! searchLock) {
+      searchLock = true
+      //console.log('search is done')
+
+      let dist_search = helpers.extractToken(document.getElementById('search').value)
+      //console.log(dist_search)
+      if (dist_search)
+      {
+        //console.log('dist searching')
+        hackerList.filter(function(item) {
+          //console.log(item.values().dist.toUpperCase())
+        if (item.values().dist.toUpperCase().includes(dist_search.toUpperCase()))
+        {
+          //console.log('true')
+          return true
+        } else {
+          //console.log('false')
+          return false
+        }
+        });
+        let newSearch = helpers.removeDistToken(document.getElementById('search').value, dist_search)
+        console.log("new search is" + newSearch)
+        hackerList.search(newSearch)
+      }
+    }
+    else 
+    {
+      searchLock = false
+    }
+   }
+  });
 }
 
 let maximumStartTime = '09:00:00'
