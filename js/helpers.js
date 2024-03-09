@@ -9,18 +9,22 @@ export function strNumericAdd(string1, string2)
     return (parseInt(string1) + parseInt(string2)).toString()
 }
 
-export function extractToken(string) {
-    const prefix = "dist:";
+export function extractToken(string, prefix) {
+    //const prefix = "dist:";
     const startIndex = string.indexOf(prefix);
   
     if (startIndex !== -1) {
       // Find the start position of the token
       const tokenStart = startIndex + prefix.length;
       // Find the end position of the token (next space after the token, or end of string if no space found)
-      let tokenEnd = string.indexOf(" ", tokenStart);
+      let tokenEnd = string.indexOf(",", tokenStart);
+      if (tokenEnd == -1)
+      {
+        tokenEnd = string.indexOf(" ", tokenStart);
+      }
       tokenEnd = tokenEnd === -1 ? string.length : tokenEnd; // If no space found, use the end of the string
       
-      // Extract the token
+      // Extract the token0
       const token = string.substring(tokenStart, tokenEnd);
       console.log("found token: " + token)
       return token;
@@ -30,8 +34,8 @@ export function extractToken(string) {
     return null;
   }
   
-export function removeDistToken(string, search_token) {
-    const prefix = "dist:" + search_token;
+export function removeToken(string, search_token, search_prefix) {
+    const prefix = search_prefix + search_token;
     const startIndex = string.indexOf(prefix);
   
     if (startIndex !== -1) {

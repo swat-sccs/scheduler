@@ -69,9 +69,12 @@ function initList(tableArr) {
   {
     if (! searchLock) {
       searchLock = true
-      //console.log('search is done')
+      let search_string = ""
+      search_string = document.getElementById('search').value
+      
+      console.log('search is done')
 
-      let dist_search = helpers.extractToken(document.getElementById('search').value)
+      let dist_search = helpers.extractToken(search_string, "dist:")
       //console.log(dist_search)
       if (dist_search)
       {
@@ -87,10 +90,33 @@ function initList(tableArr) {
           return false
         }
         });
-        let newSearch = helpers.removeDistToken(document.getElementById('search').value, dist_search)
-        console.log("new search is" + newSearch)
-        hackerList.search(newSearch)
+        search_string = helpers.removeToken(search_string, dist_search, "dist:")
+        //console.log("new search is: " + newSearch)
+        //hackerList.search(search_string)
       }
+
+      let subj_search = helpers.extractToken(search_string, "subj:")
+      //console.log(dist_search)
+      if (subj_search)
+      {
+        //console.log('dist searching')
+        hackerList.filter(function(item) {
+          //console.log(item.values().dist.toUpperCase())
+        if (item.values().subj.toUpperCase().includes(subj_search.toUpperCase()))
+        {
+          //console.log('true')
+          return true
+        } else {
+          //console.log('false')
+          return false
+        }
+        });
+        search_string = helpers.removeToken(search_string, subj_search, "subj:")
+        //console.log("new search is: " + newSearch)
+        //hackerList.search(newSearch)
+      }
+      console.log("new search is: " + search_string)
+      hackerList.search(search_string)
     }
     else 
     {
