@@ -69,52 +69,54 @@ function initList(tableArr) {
   {
     if (! searchLock) {
       searchLock = true
-      let search_string = ""
-      search_string = document.getElementById('search').value
+      let search_string = document.getElementById('search').value
       
       console.log('search is done')
 
-      let dist_search = helpers.extractToken(search_string, "dist:")
-      //console.log(dist_search)
-      if (dist_search)
-      {
-        //console.log('dist searching')
-        hackerList.filter(function(item) {
-          //console.log(item.values().dist.toUpperCase())
-        if (item.values().dist.toUpperCase().includes(dist_search.toUpperCase()))
+      let search_prefixes = ["dist", "subj", "title", "instruct", "cred", "days", "time"]
+      let filter_dict = {
+        "dist": false,
+        "subj": false,
+        "title": false,
+        "instruct": false,
+        "cred": false,
+        "days": false,
+        "time": false
+      };
+      
+      for (let prefix of search_prefixes) {
+        let found_prefix = helpers.extractToken(search_string, prefix + ":")
+        //console.log(dist_search)
+        if (found_prefix)
         {
-          //console.log('true')
-          return true
-        } else {
-          //console.log('false')
-          return false
+          console.log('found prefix:' + prefix)
+          filter_dict[prefix] = found_prefix
+          search_string = helpers.removeToken(search_string, found_prefix, prefix + ":")
+          //console.log("new search is: " + newSearch)
+          //hackerList.search(search_string)
         }
-        });
-        search_string = helpers.removeToken(search_string, dist_search, "dist:")
-        //console.log("new search is: " + newSearch)
-        //hackerList.search(search_string)
       }
-
-      let subj_search = helpers.extractToken(search_string, "subj:")
-      //console.log(dist_search)
-      if (subj_search)
-      {
-        //console.log('dist searching')
-        hackerList.filter(function(item) {
-          //console.log(item.values().dist.toUpperCase())
-        if (item.values().subj.toUpperCase().includes(subj_search.toUpperCase()))
-        {
-          //console.log('true')
-          return true
-        } else {
-          //console.log('false')
-          return false
+      hackerList.filter(function(item) {
+        for (let prefix of search_prefixes) {
+          if (filter_dict[prefix])
+          {
+            let item_name = prefix
+            if (item_name.includes("title")) {item_name = "c_title"}
+            if (! item.values()[item_name])
+            {
+              return false
+            }
+            //console.log("item name = " + item.values()[item_name])
+            //console.log("search found = " + filter_dict[prefix])
+            if (! item.values()[item_name].toUpperCase().includes(filter_dict[prefix].toUpperCase()))
+            {
+              return false
+            } 
+          }
         }
-        });
-        search_string = helpers.removeToken(search_string, subj_search, "subj:")
-        //console.log("new search is: " + newSearch)
-        //hackerList.search(newSearch)
-      }
+        return true
+      });
+      
       console.log("new search is: " + search_string)
       hackerList.search(search_string)
     }

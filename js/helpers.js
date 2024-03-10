@@ -17,11 +17,8 @@ export function extractToken(string, prefix) {
       // Find the start position of the token
       const tokenStart = startIndex + prefix.length;
       // Find the end position of the token (next space after the token, or end of string if no space found)
-      let tokenEnd = string.indexOf(",", tokenStart);
-      if (tokenEnd == -1)
-      {
-        tokenEnd = string.indexOf(" ", tokenStart);
-      }
+      let tokenEnd = string.indexOf(" ", tokenStart);
+
       tokenEnd = tokenEnd === -1 ? string.length : tokenEnd; // If no space found, use the end of the string
       
       // Extract the token0
