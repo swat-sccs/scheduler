@@ -806,28 +806,41 @@ request.onload = function() {
     // classSchedObj from included schedule.js file (made with `doAll` in folder)
     // classSchedObj = [hasTimes, hasNoTimes, multipleTimes]
     classSchedObj = JSON.parse(this.response)
+    console.log("OOKK")
+    console.log(classSchedObj)
     const tableArr = []
+
+    const dayMap = {
+      "monday": "MO",
+      "tuesday": "TU",
+      "wednesday": "WE",
+      "thursday": "TH",
+      "friday": "FR",
+      "saturday": "SA",
+      "sunday": "SU"
+    };
 
     // Do normal hasTimes and hasNoTimes. multipleTimes is checked when added to see if exists
     for (let i = 0; i <= 1; i++) {
       for (const z in classSchedObj[i]) {
-        const id = classSchedObj[i][z].id
+        const id = classSchedObj[i][z].id //works with go
         // TODO what should the ADA label be?
-        classSchedObj[i][z].labelSummary = classSchedObj[i][z].ref + ' ' + classSchedObj[i][z].subj + classSchedObj[i][z].numSec
+        classSchedObj[i][z].labelSummary = classSchedObj[i][z].courseReferenceNumber + ' ' + classSchedObj[i][z].subject + classSchedObj[i][z].courseNumber
         // In multipleTimes so add below the main item
 
         classSchedObj[i][z].multipleTimes = null
         classSchedObj[i][z].highlighted = false
-        classSchedObj[i][z].title = classSchedObj[i][z].subj + ' ' + classSchedObj[i][z].numSec + ': ' + classSchedObj[i][z].c_title
-
+        classSchedObj[i][z].title = classSchedObj[i][z].subject + ' ' + classSchedObj[i][z].courseNumber + ': ' + classSchedObj[i][z].courseTitle
+        let days = Object.keys(classSchedObj[i][z].meetingsFaculty[0].MeetingTime).filter(day => days[day]).map(day => dayMap[day]).join(" ")
         if (id in classSchedObj[2]) {
-          classSchedObj[i][z].days += '<br>' + classSchedObj[2][id].days
-          classSchedObj[i][z].time += '<br>' + classSchedObj[2][id].time
+            const next_days = Object.keys(classSchedObj[i][z].meetingsFaculty[1].MeetingTime).filter(day => days[day]).map(day => dayMap[day]).join(" ")
+            days += '<br>' + next_days
+            classSchedObj[i][z].time += '<br>' + classSchedObj[2][id].time
 
-          classSchedObj[i][z].multiTime = classSchedObj[2][id]
-          // Needed for calendar to know how to delete
-          classSchedObj[i][z].multiTime.id += 'extra'
-          classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
+            classSchedObj[i][z].multiTime = classSchedObj[2][id]
+            // Needed for calendar to know how to delete
+            classSchedObj[i][z].multiTime.id += 'extra'
+            classSchedObj[i][z].multiTime.title = classSchedObj[i][z].title
         }
         tableArr.push(classSchedObj[i][z])
       }
