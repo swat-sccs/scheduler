@@ -2,6 +2,7 @@ import '../css/normalize.css'
 import '../css/main.css'
 
 import * as icsUtils from './icsUtils.js'
+import * as helpers from './helpers.js'
 
 import Cookies from 'js-cookie'
 import List from 'list.js'
@@ -62,6 +63,69 @@ function initList(tableArr) {
     }
   })
   hackerList.items.forEach(item => item.elm.onclick = rowClickHandler)
+
+  let searchLock = false
+  hackerList.on('searchComplete', (filterDist) => {
+  {
+    if (! searchLock) {
+      searchLock = true
+      let search_string = document.getElementById('search').value
+      
+      console.log('search is done')
+
+      let search_prefixes = ["dist", "subj", "title", "instruct", "cred", "days", "time"]
+      let filter_dict = {
+        "dist": false,
+        "subj": false,
+        "title": false,
+        "instruct": false,
+        "cred": false,
+        "days": false,
+        "time": false
+      };
+      
+      for (let prefix of search_prefixes) {
+        let found_prefix = helpers.extractToken(search_string, prefix + ":")
+        //console.log(dist_search)
+        if (found_prefix)
+        {
+          console.log('found prefix:' + prefix)
+          filter_dict[prefix] = found_prefix
+          search_string = helpers.removeToken(search_string, found_prefix, prefix + ":")
+          //console.log("new search is: " + newSearch)
+          //hackerList.search(search_string)
+        }
+      }
+      hackerList.filter(function(item) {
+        for (let prefix of search_prefixes) {
+          if (filter_dict[prefix])
+          {
+            let item_name = prefix
+            if (item_name.includes("title")) {item_name = "c_title"}
+            if (! item.values()[item_name])
+            {
+              return false
+            }
+            //console.log("item name = " + item.values()[item_name])
+            //console.log("search found = " + filter_dict[prefix])
+            if (! item.values()[item_name].toUpperCase().includes(filter_dict[prefix].toUpperCase()))
+            {
+              return false
+            } 
+          }
+        }
+        return true
+      });
+      
+      console.log("new search is: " + search_string)
+      hackerList.search(search_string)
+    }
+    else 
+    {
+      searchLock = false
+    }
+   }
+  });
 }
 
 let maximumStartTime = '09:00:00'
