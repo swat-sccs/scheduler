@@ -8,7 +8,7 @@ import List from 'list.js'
 import {Calendar} from '@fullcalendar/core'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
-import {term, termSubtitle, scheduleJSON, startSemester, endSemester, 
+import {term, termSubtitle, scheduleJSON, startSemester, endSemester,
         endHalfSemester, endSemesterISO, endHalfSemesterISO} from './constants'
 
 import packageInfo from '../package.json';
@@ -153,9 +153,9 @@ function selectClass(id, bulk) {
       fullCalendar.addEventSource(source)
       updateSlotTimes()
     }
-  
+
     selectedClasses.push(id)
-    
+
   } else {
     // selected an old class (if multitime, will delete both TODO)
     const thisClass = classSchedObj[0][id]
@@ -302,7 +302,7 @@ function loadPlanFromCookies() {
       curCookies.push(cookieName)
 
       plansCount = plansCount + 1
-    } 
+    }
   }
 
   resizeDropdown()
@@ -343,9 +343,9 @@ function changePlan(plan) {
   let planCookies = Cookies.get(plan)
 
   if (planCookies && planCookies !== term + "__") {
-    arrScFromCookies = Cookies.get(plan).replace(term + "__", "").split(",")   
+    arrScFromCookies = Cookies.get(plan).replace(term + "__", "").split(",")
   } else {
-    arrScFromCookies = [] 
+    arrScFromCookies = []
   }
 
   clearAll()
@@ -447,7 +447,7 @@ function savePlan() {
     child.setAttribute('id', plan)
     child.appendChild(grandchild)
     parent.appendChild(child)
-  } 
+  }
 
   plansCount = plansCount + 1
 
@@ -459,7 +459,7 @@ function setupEventListeners() {
     document.getElementById('export-btn').addEventListener('click', exportBtn)
     document.getElementById('save-button').addEventListener('click', savePlan)
     document.getElementById('cc-button').addEventListener('click', deletePlan)
-    
+
     // Listens to plan dropdown changes and changes plans accordingly
     let parentId = document.querySelector('.slide')
     parentId.addEventListener('click', function(event){
@@ -485,7 +485,7 @@ function setupEventListeners() {
       }
       clickCount++
     })
-  
+
     // yea this isn't exactly proper for this func but whatever
     // this hook is nice and it serves its purpose well
     var modal = document.getElementById("modalContent");
@@ -538,7 +538,7 @@ function highlightClass(id, bulk) {
   if (thisClass != null) {
     thisClass.highlighted = !thisClass.highlighted
   }
-  
+
   if (!bulk) {
     updateHashCookie()
     reloadRightCol()
@@ -584,7 +584,7 @@ function reloadRightCol() {
       key: thisClass.subj + thisClass.numSec,
       val: "<div class='chosenClass'><button class='icon_button icon-trash-1' aria-label='remove class' value='" + thisClass.id + "'></button><button aria-label='highlight class' class='icon_button icon-brush " + highlightClass + "' value='" + thisClass.id + "'></button><span><span class='" + boldClass + " chosenClassLeft'>" + thisClass.subj + ' ' + thisClass.numSec + ": </span><span class='chosenClassRight'>" + thisClass.c_title + noTime + '&nbsp;(' + thisClass.id + ')</span></span></div>'
     })
-    
+
   }
   htmlObj = htmlObj.sort(function (a, b) {
     return a.key.localeCompare(b.key)
@@ -618,7 +618,7 @@ function reloadRightCol() {
  * on height change for the "toggle" effect. Unfortunately, transitions don't fire if
  * either the from or to height is "auto". If the container height is not auto, when active,
  * we can't expand how much of the calendar the user sees in response to adding say an 8:30pm
- * class. Thus, this workaround of setting height to auto after the transition to active and 
+ * class. Thus, this workaround of setting height to auto after the transition to active and
  * setting to a specific height before the transition to non-active.
  *
  * It's unclear why we have to use setTimeout to set the container height to what we want.
@@ -729,7 +729,7 @@ function exportBtn() {
 
     // Fix start for various days of the week
     icsUtils.fixDates(days, start, end, startSemester)
-    
+
     // Default class end
     let classEnd = endSemesterISO;
 
@@ -750,8 +750,8 @@ function exportBtn() {
       {
         classEnd = endHalfSemesterISO
       }
-    }  
-    
+    }
+
     let room = shortenRoom(thisClass.rm)
 
     console.log("Calling icsUtils.buildEvent(%s, %s, %s, %s, %s, %s)", bigTitle, start.toString(), end.toString(), days, classEnd.toString(), room)
@@ -789,14 +789,14 @@ function clearAll() {
   selectedClasses = []
   reloadRightCol()
   updateHashCookie()
-  
+
 }
 
 registerSW()
 initCalendar()
 setupEventListeners()
 
-document.getElementById('semester-subtitle').textContent = termSubtitle
+document.getElementById('semester-subtitle').textContent = "Legacy - " + termSubtitle
 document.getElementById('version').textContent = 'v' + packageInfo.version
 
 let request = new XMLHttpRequest()

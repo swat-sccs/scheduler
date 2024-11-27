@@ -10,19 +10,6 @@ services:
     environment:
       NODE_ENV: development
       DOMAIN: http://127.0.0.1:3000/
-      DATABASE_URL: "mysql://root:p@ssw0rd@scheduler-db:3306/schedule_data"
     ports:
       - 3000:3000
-    command: sh -c "npm install --silent && sleep 10 && npx prisma migrate dev --name init && npx prisma generate && npm start "
-  
-  scheduler-db:
-    image: mariadb:11
-    #volumes:
-      #- ./mock_sql:/docker-entrypoint-initdb.d
-    #ports:
-      #- 3306:3306
-    environment:
-      - MARIADB_ROOT_PASSWORD=p@ssw0rd
-      - MARIADB_USER=user
-      - MARIADB_PASSWORD=p@ssw0rd
-      - MARIADB_DATABASE=schedule_data
+    command: sh -c "npm install --silent && sleep 10 && npm start "

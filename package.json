@@ -1,7 +1,7 @@
 {
   "name": "scheduler",
-  "version": "1.6.1",
-  "description": "The frontend of SCCS's Swarthmore Course Scheduler",
+  "version": "1.7.0",
+  "description": "The legacy frontend of SCCS's Swarthmore Course Scheduler",
   "main": "index.html",
   "repository": "https://github.com/swat-sccs/scheduler",
   "author": "SCCS Staff <staff@sccs.swarthmore.edu>",
@@ -9,7 +9,6 @@
   "dependencies": {
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/timegrid": "^6.1.9",
-    "@prisma/client": "^5.5.2",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
@@ -36,7 +35,6 @@
     "build": "webpack --config webpack.prod.js"
   },
   "devDependencies": {
-    "prisma": "^5.5.2",
     "webpack-dev-server": "^4.15.1"
   }
 }
